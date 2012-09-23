@@ -1,0 +1,23 @@
+# Cookbook Name:: icinga
+# Recipe:: master
+#
+# Copyright 2012, YOUR_COMPANY_NAME
+#
+# All rights reserved - Do Not Redistribute
+#
+
+if ['debian', 'ubuntu'].member? node[:platform]
+
+  nodes = search(:node, 'role:monitoring-server');
+
+  # Multisite Configuration
+  template "/etc/check_mk/multisite.d/sites.mk" do
+    source "check_mk/master/sites.mk.erb"
+    owner "nagios"
+    group "nagios"
+    mode 0640
+    variables(
+        :nodes => nodes
+    )
+  end
+end

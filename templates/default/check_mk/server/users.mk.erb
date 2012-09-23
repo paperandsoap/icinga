@@ -1,0 +1,9 @@
+# Written by CHEF
+# encoding: utf-8
+
+multisite_users = \
+{
+<% @users.each do |user| -%>
+'<%= user['id'] %>': {'alias': u'<%= user['firstname'] %> <%= user['lastname'] %>', 'locked': <%= (!user['enabled']).to_s.capitalize %>, 'roles': ['admin']},
+<% end -%>
+}

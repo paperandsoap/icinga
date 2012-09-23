@@ -1,0 +1,22 @@
+# Written by WATO
+# encoding: utf-8
+
+
+sites = \
+{
+<% @nodes.each do |monitoring_node| -%>
+    '<%= monitoring_node['fqdn'] %>':
+    {
+    'alias': u'<%= monitoring_node['alias'] %>',
+    'disabled': False,
+    'insecure': False,
+    'multisiteurl': 'http://<%= monitoring_node['fqdn'] %>/check_mk/',
+    'persist': True,
+    'repl_priority': 0,
+    'timeout': 10,
+    'socket': 'tcp:<%= monitoring_node['fqdn'] %>:6557',
+    },
+<% end -%>
+}
+
+

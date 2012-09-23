@@ -1,0 +1,7 @@
+# Default settings for the NPCD init script.
+
+# Should NPCD be started? ("yes" to enable)
+RUN="<%= node[:npcd][:setup][:config][:run] %>"
+
+# Additional options that are passed to the daemon.
+DAEMON_OPTS="<%= node[:npcd][:setup][:config][:options] %>"
