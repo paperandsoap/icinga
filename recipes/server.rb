@@ -30,6 +30,7 @@ end
 end
 
 if ['debian', 'ubuntu'].member? node[:platform]
+  # TODO: The install process is a bit messy since debian-backports is not used when finding installation candidates
   # Standard packages required by server
   pkgs = value_for_platform(
       "default" => %w{ xinetd python }
@@ -227,7 +228,7 @@ if ['debian', 'ubuntu'].member? node[:platform]
     end
   end
 
-  # Ensure all users run the default sidebar
+  # Ensure all users run the default sidebar, do not overwrite if it exists already
   users.each do |user|
     directory node["check_mk"]["setup"]["vardir"] + "/web/" + user['id'] do
       owner "www-data"
@@ -240,6 +241,7 @@ if ['debian', 'ubuntu'].member? node[:platform]
       owner "www-data"
       group "root"
       mode 0640
+      action :create_if_missing
     end
   end
 
@@ -261,5 +263,29 @@ if ['debian', 'ubuntu'].member? node[:platform]
     variables(
         :users => users
     )
+  end
+
+  # Add all nodes (for now) to this monitoring server
+
+  # Command definition to reload check_mk when template changed
+  execute "reload-check-mk" do
+    command "check_mk -I ; check_mk -O"
+    action :nothing
+  end
+
+  # TODO: Find a way to properly scale this automatically via chef
+  # TODO: Find total amount of monitoring server in this domain, automatically add only nodes this server is resp. for
+  nodes = search(:node, 'name:*');
+
+  # Multisite Configuration
+  template "/etc/check_mk/conf.d/monitoring-nodes-#{node['hostname']}.mk" do
+    source "check_mk/server/client_nodes.mk.erb"
+    owner "nagios"
+    group "nagios"
+    mode 0640
+    variables(
+        :nodes => nodes
+    )
+    notifies :run, "execute[reload-check-mk]", :immediately
   end
 end
