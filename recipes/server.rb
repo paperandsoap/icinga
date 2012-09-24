@@ -30,6 +30,14 @@ end
 end
 
 if ['debian', 'ubuntu'].member? node[:platform]
+  # We need the backports repository for up-to-date Icinga version
+  apt_repository "squeeze-backports" do
+    uri "http://backports.debian.org/debian-backports"
+    distribution "squeeze-backports"
+    components ["main", "non-free"]
+    action :add
+  end
+
   # TODO: The install process is a bit messy since debian-backports is not used when finding installation candidates
   # Standard packages required by server
   pkgs = value_for_platform(
@@ -40,14 +48,6 @@ if ['debian', 'ubuntu'].member? node[:platform]
     package pkg do
       action :install
     end
-  end
-
-  # We need the backports repository for up-to-date Icinga version
-  apt_repository "squeeze-backports" do
-    uri "http://backports.debian.org/debian-backports"
-    distribution "squeeze-backports"
-    components ["main", "non-free"]
-    action :add
   end
 
   package "rrdcached" do
@@ -61,7 +61,7 @@ if ['debian', 'ubuntu'].member? node[:platform]
   )
   %w{ icinga icinga-cgi icinga-core icinga-doc }.each do |pkg|
     package pkg do
-      version "1.7.0-4~bpo60+1"
+      version "1.7.1-3~bpo60+1"
       action :install
 #      options  "-t #{node[:os_codename]}-backports"
       options "-t squeeze-backports"
@@ -277,9 +277,17 @@ if ['debian', 'ubuntu'].member? node[:platform]
   # TODO: Find total amount of monitoring server in this domain, automatically add only nodes this server is resp. for
   nodes = search(:node, 'name:*');
   roles = search(:role, 'name:*');
-  # roles = [ "role[server]", "role[client]", "role[monitoring-master]"]
+  # roles = ["role[server]", "role[client]", "role[monitoring-master]"]
   environments = search(:environment, 'name:*')
-  # environments = [ "test", "_default" ]
+  # environments = ["test", "_default"]
+  # TODO: Maybe there is a better way to fetch all existing tags in ohai?
+  tags = Array.new
+  nodes.each do |client_node|
+    client_node['tags'].each do |tag|
+      tags.push(tag)
+    end
+  end
+  tags.uniq
 
   # Add all found nodes to this server
   template "/etc/check_mk/conf.d/monitoring-nodes-#{node['hostname']}.mk" do
@@ -301,7 +309,8 @@ if ['debian', 'ubuntu'].member? node[:platform]
     mode 0640
     variables(
         :roles => roles,
-        :environments => environments
+        :environments => environments,
+        :tags => tags
     )
     notifies :run, "execute[reload-check-mk]"
   end
