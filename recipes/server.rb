@@ -276,6 +276,7 @@ if ['debian', 'ubuntu'].member? node[:platform]
   # TODO: Find a way to properly scale this automatically via chef
   # TODO: Find total amount of monitoring server in this domain, automatically add only nodes this server is resp. for
   nodes = search(:node, 'name:*');
+  roles = search(:role, 'name:*');
 
   # Add all found nodes to this server
   template "/etc/check_mk/conf.d/monitoring-nodes-#{node['hostname']}.mk" do
@@ -285,6 +286,18 @@ if ['debian', 'ubuntu'].member? node[:platform]
     mode 0640
     variables(
         :nodes => nodes
+    )
+    notifies :run, "execute[reload-check-mk]", :immediately
+  end
+
+  # Add all roles as hostgroups as they are used as tags for nodes
+  template "/etc/check_mk/conf.d/hostgroups-#{node['hostname']}.mk" do
+    source "check_mk/server/hostgroups.mk.erb"
+    owner "nagios"
+    group "nagios"
+    mode 0640
+    variables(
+        :roles => roles
     )
     notifies :run, "execute[reload-check-mk]", :immediately
   end
