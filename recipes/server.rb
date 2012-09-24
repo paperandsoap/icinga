@@ -277,6 +277,8 @@ if ['debian', 'ubuntu'].member? node[:platform]
   # TODO: Find total amount of monitoring server in this domain, automatically add only nodes this server is resp. for
   nodes = search(:node, 'name:*');
   roles = search(:role, 'name:*');
+  environments = search(:environment, 'name:*')
+
   # roles = [ "role[server]", "role[client]" ]
 
   # Add all found nodes to this server
@@ -298,7 +300,8 @@ if ['debian', 'ubuntu'].member? node[:platform]
     group "nagios"
     mode 0640
     variables(
-        :roles => roles
+        :roles => roles,
+        :environments => environments
     )
     notifies :run, "execute[reload-check-mk]"
   end

@@ -1,5 +1,5 @@
 all_hosts += [
 <% @nodes.each do |client_node| -%>
-    '<%= client_node['hostname'] %>|<%= client_node['lsb']['codename'] %>|site:<%= node['hostname'] %>|<%= client_node['roles'].join("|") %>',
+    '<%= client_node['hostname'] %>|<%= client_node['lsb']['codename'] %>|site:<%= node['hostname'] %>|<%= node['environment'] %>|<%= client_node['roles'].join("|") %>',
 <% end -%>
 ]
