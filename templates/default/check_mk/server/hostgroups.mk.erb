@@ -1,6 +1,6 @@
 host_groups += [
 <% @roles.each do |tmp|
-    role = tmp.match('role\[(.*)\]')[1]
+  role = tmp.to_s.match('role\[(.*)\]')[1]
 -%>
     ( '<%= role %>', [ '<%= role %>' ], ALL_HOSTS ),
 <% end -%>
