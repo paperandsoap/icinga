@@ -287,7 +287,7 @@ if ['debian', 'ubuntu'].member? node[:platform]
     variables(
         :nodes => nodes
     )
-    notifies :run, "execute[reload-check-mk]", :immediately
+    notifies :run, "execute[reload-check-mk]"
   end
 
   # Add all roles as hostgroups as they are used as tags for nodes
@@ -299,7 +299,7 @@ if ['debian', 'ubuntu'].member? node[:platform]
     variables(
         :roles => roles
     )
-    notifies :run, "execute[reload-check-mk]", :immediately
+    notifies :run, "execute[reload-check-mk]"
   end
 
   # Global configuration settings
@@ -308,6 +308,6 @@ if ['debian', 'ubuntu'].member? node[:platform]
     owner "nagios"
     group "nagios"
     mode 0640
-    notifies :run, "execute[reload-check-mk]", :immediately
+    notifies :run, "execute[reload-check-mk]"
   end
 end
