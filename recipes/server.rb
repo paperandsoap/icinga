@@ -277,6 +277,7 @@ if ['debian', 'ubuntu'].member? node[:platform]
   # TODO: Find total amount of monitoring server in this domain, automatically add only nodes this server is resp. for
   nodes = search(:node, 'name:*');
   roles = search(:role, 'name:*');
+  # roles = [ "role[server]", "role[client]" ]
 
   # Add all found nodes to this server
   template "/etc/check_mk/conf.d/monitoring-nodes-#{node['hostname']}.mk" do
