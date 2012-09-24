@@ -277,7 +277,7 @@ if ['debian', 'ubuntu'].member? node[:platform]
   # TODO: Find total amount of monitoring server in this domain, automatically add only nodes this server is resp. for
   nodes = search(:node, 'name:*');
 
-  # Multisite Configuration
+  # Add all found nodes to this server
   template "/etc/check_mk/conf.d/monitoring-nodes-#{node['hostname']}.mk" do
     source "check_mk/server/client_nodes.mk.erb"
     owner "nagios"
@@ -286,6 +286,15 @@ if ['debian', 'ubuntu'].member? node[:platform]
     variables(
         :nodes => nodes
     )
+    notifies :run, "execute[reload-check-mk]", :immediately
+  end
+
+  # Global configuration settings
+  template "/etc/check_mk/conf.d/global-configuration.mk" do
+    source "check_mk/server/global_config.mk.erb"
+    owner "nagios"
+    group "nagios"
+    mode 0640
     notifies :run, "execute[reload-check-mk]", :immediately
   end
 end

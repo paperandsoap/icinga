@@ -1,0 +1,88 @@
+# Automatically check each host for new inventory items
+inventory_check_interval = 120
+
+# Adjust our HARD check attempts and retry intervals
+extra_host_conf["max_check_attempts"] = [ ("5", ALL_HOSTS) ]
+extra_service_conf["max_check_attempts"] = [ ("5", ALL_HOSTS, [""]) ]
+extra_host_conf["retry_interval"] = [ ("1", ALL_HOSTS) ]
+extra_service_conf["retry_interval"] = [ ("1", ALL_HOSTS, [""]) ]
+
+# Automatically create host- and servicegroups
+define_hostgroups = True
+define_servicegroups = True
+define_contactgroups = True
+
+# Use alias for names and monitor interface speeds
+if_inventory_uses_alias = True
+if_inventory_monitor_speed = True
+
+# Global filesystem default levels
+filesystem_default_levels["levels"] = ( 90, 95 )
+
+# Ignore ipmi entries with no records
+ipmi_ignore_nr = True
+
+# Adjust some check parameters
+check_parameters += [
+    # /boot is usually pretty small and doesn't change often
+    ( { "levels" : (95, 98)} , ALL_HOSTS, [ "fs_/boot" ] ),
+    # Eventstream disks are supposed to run on low disk
+    ( { "levels" : (99, 100)} , [ "eventstream" ], ALL_HOSTS, [ "fs_/mnt/data" ] ),
+    # This machine runs a lot of parallel messagequeue services
+    ( (11000, 12000), [ "sealords-mq" ], ALL_HOSTS, [ "Number of threads" ] ),
+    # Gameservers and globalmessagequeue run on more threads usually
+    ( (3000, 4000), [ "game" ], ALL_HOSTS, [ "Number of threads" ] ),
+    ( (9500, 10000), [ "globalmessagequeue" ], ALL_HOSTS, [ "Number of threads" ] ),
+    ( { "errors" : (0.5, 1.0) }, ["srv019058"], [ "Interface vpn_.*" ] ),
+    ( { "errors" : (0.5, 1.0) }, ["srv015153"], [ "Interface vpn_.*" ] ),
+]
+
+# Ignore some services
+ignored_services += [
+    # Disable some monitoring events that are causing false positives
+    ( ALL_HOSTS, [ "Monitoring" ] ),
+    ( ALL_HOSTS, [ 'NFS mount /var/userhome/.*' ] ),
+    ( ALL_HOSTS, [ "IPMI Sensor Fan_Fan4" ] ),
+    ( ALL_HOSTS, [ "IPMI Sensor Fan_Fan5" ] ),
+    ( ALL_HOSTS, [ "IPMI Sensor Fan_Fan6" ] ),
+    ( ALL_HOSTS, [ "IPMI Sensor Fan_Fan7/CPU1" ] ),
+    ( ALL_HOSTS, [ "IPMI Sensor Fan_Fan8/CPU2" ] ),
+
+    # Ignore interfaces on network devices that have no string alias/description set
+    ( ["switch"], ALL_HOSTS, ["Interface\s\d+"]),
+    ( ["router"], ALL_HOSTS, ["Interface\s\d+"]),
+]
+
+# Our SNMP default community for SNMP scans
+snmp_default_community = "phN7RY5s163nE"
+
+inventory_processes += [
+    # if we find a these on hosts, montior them
+    ( "NTPD", "/usr/sbin/ntpd", ANY_USER, 1, 1, 1, 1),
+    ( "SSH", "/usr/sbin/sshd", ANY_USER, 1, 1, 5, 6),
+]
+
+inventory_processes_perf += [
+    ( "Apache2", "~.*bin/apache2", "www-data", 2, 3, 50, 50 ),
+    ( ["virtualitem"], ALL_HOSTS, "Apache2", "~.*bin/apache2", "www-data", 2, 3, 800, 900 ),
+    ( ["globalcatalog"], ALL_HOSTS, "Apache2", "~.*bin/apache2", "www-data", 2, 3, 300, 500 ),
+    ( ["ssl"], ALL_HOSTS, "Apache2", "~.*bin/apache2", "www-data", 2, 3, 250, 500 ),
+    ( ["ssl3"], ALL_HOSTS, "Apache2", "~.*bin/apache2", "www-data", 2, 3, 250, 500 ),
+    ( ["otrs"], ALL_HOSTS, "Apache2", "~.*bin/apache2", "www-data", 2, 3, 100, 150 ),
+]
+
+service_groups += [
+    ( "Filesystems", ALL_HOSTS, [ "fs" ] ),
+    ( "Performance", ALL_HOSTS, [
+        "CPU load",
+        "CPU utilization",
+        "Disk IO SUMMARY",
+        "Interface.*",
+        "Memory used" ] ),
+    ( "Heartbeat", ALL_HOSTS, [ "Heartbeat.*" ] ),
+    ( "MySQL", ALL_HOSTS, [ "MySQL.*" ] ),
+    ( "Apache", ALL_HOSTS, [ "proc_Apache2" ] ),
+    ( "Logfiles", ALL_HOSTS, [ "LOG.*" ] ),
+    ( "IPMI", ALL_HOSTS, [ "IPMI.*" ] ),
+    ( "RAID", ALL_HOSTS, [ "RAID.*", "MD.*" ] ),
+]
