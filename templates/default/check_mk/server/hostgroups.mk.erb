@@ -1,5 +1,5 @@
-hostgroups += [
+host_groups += [
 <% @roles.each do |role| -%>
-    ( '<%= role["name"] %>', [ '<%= role["name"] %>' ], ALL_HOSTS ),
+    ( '<%= /.*role[(.*)]/.match(role) %>', [ '<%= /.*role[(.*)]/.match(role) %>' ], ALL_HOSTS ),
 <% end -%>
 ]
