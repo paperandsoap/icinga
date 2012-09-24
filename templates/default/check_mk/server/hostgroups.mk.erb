@@ -1,0 +1,5 @@
+hostgroups += [
+<% @roles.each do |role| -%>
+    ( '<%= role["name"] %>', [ '<%= role["name"] %>' ], ALL_HOSTS ),
+<% end -%>
+]
