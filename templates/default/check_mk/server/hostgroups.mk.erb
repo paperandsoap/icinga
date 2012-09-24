@@ -3,14 +3,12 @@ host_groups += [
 <% @roles.each do |tmp|
   role = tmp.to_s.match('role\[(.*)\]')[1]
 -%>
-    ( '<%= role %>', [ '<%= role %>' ], ALL_HOSTS ),
+    ( 'role: <%= role %>', [ '<%= role %>' ], ALL_HOSTS ),
 <% end -%>
 
     # Chef Environments
-<% @environments.each do |tmp|
-  environment = tmp.to_s
--%>
-    ( '<%= environment %>', [ '<%= environment %>' ], ALL_HOSTS ),
+<% @environments.each do |tmp| -%>
+    ( 'environment: <%= tmp %>', [ '<%= tmp %>' ], ALL_HOSTS ),
 <% end -%>
 
 ]
