@@ -58,13 +58,13 @@ end
 
 # Platform specific installation path  : CentOS/RedHat/SuSE
 if ['centos', 'redhat', 'suse', 'fedora'].member? node[:platform]
-  remote_file "#{Chef::Config[:file_cache_path]}/check-mk-agent_1.2.0p2-2_all.deb" do
+  remote_file "#{Chef::Config[:file_cache_path]}/check_mk-agent-1.2.0p2-1.noarch.rpm" do
     source "http://mathias-kettner.de/download/check_mk-agent-1.2.0p2-1.noarch.rpm"
     mode "0644"
     checksum "ce17f7d9bdc51339a9595c84a3636aad4bfee54c8a4cd36eb32923ec2e21e187" # A SHA256 (or portion thereof) of the file.
   end
 
-  remote_file "#{Chef::Config[:file_cache_path]}/check-mk-agent-logwatch_1.2.0p2-2_all.deb" do
+  remote_file "#{Chef::Config[:file_cache_path]}/check_mk-agent-logwatch-1.2.0p2-1.noarch.rpm" do
     source "http://mathias-kettner.de/download/check_mk-agent-logwatch-1.2.0p2-1.noarch.rpm"
     mode "0644"
     checksum "cb179d1c5b41bce3d4d89ed14dffbdc4fb3de2c1a1ca94626af8200ce88c5d4c" # A SHA256 (or portion thereof) of the file.
@@ -73,13 +73,13 @@ if ['centos', 'redhat', 'suse', 'fedora'].member? node[:platform]
 
   package "check-mk-agent" do
     action :install
-    source "#{Chef::Config[:file_cache_path]}/check-mk-agent_1.2.0p2-2_all.rpm"
+    source "#{Chef::Config[:file_cache_path]}/check_mk-agent-1.2.0p2-1.noarch.rpm"
     provider Chef::Provider::Package::Rpm
   end
 
   package "check-mk-agent-logwatch" do
     action :install
-    source "#{Chef::Config[:file_cache_path]}/check-mk-agent-logwatch_1.2.0p2-2_all.deb"
+    source "#{Chef::Config[:file_cache_path]}/check_mk-agent-logwatch-1.2.0p2-1.noarch.rpm"
     provider Chef::Provider::Package::Rpm
   end
 end
