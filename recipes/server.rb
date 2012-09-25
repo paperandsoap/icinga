@@ -275,12 +275,14 @@ if ['debian', 'ubuntu'].member? node[:platform]
 
   # TODO: Find a way to properly scale this automatically via chef
   # TODO: Find total amount of monitoring server in this domain, automatically add only nodes this server is resp. for
+  # Find all nodes that we wish to monitor
   nodes = search(:node, 'name:*');
+
+  # Search roles and environments to create hostgroups
   roles = search(:role, 'name:*');
-  # roles = ["role[server]", "role[client]", "role[monitoring-master]"]
   environments = search(:environment, 'name:*')
-  # environments = ["test", "_default"]
-  # TODO: Maybe there is a better way to fetch all existing tags in ohai?
+
+  # TODO: Maybe there is a better way to fetch all existing tags?
   tags = Array.new
   nodes.each do |client_node|
     client_node['tags'].each do |tag|
