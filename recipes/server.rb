@@ -10,13 +10,18 @@
 # Needed to build check_mk from source (no debian package available)
 include_recipe "build-essential"
 
-# Ensure Apache mod_python is installed
-include_recipe "apache2::mod_python"
+# Install Apache2
+include_recipe "apache2"
 
+# Packages required for Apache2 SSL
 package "openssl"
 package "ssl-cert"
 
-# Enable default ssl host
+# Apache2 Modules
+include_recipe "apache2::mod_ssl"
+include_recipe "apache2::mod_python"
+
+# Enable default ssl host and disable default vhost
 apache_site "default-ssl"
 apache_site "default" do
   enable false
@@ -70,7 +75,7 @@ if ['debian', 'ubuntu'].member? node[:platform]
 
   # Install pnp4nagios now to avoid Nagios3 dependency
   package "pnp4nagios" do
-    version "0.6.12-1~bpo60+1"
+    version node["pnp4nagios"]["version"]
     action :install
     options "-t squeeze-backports"
   end
@@ -326,3 +331,6 @@ if ['debian', 'ubuntu'].member? node[:platform]
     notifies :run, "execute[reload-check-mk]"
   end
 end
+
+# Install the Icinga client recipe
+include_recipe "icinga::client"

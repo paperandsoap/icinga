@@ -6,6 +6,9 @@
 # All rights reserved - Do Not Redistribute
 #
 
+include_recipe "icinga::server"
+include_recipe "icinga::client"
+
 if ['debian', 'ubuntu'].member? node[:platform]
 
   nodes = search(:node, 'role:monitoring-server');

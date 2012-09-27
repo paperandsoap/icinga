@@ -4,15 +4,13 @@ default["rrdcached"]["config"]["socket"] = "unix:/var/run/rrdcached.sock"
 default["icinga"]["version"] = ""
 default["icinga"]["user"] = "nagios"
 default["icinga"]["group"] = "nagios"
-default["icinga"]["admin"]["user"] = "icingaadmin"
-default["icinga"]["admin"]["pass"] = "test"
 default["icinga"]["htpasswd"]["file"] = "/etc/icinga/htpasswd.users"
-
-# Check_mk settings
 default["check_mk"]["version"] = '1.2.1i1'
 default["check_mk"]["deb"]["release"] = '2'
-default["check_mk"]["tar"]["release"] = '1'
 default["check_mk"]["rpm"]["release"] = '1'
+default["check_mk"]["groups"] = ["check-mk-admin"]
+
+# Check_mk settings
 default["check_mk"]["setup"]["bindir"] = '/usr/bin'
 default["check_mk"]["setup"]["confdir"] = '/etc/check_mk'
 default["check_mk"]["setup"]["sharedir"] = '/usr/share/check_mk'
@@ -44,7 +42,6 @@ default["check_mk"]["setup"]["livebackendsdir"] = '/usr/share/check_mk/livestatu
 default["check_mk"]["setup"]["multisite"]["config"]["file"] = "/etc/check_mk/multisite.mk"
 default["check_mk"]["setup"]["multisite"]["config"]["nagvis_base_url"] = "/nagvis"
 default["check_mk"]["module"]["file"] = "#{node["check_mk"]["setup"]["libdir"]}/livestatus.o"
-default["check_mk"]["groups"] = ["check-mk-admin"]
 
 # npcd
 default["npcd"]["setup"]["config"]["file"] = "/etc/pnp4nagios/npcd.cfg"
