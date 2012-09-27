@@ -1,6 +1,7 @@
 # Default settings used in configuration options below
 default["pnp4nagios"]["config"]["rrdbase"] = "/var/lib/pnp4nagios/perfdata/"
 default["rrdcached"]["config"]["socket"] = "unix:/var/run/rrdcached.sock"
+default["icinga"]["version"] = ""
 default["icinga"]["user"] = "nagios"
 default["icinga"]["group"] = "nagios"
 default["icinga"]["admin"]["user"] = "icingaadmin"
@@ -8,7 +9,10 @@ default["icinga"]["admin"]["pass"] = "test"
 default["icinga"]["htpasswd"]["file"] = "/etc/icinga/htpasswd.users"
 
 # Check_mk settings
-default["check_mk"]["version"] = '1.2.0p2'
+default["check_mk"]["version"] = '1.2.1i1'
+default["check_mk"]["deb"]["release"] = '2'
+default["check_mk"]["tar"]["release"] = '1'
+default["check_mk"]["rpm"]["release"] = '1'
 default["check_mk"]["setup"]["bindir"] = '/usr/bin'
 default["check_mk"]["setup"]["confdir"] = '/etc/check_mk'
 default["check_mk"]["setup"]["sharedir"] = '/usr/share/check_mk'
@@ -79,7 +83,7 @@ default["icinga"]["setup"]["config"]["log_notifications"] = "1"
 default["icinga"]["setup"]["config"]["log_service_retries"] = "1"
 default["icinga"]["setup"]["config"]["log_host_retries"] = "1"
 default["icinga"]["setup"]["config"]["log_event_handlers"] = "1"
-default["icinga"]["setup"]["config"]["log_initial_states"] = "0"
+default["icinga"]["setup"]["config"]["log_initial_states"] = "1"
 default["icinga"]["setup"]["config"]["log_current_states"] = "1"
 default["icinga"]["setup"]["config"]["log_external_commands"] = "1"
 default["icinga"]["setup"]["config"]["log_passive_checks"] = "0"

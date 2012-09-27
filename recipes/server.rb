@@ -76,13 +76,13 @@ if ['debian', 'ubuntu'].member? node[:platform]
   end
 
   # Version alias for check_mk
-  version = node["check_mk"]["version"]
+  version = node['check_mk']['version']
 
   # Source of check_mk
   remote_file "#{Chef::Config[:file_cache_path]}/check_mk-#{version}.tar.gz" do
     source "http://mathias-kettner.de/download/check_mk-#{version}.tar.gz"
     mode "0644"
-    checksum "abf936a9e8e96f89cd960bbc5f8f813441353e075536ba418a9bad812125eb1c" # A SHA256 (or portion thereof) of the file.
+    checksum "c52644af14d306f5a2d0a2234d7b914411ad22266849cab56214ef2bfe052559" # A SHA256 (or portion thereof) of the file.
   end
 
   # Add the setup template to compile check_mk

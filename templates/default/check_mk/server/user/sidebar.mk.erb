@@ -2,6 +2,6 @@
   ('tactical_overview', 'open'),
   ('search', 'open'),
   ('views', 'open'),
-  ('sitestatus', 'open'),
+  <% if ! ['monitoring-master' ].member? node[:role] -%># <% end -%>('sitestatus', 'open'),
   ('speedometer', 'open')
 ]
