@@ -19,7 +19,8 @@ Chef
 
 Chef version 0.12.0+ is required for chef environment usage. See __Environments__ under __Usage__ below.
 
-All users in the __users__ Data Bag will be added as admins to view and control the Master and each Server.
+All users in the __users__ Data Bag and part of the group __check-mk-admins__ from the __groups__ Data Bag will
+be added as admins to view and control the Master and each Server.
 
 Since it is using a lot of search functionality this cookbook can only be used if the ChefSolo search libraries
 are available.
