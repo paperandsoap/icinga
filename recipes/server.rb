@@ -124,16 +124,16 @@ if ['debian', 'ubuntu'].member? node[:platform]
   # Change some permissions
   %w{ /var/lib/icinga/rw /etc/icinga /etc/check_mk/conf.d /etc/check_mk/conf.d/wato /etc/check_mk/conf.d /etc/check_mk/multisite.d /etc/check_mk/multisite.d/wato }.each do |d|
     file d do
-      owner "nagios"
-      group "www-data"
+      owner node["icinga"]["user"]
+      group node['apache']['user']
       mode "770"
     end
   end
   %w{ /etc/icinga/htpasswd.users /etc/check_mk/conf.d/distributed_wato.mk }.each do |f|
     file f do
       mode "640"
-      owner "www-data"
-      group "nagios"
+      owner node['apache']['user']
+      group node["icinga"]["group"]
     end
   end
 
@@ -141,7 +141,7 @@ if ['debian', 'ubuntu'].member? node[:platform]
   file "/usr/lib64/nagios/plugins/check_icmp" do
     mode "4750"
     owner "root"
-    group "nagios"
+    group node["icinga"]["group"]
   end
 
   # pnp4nagios templates
@@ -181,29 +181,29 @@ if ['debian', 'ubuntu'].member? node[:platform]
   template "/etc/pnp4nagios/config.php" do
     source "pnp4nagios/pnp4nagios_config.php.erb"
     owner 'root'
-    group 'www-data'
+    group node['apache']['user']
     mode 0640
   end
 
   # Multisite Configuration
   template "/etc/check_mk/multisite.mk" do
     source "check_mk/server/multisite.mk.erb"
-    owner "nagios"
-    group "nagios"
+    owner node["icinga"]["user"]
+    group node["icinga"]["group"]
     mode 0640
   end
   template "/etc/check_mk/multisite.d/wato_config.mk" do
     source "check_mk/server/wato_config.mk.erb"
-    owner "nagios"
-    group "nagios"
+    owner node["icinga"]["user"]
+    group node["icinga"]["group"]
     mode 0640
   end
 
   # Icinga Configuration
   template "/etc/icinga/icinga.cfg" do
     source "icinga/icinga.cfg.erb"
-    owner 'nagios'
-    group 'nagios'
+    owner node["icinga"]["user"]
+    group node["icinga"]["group"]
     mode 0640
     notifies :restart, resources(:service => "icinga")
   end
@@ -240,14 +240,14 @@ if ['debian', 'ubuntu'].member? node[:platform]
   # Ensure all users run the default sidebar, do not overwrite if it exists already
   users.each do |user|
     directory node["check_mk"]["setup"]["vardir"] + "/web/" + user['id'] do
-      owner "www-data"
+      owner node['apache']['user']
       group "root"
       mode "0750"
       action :create
     end
     template node["check_mk"]["setup"]["vardir"] + "/web/" + user['id'] + "/sidebar.mk" do
       source "check_mk/server/user/sidebar.mk.erb"
-      owner "www-data"
+      owner node['apache']['user']
       group "root"
       mode 0640
       action :create_if_missing
@@ -256,8 +256,8 @@ if ['debian', 'ubuntu'].member? node[:platform]
 
   template node["icinga"]["htpasswd"]["file"] do
     source "icinga/htpasswd.users.erb"
-    owner 'www-data'
-    group 'root'
+    owner 'root'
+    group node['apache']['user']
     mode "440"
     variables(
         :users => users
@@ -311,8 +311,8 @@ if ['debian', 'ubuntu'].member? node[:platform]
   # Add all found nodes to this server
   template "/etc/check_mk/conf.d/monitoring-nodes-#{node['hostname']}.mk" do
     source "check_mk/server/client_nodes.mk.erb"
-    owner "nagios"
-    group "nagios"
+    owner node["icinga"]["user"]
+    group node["icinga"]["group"]
     mode 0640
     variables(
         :nodes => nodes
@@ -323,8 +323,8 @@ if ['debian', 'ubuntu'].member? node[:platform]
   # Add all roles as hostgroups as they are used as tags for nodes
   template "/etc/check_mk/conf.d/hostgroups-#{node['hostname']}.mk" do
     source "check_mk/server/hostgroups.mk.erb"
-    owner "nagios"
-    group "nagios"
+    owner node["icinga"]["user"]
+    group node["icinga"]["group"]
     mode 0640
     variables(
         :roles => roles,
@@ -338,8 +338,8 @@ if ['debian', 'ubuntu'].member? node[:platform]
   # Global configuration settings
   template "/etc/check_mk/conf.d/global-configuration.mk" do
     source "check_mk/server/global_config.mk.erb"
-    owner "nagios"
-    group "nagios"
+    owner node["icinga"]["user"]
+    group node["icinga"]["group"]
     mode 0640
     notifies :run, "execute[reload-check-mk]"
   end
