@@ -80,7 +80,7 @@ if ['debian', 'ubuntu'].member? node[:platform]
   %w{ icinga npcd xinetd rrdcached }.each do |svc|
     service svc do
       supports :status => true, :restart => true, :reload => true
-      action :enable
+      action [ :enable, :start ]
     end
   end
 
