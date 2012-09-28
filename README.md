@@ -127,7 +127,7 @@ TODO
  * Nice to have: Package for check_mk server components
 
 
-Rhyme
+Poem
 =======
 
 'Die Sonne scheint mir auf den Bauch,
