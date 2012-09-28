@@ -67,3 +67,4 @@ attribute "check_mk/groups",
 
 depends "build-essential", ">= 1.1.2"
 depends "apache2", ">= 1.1.16"
+depends "apt", ">= 1.4.8"
