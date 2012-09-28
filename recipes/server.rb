@@ -27,14 +27,6 @@ apache_site "default" do
   enable false
 end
 
-# Define all services
-%w{ icinga npcd xinetd rrdcached }.each do |svc|
-  service svc do
-    supports :status => true, :restart => true, :reload => true
-    action :enable
-  end
-end
-
 if ['debian', 'ubuntu'].member? node[:platform]
   # We need the backports repository for up-to-date Icinga version
   apt_repository "squeeze-backports" do
@@ -70,7 +62,7 @@ if ['debian', 'ubuntu'].member? node[:platform]
       version node["icinga"]["version"]
       action :install
       # TODO: Properly find the backports repo to use
-#     options  "-t #{node[:os_codename]}-backports"
+      #     options  "-t #{node[:os_codename]}-backports"
       options "-t squeeze-backports"
     end
   end
@@ -82,6 +74,14 @@ if ['debian', 'ubuntu'].member? node[:platform]
     # TODO: Properly find the backports repo to use
     #     options  "-t #{node[:os_codename]}-backports"
     options "-t squeeze-backports"
+  end
+
+  # Define all services
+  %w{ icinga npcd xinetd rrdcached }.each do |svc|
+    service svc do
+      supports :status => true, :restart => true, :reload => true
+      action :enable
+    end
   end
 
   # Version alias for check_mk
