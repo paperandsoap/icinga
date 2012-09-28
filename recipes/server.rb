@@ -31,6 +31,7 @@ end
 %w{ icinga npcd xinetd rrdcached }.each do |svc|
   service svc do
     supports :status => true, :restart => true, :reload => true
+    action :enable
   end
 end
 
@@ -68,7 +69,8 @@ if ['debian', 'ubuntu'].member? node[:platform]
     package pkg do
       version node["icinga"]["version"]
       action :install
-#      options  "-t #{node[:os_codename]}-backports"
+      # TODO: Properly find the backports repo to use
+#     options  "-t #{node[:os_codename]}-backports"
       options "-t squeeze-backports"
     end
   end
@@ -77,6 +79,8 @@ if ['debian', 'ubuntu'].member? node[:platform]
   package "pnp4nagios" do
     version node["pnp4nagios"]["version"]
     action :install
+    # TODO: Properly find the backports repo to use
+    #     options  "-t #{node[:os_codename]}-backports"
     options "-t squeeze-backports"
   end
 
@@ -225,7 +229,7 @@ if ['debian', 'ubuntu'].member? node[:platform]
   users = Array.new
   # get group from databag
   node['check_mk']['groups'].each do |groupid|
-    # get the group data bag 
+    # get the group data bag
     group = data_bag_item('groups', groupid)
     # for every member
     group["members"].each do |userid|
@@ -278,7 +282,7 @@ if ['debian', 'ubuntu'].member? node[:platform]
     action :nothing
   end
 
-  # nodes = search(:node, 'name:*');
+  # Find nodes in our environment
   nodes = search(:node, "hostname:[* TO *] AND chef_environment:#{node.chef_environment}")
 
   # If no nodes are found only add ourselves
