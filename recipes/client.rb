@@ -25,6 +25,7 @@ end
 # runs /etc/init.d/xinetd (start|stop|restart), etc.
 service "xinetd" do
   supports :status => true, :restart => true, :reload => true
+  action [ :enable, :start ]
 end
 
 
@@ -44,7 +45,6 @@ if ['debian', 'ubuntu'].member? node[:platform]
     mode "0644"
     checksum node["check_mk"]["logwatch"]["deb"]["checksum"] # A SHA256 (or portion thereof) of the file.
   end
-
 
   package "check-mk-agent" do
     action :install
@@ -75,7 +75,6 @@ if ['centos', 'redhat', 'suse', 'fedora'].member? node[:platform]
     mode "0644"
     checksum node["check_mk"]["logwatch"]["rpm"]["checksum"] # A SHA256 (or portion thereof) of the file.
   end
-
 
   package "check-mk-agent" do
     action :install
