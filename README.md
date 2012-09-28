@@ -43,7 +43,8 @@ Packages
 
  * xinetd (for check_mk livestatus and agent)
  * ethtool (for check_mk agent, net link speed detection)
-
+ * openssl (for SSL certificate creation)
+ * ssl-cert (default certificates)
 
 Attributes
 ==========
