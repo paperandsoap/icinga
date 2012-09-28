@@ -7,7 +7,8 @@ to support server aggregation on a single master node.
 It is configured to find all nodes in it's segment automatically while the master server looks for all
 monitoring-serer roles in a network segment (environment).
 
-check_mk is used for automated host and service generation in Icinga.
+check_mk is used for automated host and service generation in Icinga, chef is used to populate check_mk with the
+appropriate configuration files for this node.
 
 
 Requirements
@@ -16,7 +17,7 @@ Requirements
 Chef
 ----
 
-Chef version 0.10.0+ is required for chef environment usage. See __Environments__ under __Usage__ below.
+Chef version 0.12.0+ is required for chef environment usage. See __Environments__ under __Usage__ below.
 
 All users in the __users__ Data Bag will be added as admins to view and control the Master and each Server.
 
@@ -41,6 +42,7 @@ Packages
 --------
 
  * xinetd (for check_mk livestatus and agent)
+ * ethtool (for check_mk agent, net link speed detection)
 
 
 Attributes
@@ -108,6 +110,12 @@ are required for this check to work:
  For further details how to write native check_mk agents please refer to the official documentation:
 
   * http://mathias-kettner.de/checkmk_devel_agentbased.html
+
+Environments
+------------
+
+The install recipe for the server is using chef environments to find all nodes within the Icinga servers environment.
+Be aware that this is a feature requiring Chef >= 0.10.0 to work.
 
 
 TODO
