@@ -40,6 +40,14 @@ require 'chefspec'
                 "vardir" => "/var/lib/check_mk"
             }
     }
+    runner.node.apache = {
+        "user" => "www-data",
+        "group" => "www-data"
+    }
+    runner.node.icinga = {
+        "user" => "nagios",
+        "group" => "nagios"
+    }
     runner.node.automatic_attrs[:hostname] = "localhost"
     runner.node.automatic_attrs[:platform] = platform
     runner.converge 'icinga::server'
@@ -84,12 +92,24 @@ require 'chefspec'
       /etc/icinga/htpasswd.users
       /etc/check_mk/multisite.d/users.mk
       /etc/check_mk/conf.d/monitoring-nodes-localhost.mk
+      /etc/check_mk/conf.d/hostgroups-localhost.mk
+      /etc/check_mk/conf.d/global-configuration.mk
     }.each do |file|
       it "should create file from template #{file}" do
         chef_run.should create_file file
       end
     end
-  end
 
-  # Check file ownership
+    # Check file and directory ownerships
+    %w{
+      /etc/icinga/htpasswd.users
+  }.each do |dir|
+      it "#{dir} should be owned by www-data:nagios" do
+        chef_run.file(dir).should be_owned_by('www-data', 'nagios')
+      end
+    end
+    it "should execute check_mk re-inventory and reload" do
+      chef_run.should execute_command "check_mk -I ; check_mk -O"
+    end
+  end
 end
