@@ -28,7 +28,6 @@ service "xinetd" do
   action [ :enable, :start ]
 end
 
-
 # Platform specific installation path  : Debian
 if ['debian', 'ubuntu'].member? node[:platform]
   # Create our version string to fetch the appropriate file
