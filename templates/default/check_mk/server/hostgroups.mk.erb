@@ -15,4 +15,9 @@ host_groups += [
 <% @tags.each do |tmp| -%>
     ( 'tag: <%= tmp %>', [ '<%= tmp %>' ], ALL_HOSTS ),
 <% end -%>
+
+    # Chef tags attached to machines
+<% @os_list.each do |tmp| -%>
+    ( 'os: <%= tmp %>', [ '<%= tmp %>' ], ALL_HOSTS ),
+<% end -%>
 ]

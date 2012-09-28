@@ -66,7 +66,7 @@ if ['debian', 'ubuntu'].member? node[:platform]
   )
   %w{ icinga icinga-cgi icinga-core icinga-doc }.each do |pkg|
     package pkg do
-      version "1.7.1-3~bpo60+1"
+      version node["icinga"]["version"]
       action :install
 #      options  "-t #{node[:os_codename]}-backports"
       options "-t squeeze-backports"
@@ -85,9 +85,9 @@ if ['debian', 'ubuntu'].member? node[:platform]
 
   # Source of check_mk
   remote_file "#{Chef::Config[:file_cache_path]}/check_mk-#{version}.tar.gz" do
-    source "http://mathias-kettner.de/download/check_mk-#{version}.tar.gz"
+    source "#{node["check_mk"]["url"]}/check_mk-#{version}.tar.gz"
     mode "0644"
-    checksum "c52644af14d306f5a2d0a2234d7b914411ad22266849cab56214ef2bfe052559" # A SHA256 (or portion thereof) of the file.
+    checksum node["check_mk"]["source"]["tar"]["checksum"] # A SHA256 (or portion thereof) of the file.
   end
 
   # Add the setup template to compile check_mk
@@ -278,22 +278,30 @@ if ['debian', 'ubuntu'].member? node[:platform]
     action :nothing
   end
 
-  # TODO: Find a way to properly scale this automatically via chef
-  # TODO: Find total amount of monitoring server in this domain, automatically add only nodes this server is resp. for
-  # Find all nodes that we wish to monitor
-  nodes = search(:node, 'name:*');
+  # nodes = search(:node, 'name:*');
+  nodes = search(:node, "hostname:[* TO *] AND chef_environment:#{node.chef_environment}")
 
-  # Search roles and environments to create hostgroups
+  # If no nodes are found only add ourselves
+  if nodes.empty?
+    Chef::Log.info("Not able to find any nodes in this environment.")
+    nodes = Array.new
+    nodes << node
+  end
+
+  # Search for all roles and environments to create hostgroups to use as check_mk tags
   roles = search(:role, 'name:*');
   environments = search(:environment, 'name:*')
 
-  # TODO: Maybe there is a better way to fetch all existing tags?
+  # Search all nodes for tags and os and add them to check_mk tagging and hostgroups
   tags = Array.new
+  os_list = Array.new
   nodes.each do |client_node|
     client_node['tags'].each do |tag|
       tags.push(tag)
     end
+    os_list.push(client_node['os'])
   end
+  os_list.uniq
   tags.uniq
 
   # Add all found nodes to this server
@@ -317,7 +325,8 @@ if ['debian', 'ubuntu'].member? node[:platform]
     variables(
         :roles => roles,
         :environments => environments,
-        :tags => tags
+        :tags => tags,
+        :os_list => os_list
     )
     notifies :run, "execute[reload-check-mk]"
   end

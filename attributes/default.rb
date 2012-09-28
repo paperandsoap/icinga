@@ -1,13 +1,19 @@
 # Default settings used in configuration options below
 default["pnp4nagios"]["config"]["rrdbase"] = "/var/lib/pnp4nagios/perfdata/"
 default["rrdcached"]["config"]["socket"] = "unix:/var/run/rrdcached.sock"
-default["icinga"]["version"] = ""
+default["icinga"]["version"] = "1.7.1-3~bpo60+1"
 default["icinga"]["user"] = "nagios"
 default["icinga"]["group"] = "nagios"
 default["icinga"]["htpasswd"]["file"] = "/etc/icinga/htpasswd.users"
+default["check_mk"]["url"] = "http://mathias-kettner.de/download"
 default["check_mk"]["version"] = '1.2.1i1'
 default["check_mk"]["deb"]["release"] = '2'
 default["check_mk"]["rpm"]["release"] = '1'
+default["check_mk"]["agent"]["rpm"]["checksum"] = "a3288f8bee0c1f5a313ceb1b3146458cabd7f41218b937dabb65656ca0313fe3"
+default["check_mk"]["logwatch"]["rpm"]["checksum"] = "7e865b843c96b57e1743b5b2f8b9a68125e59bc05fdad760274032297c1d8093"
+default["check_mk"]["agent"]["deb"]["checksum"] = "6df2cf15f735d0e0f4ea80b34993d1fd4414d9e399ec49751c9855e0d28cda0b"
+default["check_mk"]["logwatch"]["deb"]["checksum"] = "8f931be926bc088bddf8865344ff70ba7a7bb2d787b9812acd0c0b9b25d91002"
+default["check_mk"]["source"]["tar"]["checksum"] = "c52644af14d306f5a2d0a2234d7b914411ad22266849cab56214ef2bfe052559"
 default["check_mk"]["groups"] = ["check-mk-admin"]
 
 # Check_mk settings
