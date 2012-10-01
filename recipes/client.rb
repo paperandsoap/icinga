@@ -6,6 +6,9 @@
 # All rights reserved - Do Not Redistribute
 #
 
+# Include apt recipe to ensure system is updated prior to installing
+include_rcipe "apt"
+
 # Install required packages based on platform
 pkgs = value_for_platform(
     ["centos", "redhat", "suse", "fedora"] => {

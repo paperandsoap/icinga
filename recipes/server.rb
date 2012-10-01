@@ -7,6 +7,9 @@
 # All rights reserved - Do Not Redistribute
 #
 
+# Include apt recipe to ensure the system is updated prior to installing
+include_recipe "apt"
+
 # Needed to build check_mk from source (no debian package available)
 include_recipe "build-essential"
 

@@ -35,6 +35,7 @@ Platform
 Cookbooks
 ---------
 
+ * apt
  * build-essential
  * apache2
  * mod_python
