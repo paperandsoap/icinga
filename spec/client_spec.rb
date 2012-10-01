@@ -1,11 +1,11 @@
 require 'chefspec'
 
 %w{ debian centos ubuntu fedora redhat }.each do |platform|
-  describe "The icinga::client #{platform} Recipe" do
+  describe "The bp-icinga::client #{platform} Recipe" do
     before (:all) {
       @chef_run = ChefSpec::ChefRunner.new
       @chef_run.node.automatic_attrs[:platform] = platform
-      @chef_run.converge 'icinga::client'
+      @chef_run.converge 'bp-icinga::client'
     }
 
     # Check all packages that are installed

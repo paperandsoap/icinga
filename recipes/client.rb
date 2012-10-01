@@ -1,4 +1,4 @@
-# Cookbook Name:: icinga
+# Cookbook Name:: bp-icinga
 # Recipe:: client
 #
 # Copyright 2012, BigPoint GmbH
@@ -7,7 +7,7 @@
 #
 
 # Include apt recipe to ensure system is updated prior to installing
-include_rcipe "apt"
+include_recipe "apt"
 
 # Install required packages based on platform
 pkgs = value_for_platform(
