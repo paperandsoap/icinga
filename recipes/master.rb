@@ -1,4 +1,4 @@
-# Cookbook Name:: bp-icinga
+# Cookbook Name:: icinga
 # Recipe:: master
 #
 # Copyright 2012, BigPoint GmbH
@@ -6,8 +6,8 @@
 # All rights reserved - Do Not Redistribute
 #
 
-include_recipe "bp-icinga::server"
-include_recipe "bp-icinga::client"
+include_recipe "icinga::server"
+include_recipe "icinga::client"
 
 if ['debian', 'ubuntu'].member? node[:platform]
 

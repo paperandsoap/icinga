@@ -62,17 +62,17 @@ Recipes
 default
 -------
 
-The default recipe will install the `bp-icinga::client` recipe.
+The default recipe will install the `icinga::client` recipe.
 
 client
 ------
 
-The `bp-icinga::client` recipe will install and configure the check_mk client and xinetd.
+The `icinga::client` recipe will install and configure the check_mk client and xinetd.
 
 server
 ------
 
-The `bp-icinga::server` recipe installs Apache as web frontend for check_mk Multisite. User are fetched from the `users`
+The `icinga::server` recipe installs Apache as web frontend for check_mk Multisite. User are fetched from the `users`
 data bag.
 
 The recipe does the following:
@@ -88,7 +88,7 @@ The recipe does the following:
 master
 ------
 
-The `bp-icinga::master` recipe will install the `bp-icinga::server` recipe and add the multisite site configuration
+The `icinga::master` recipe will install the `icinga::server` recipe and add the multisite site configuration
 for server aggregation in the check_mk Multisite web GUI. All nodes with the role `monitoring-server` will be
 added to the configuration.
 
@@ -97,7 +97,7 @@ Usage
 =====
 
 Once installed the monitoring server will automatically search for all nodes in its environment. Ensure all nodes
-in this environment have the `bp-icinga::client` recipe installed otherwise no services will be monitored.
+in this environment have the `icinga::client` recipe installed otherwise no services will be monitored.
 
 Service Monitoring
 ------------------

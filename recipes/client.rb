@@ -1,4 +1,4 @@
-# Cookbook Name:: bp-icinga
+# Cookbook Name:: icinga
 # Recipe:: client
 #
 # Copyright 2012, BigPoint GmbH
