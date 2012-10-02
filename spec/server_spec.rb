@@ -2,7 +2,7 @@ require 'chefspec'
 
 # Required for proper recipe testing by platform
 %w{ debian }.each do |platform|
-  describe "The icinga::server #{platform} Recipe" do
+  describe "The bp-icinga::server #{platform} Recipe" do
     let (:chef_run) {
       # Define some data bag items and searches that are used in the recipe
       Chef::Recipe.any_instance.stub(:data_bag_item).and_return(Hash.new)
@@ -44,7 +44,7 @@ require 'chefspec'
       # Required for template file name
       runner.node.automatic_attrs[:hostname] = "localhost"
       runner.node.automatic_attrs[:platform] = platform
-      runner.converge 'icinga::server'
+      runner.converge 'bp-icinga::server'
       runner
     }
 

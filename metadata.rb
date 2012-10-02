@@ -5,9 +5,9 @@ description "Installs/Configures Icinga and check_mk Monitoring Solution"
 long_description IO.read(File.join(File.dirname(__FILE__), 'README.md'))
 version "0.1.26"
 
-recipe "icinga", "Icinga Client Monitoring"
-recipe "icinga::server", "Icinga Monitoring Server and node discovery for the server node environment"
-recipe "icinga::master", "Icinga Monitoring Server and Master with monitoring-server role discovery"
+recipe "bp-icinga", "Icinga Client Monitoring"
+recipe "bp-icinga::server", "Icinga Monitoring Server and node discovery for the server node environment"
+recipe "bp-icinga::master", "Icinga Monitoring Server and Master with monitoring-server role discovery"
 
 # Default settings used in configuration options below
 attribute "pnp4nagios/config/rrdbase",
