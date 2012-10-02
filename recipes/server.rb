@@ -349,4 +349,4 @@ if ['debian', 'ubuntu'].member? node[:platform]
 end
 
 # Install the Icinga client recipe
-include_recipe "bp-icinga::client"
+include_recipe "icinga::client"
