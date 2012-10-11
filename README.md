@@ -72,7 +72,7 @@ The `icinga::client` recipe will install and configure the check_mk client and x
 server
 ------
 
-The `icigna::server` recipe installs Apache as web frontend for check_mk Multisite. User are fetched from the `users`
+The `icinga::server` recipe installs Apache as web frontend for check_mk Multisite. User are fetched from the `users`
 data bag.
 
 The recipe does the following:
