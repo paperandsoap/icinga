@@ -1,6 +1,8 @@
 # Default settings used in configuration options below
+default["pnp4nagios"]["version"] = "0.6.12-1~bpo60+1"
 default["pnp4nagios"]["config"]["rrdbase"] = "/var/lib/pnp4nagios/perfdata/"
 default["rrdcached"]["config"]["socket"] = "unix:/var/run/rrdcached.sock"
+default["rrdcached"]["version"] = "1.4.3-1"
 default["icinga"]["version"] = "1.7.1-3~bpo60+1"
 default["icinga"]["user"] = "nagios"
 default["icinga"]["group"] = "nagios"
@@ -194,7 +196,6 @@ default["rrdcached"]["setup"]["config"]["rrdcached"]["MAXWAIT"] = "30"
 default["rrdcached"]["setup"]["config"]["rrdcached"]["ENABLE_COREFILES"] = "0"
 
 # pnp4nagios
-
 default["pnp4nagios"]["setup"]["config"]["vhost"]["alias_url"] = "/pnp4nagios"
 default["pnp4nagios"]["setup"]["config"]["vhost"]["alias_path"] = "/usr/share/pnp4nagios/html"
 default["pnp4nagios"]["setup"]["config"]["vhost"]["auth_name"] = "pnp4nagios Restricted Access"
