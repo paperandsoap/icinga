@@ -120,6 +120,29 @@ Environments
 The install recipe for the server is using chef environments to find all nodes within the Icinga servers environment.
 Be aware that this is a feature requiring Chef >= 0.10.0 to work.
 
+Vagrant
+=======
+
+Search Functions
+----------------
+
+To allow searching for nodes, roles, environments as used in this recipe ensure you have created the required
+data bags and have the ChefSolo search library installed.
+
+ --- data_bags
+             \- node
+             |      \- nodeN.json
+             |- role
+             |      \- roleN.json
+             |- environment
+                    \- envN.json
+
+Vagrantfile
+-----------
+
+Please ensure you have forwarded port 443 to your local machine to access the WebUI.
+No other special settings are required in the Vagrantfile for this cookbook to work.
+
 
 TODO
 ====
