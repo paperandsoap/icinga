@@ -41,9 +41,9 @@ require 'chefspec'
       }
 
       # Required for template file name
-      runner.node.automatic_attrs[:hostname] = "localhost"
-      runner.node.automatic_attrs[:platform] = platform
-      runner.node.automatic_attrs[:os_codename] = "squeeze"
+      runner.node.automatic_attrs["hostname"] = "localhost"
+      runner.node.automatic_attrs["platform"] = platform
+      runner.node.automatic_attrs["lsb"] = { "codename" => "squeeze" }
       runner.converge 'icinga::server'
       runner
     }

@@ -7,11 +7,11 @@
 # All rights reserved - Do Not Redistribute
 #
 
-if ['debian', 'ubuntu'].member? node[:platform]
+if ['debian', 'ubuntu'].member? node["platform"]
 # We need the backports repository for up-to-date Icinga version
-  apt_repository node[:lsb][:codename] + "-backports" do
+  apt_repository node["lsb"]["codename"] + "-backports" do
     uri "http://backports.debian.org/debian-backports"
-    distribution node[:lsb][:codename] + "-backports"
+    distribution node["lsb"]["codename"] + "-backports"
     components ["main", "non-free"]
     action :add
   end
@@ -30,7 +30,7 @@ if ['debian', 'ubuntu'].member? node[:platform]
   package "rrdcached" do
     version node["rrdcached"]["version"]
     action :install
-    options "-t #{node[:lsb][:codename]}-backports"
+    options "-t " + node["lsb"]["codename"] + "-backports"
   end
   pkgsbackports = value_for_platform(
       ["debian", "ubuntu"] =>
@@ -40,7 +40,7 @@ if ['debian', 'ubuntu'].member? node[:platform]
     package pkg do
       version node["icinga"]["version"]
       action :install
-      options  "-t #{node[:lsb][:codename]}-backports"
+      options "-t " + node["lsb"]["codename"] + "-backports"
     end
   end
 
@@ -48,7 +48,7 @@ if ['debian', 'ubuntu'].member? node[:platform]
   package "pnp4nagios" do
     version node["pnp4nagios"]["version"]
     action :install
-    options  "-t #{node[:lsb][:codename]}-backports"
+    options "-t " + node["lsb"]["codename"] + "-backports"
   end
 
 # Define all services

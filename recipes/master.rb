@@ -9,9 +9,13 @@
 include_recipe "icinga::server"
 include_recipe "icinga::client"
 
-if ['debian', 'ubuntu'].member? node[:platform]
+if ['debian', 'ubuntu'].member? node["platform"]
 
-  nodes = search(:node, 'role:monitoring-server');
+  if Chef::Config[:solo]
+    nodes = search(:node, 'role:monitoring-server');
+  else
+    nodes = search(:node, 'role:monitoring-server');
+  end
 
   # Multisite Configuration
   template "/etc/check_mk/multisite.d/sites.mk" do

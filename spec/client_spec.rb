@@ -4,7 +4,7 @@ require 'chefspec'
   describe "The icinga::client #{platform} Recipe" do
     before (:all) {
       @chef_run = ChefSpec::ChefRunner.new
-      @chef_run.node.automatic_attrs[:platform] = platform
+      @chef_run.node.automatic_attrs["platform"] = platform
       @chef_run.converge 'icinga::client'
     }
 
