@@ -1,0 +1,37 @@
+aggregation_rules["cpu_usage"] = (
+    "CPU Usage", [ "HOST" ], "worst", [
+        ( "$HOST$", "CPU" ),
+    ]
+)
+
+aggregation_rules["nic_status"] = (
+    "Interfaces", [ "HOST" ], "worst", [
+        ( "$HOST$", "Interface" ),
+    ]
+)
+
+aggregation_rules["process_status"] = (
+    "Processes", [ "HOST" ], "worst", [
+        ( "$HOST$", "proc_" ),
+    ]
+)
+
+aggregation_rules["host_status"] = (
+    "Status", [ "HOST" ], "worst", [
+        ( "$HOST$", HOST_STATE ),
+        ( "$HOST$", "Check_MK$" ),
+    ]
+)
+
+aggregation_rules["host_resources"] = (
+    "System Health", [ "HOST" ], "worst", [
+        ( "cpu_usage", [ "$HOST$" ] ),
+        ( "nic_status", [ "$HOST$" ] ),
+        ( "host_status", [ "$HOST$" ] ),
+        ( "process_status", [ "$HOST$" ] ),
+    ]
+)
+
+aggregations += [
+    ( "Zone Status", FOREACH_HOST, ALL_HOSTS, "host_resources", ["$1$"] ),
+]
