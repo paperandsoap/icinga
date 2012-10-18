@@ -26,15 +26,6 @@ ipmi_ignore_nr = True
 check_parameters += [
     # /boot is usually pretty small and doesn't change often
     ( { "levels" : (95, 98)} , ALL_HOSTS, [ "fs_/boot" ] ),
-    # Eventstream disks are supposed to run on low disk
-    ( { "levels" : (99, 100)} , [ "eventstream" ], ALL_HOSTS, [ "fs_/mnt/data" ] ),
-    # This machine runs a lot of parallel messagequeue services
-    ( (11000, 12000), [ "sealords-mq" ], ALL_HOSTS, [ "Number of threads" ] ),
-    # Gameservers and globalmessagequeue run on more threads usually
-    ( (3000, 4000), [ "game" ], ALL_HOSTS, [ "Number of threads" ] ),
-    ( (9500, 10000), [ "globalmessagequeue" ], ALL_HOSTS, [ "Number of threads" ] ),
-    ( { "errors" : (0.5, 1.0) }, ["srv019058"], [ "Interface vpn_.*" ] ),
-    ( { "errors" : (0.5, 1.0) }, ["srv015153"], [ "Interface vpn_.*" ] ),
 ]
 
 # Ignore some services
@@ -42,6 +33,7 @@ ignored_services += [
     # Disable some monitoring events that are causing false positives
     ( ALL_HOSTS, [ "Monitoring" ] ),
     ( ALL_HOSTS, [ 'NFS mount /var/userhome/.*' ] ),
+    # These often deliver false positives
     ( ALL_HOSTS, [ "IPMI Sensor Fan_Fan4" ] ),
     ( ALL_HOSTS, [ "IPMI Sensor Fan_Fan5" ] ),
     ( ALL_HOSTS, [ "IPMI Sensor Fan_Fan6" ] ),
@@ -57,19 +49,24 @@ ignored_services += [
 snmp_default_community = "phN7RY5s163nE"
 
 inventory_processes += [
-    # if we find a these on hosts, montior them
+    # System processes
     ( "NTPD", "/usr/sbin/ntpd", ANY_USER, 1, 1, 1, 1),
     ( "SSH", "/usr/sbin/sshd", ANY_USER, 1, 1, 5, 6),
+    ( "rsyslogd", "/usr/sbin/rsyslogd", "syslog", 1, 1, 1, 1),
+    # Services
+    ( "Chef-Client", "~.* /usr/bin/chef-client", ANY_USER, 1, 1, 1, 1),
+    ( "Memcached", "/usr/bin/memcached", "nobody", 1, 1, 1, 1),
 ]
 
 inventory_processes_perf += [
+    # Services
     ( "Apache2", "~.*bin/apache2", "www-data", 2, 3, 50, 50 ),
-    ( ["virtualitem"], ALL_HOSTS, "Apache2", "~.*bin/apache2", "www-data", 2, 3, 800, 900 ),
-    ( ["globalcatalog"], ALL_HOSTS, "Apache2", "~.*bin/apache2", "www-data", 2, 3, 300, 500 ),
-    ( ["ssl"], ALL_HOSTS, "Apache2", "~.*bin/apache2", "www-data", 2, 3, 250, 500 ),
-    ( ["ssl3"], ALL_HOSTS, "Apache2", "~.*bin/apache2", "www-data", 2, 3, 250, 500 ),
-    ( ["otrs"], ALL_HOSTS, "Apache2", "~.*bin/apache2", "www-data", 2, 3, 100, 150 ),
+    ( "nginx_Master", "~nginx: master process /usr/sbin/nginx", "root", 1, 1, 1, 1),
+    ( "nginx_Worker", "~nginx: worker process", "www-data", 8, 8, 15, 20),
+    ( "Jetty", "~/usr/bin/java.*/opt/jetty/start.jar", "jetty", 1, 1, 1, 1),
+    ( "Jenkins", "~/usr/bin/java.*/usr/share/jenkins/jenkins.war", "jenkins", 0, 1, 15, 30),
 ]
+
 
 service_groups += [
     ( "Filesystems", ALL_HOSTS, [ "fs" ] ),
@@ -85,4 +82,5 @@ service_groups += [
     ( "Logfiles", ALL_HOSTS, [ "LOG.*" ] ),
     ( "IPMI", ALL_HOSTS, [ "IPMI.*" ] ),
     ( "RAID", ALL_HOSTS, [ "RAID.*", "MD.*" ] ),
+    ( "Processes", ALL_HOSTS, [ "proc_.*" ] ),
 ]
