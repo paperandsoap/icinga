@@ -7,7 +7,7 @@
 # All rights reserved - Do Not Redistribute
 #
 
-if ['debian', 'ubuntu'].member? node[:platform]
+if ['debian', 'ubuntu'].member? node["platform"]
   # Install the Icinga on Debian
   include_recipe "icinga::_server_install_debian"
 
