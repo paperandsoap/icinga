@@ -13,8 +13,12 @@ execute "reload-check-mk" do
   action :nothing
 end
 
+if Chef::Config[:solo]
 # Find nodes in our environment
-nodes = search(:node, "hostname:[* TO *] AND chef_environment:#{node.chef_environment}")
+  nodes = search(:node, "hostname:[* TO *] AND chef_environment:#{node.chef_environment}")
+else
+  nodes = search(:node, "hostname:[* TO *] AND chef_environment:#{node.chef_environment}")
+end
 
 # If no nodes are found only add ourselves
 if nodes.empty?

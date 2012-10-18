@@ -32,7 +32,7 @@ service "xinetd" do
 end
 
 # Platform specific installation path  : Debian
-if ['debian', 'ubuntu'].member? node[:platform]
+if [ "debian", "ubuntu" ].member? node["platform"]
   # Create our version string to fetch the appropriate file
   version = node['check_mk']['version'] + "-" + node['check_mk']['deb']['release']
 
@@ -62,9 +62,9 @@ if ['debian', 'ubuntu'].member? node[:platform]
 end
 
 # Platform specific installation path  : CentOS/RedHat/SuSE
-if ['centos', 'redhat', 'suse', 'fedora'].member? node[:platform]
+if [ "centos", "redhat", "suse", "fedora" ].member? node["platform"]
   # Create our version string to fetch the appropriate file
-  version = node['check_mk']['version'] + "-" + node['check_mk']['rpm']['release']
+  version = node['check_mk']['version'] + "-" + node["check_mk"]["rpm"]["release"]
 
   remote_file "#{Chef::Config[:file_cache_path]}/check_mk-agent-#{version}.noarch.rpm" do
     source "#{node["check_mk"]["url"]}/check_mk-agent-#{version}.noarch.rpm"
