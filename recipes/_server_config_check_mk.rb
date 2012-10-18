@@ -35,6 +35,12 @@ template "/etc/check_mk/multisite.d/wato_config.mk" do
   group node["icinga"]["group"]
   mode 0640
 end
+template "/etc/check_mk/multisite.d/business-intelligence.mk" do
+  source "check_mk/server/business_intelligence.mk.erb"
+  owner node["icinga"]["user"]
+  group node["icinga"]["group"]
+  mode 0640
+end
 
 # check_mk livestatus xinetd template
 template "/etc/xinetd.d/livestatus" do
