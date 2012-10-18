@@ -4,49 +4,48 @@ require 'chefspec'
 %w{ debian }.each do |platform|
   describe "The icinga::server #{platform} Recipe" do
     let (:chef_run) {
-        # Define some data bag items and searches that are used in the recipe
-        Chef::Recipe.any_instance.stub(:data_bag_item).and_return(Hash.new)
-    Chef::Recipe.any_instance.stub(:data_bag_item).with("groups", "check-mk-admin").and_return(
+      # Define some data bag items and searches that are used in the recipe
+      Chef::Recipe.any_instance.stub(:data_bag_item).and_return(Hash.new)
+      Chef::Recipe.any_instance.stub(:data_bag_item).with("groups", "check-mk-admin").and_return(
         {
-            "id" => "check-mk-admin",
-            "members" => ["sebgrewe"]
+          "id" => "check-mk-admin",
+          "members" => ["sebgrewe"]
         }
-    )
-    Chef::Recipe.any_instance.stub(:data_bag_item).with("users", "sebgrewe").and_return("id" => "sebgrewe")
-    Chef::Recipe.any_instance.stub(:search).with(:node, 'hostname:[* TO *] AND chef_environment:_default').and_return(
+      )
+      Chef::Recipe.any_instance.stub(:data_bag_item).with("users", "sebgrewe").and_return("id" => "sebgrewe")
+      Chef::Recipe.any_instance.stub(:search).with(:node, 'hostname:[* TO *] AND chef_environment:_default').and_return(
         [{
-             'hostname' => 'localhost',
-             'tags' => ["testing"],
-             'os' => "linux"
+          'hostname' => 'localhost',
+          'tags' => ["testing"],
+          'os' => "linux"
+        }]
+      )
+      Chef::Recipe.any_instance.stub(:search).with(:role, 'name:*').and_return('name' => 'monitoring-server')
+      Chef::Recipe.any_instance.stub(:search).with(:environment, 'name:*').and_return('name' => '_default')
 
-         }]
-    )
-    Chef::Recipe.any_instance.stub(:search).with(:role, 'name:*').and_return('name' => 'monitoring-server')
-    Chef::Recipe.any_instance.stub(:search).with(:environment, 'name:*').and_return('name' => '_default')
-
-    # Create our object
-    runner = ChefSpec::ChefRunner.new
-    # Required for template path testing
-    runner.node.check_mk = {
+      # Create our object
+      runner = ChefSpec::ChefRunner.new
+      # Required for template path testing
+      runner.node.check_mk = {
         "setup" => {"vardir" => "/var/lib/check_mk"}
-    }
+      }
 
-    # Required for file/directory ownerships
-    runner.node.apache = {
+      # Required for file/directory ownerships
+      runner.node.apache = {
         "user" => "www-data",
         "group" => "www-data"
-    }
-    runner.node.icinga = {
+      }
+      runner.node.icinga = {
         "user" => "nagios",
         "group" => "nagios"
-    }
+      }
 
-    # Required for template file name
-    runner.node.automatic_attrs[:hostname] = "localhost"
-    runner.node.automatic_attrs[:platform] = platform
-    runner.node.automatic_attrs[:os_codename] = "squeeze"
-    runner.converge 'icinga::server'
-    runner
+      # Required for template file name
+      runner.node.automatic_attrs[:hostname] = "localhost"
+      runner.node.automatic_attrs[:platform] = platform
+      runner.node.automatic_attrs[:os_codename] = "squeeze"
+      runner.converge 'icinga::server'
+      runner
     }
 
     # Check if all packages required are installed
