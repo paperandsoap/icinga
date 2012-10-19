@@ -1,0 +1,27 @@
+# Defined service check commands
+extra_nagios_conf += r"""
+# Check HTTP ports with Arguments
+define command {
+    command_name    check-http
+    command_line    $USER1$/check_http -I $HOSTADDRESS$ $ARG1$
+}
+# Check TCP Ports
+define command {
+command_name    check-tcp
+command_line    $USER1$/check_tcp -I $HOSTADDRESS$ $ARG1$
+}
+"""
+
+# Defined legacy active service checks
+legacy_checks += [
+#  ( ( "check-tcp!-p 11211", "Memcache", True), [ "memcache-session-userauth" ], ALL_HOSTS ),
+<%
+@nodes.each do |client_node|
+    client_node["recipes"].find_all{ |recipe| node["check_mk"]["legacy"].include?(recipe) }.each do |recipe|
+-%>
+    ( ( "<%= node["check_mk"]["legacy"]["#{recipe}"]["name"] %>!<%= node["check_mk"]["legacy"]["#{recipe}"]["opts"] %>", "<%= node["check_mk"]["legacy"]["#{recipe}"]["alias"] %>", <%= node["check_mk"]["legacy"]["#{recipe}"]["perfdata"] %>), [ "<%= client_node["hostname"] %>" ] ),
+<%
+    end
+end
+%>
+]
