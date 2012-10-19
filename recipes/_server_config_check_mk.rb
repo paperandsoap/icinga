@@ -24,19 +24,19 @@ end
 
 # Multisite Configuration
 template "/etc/check_mk/multisite.mk" do
-  source "check_mk/server/multisite.mk.erb"
+  source "check_mk/server/multisite.d/multisite.mk.erb"
   owner node["icinga"]["user"]
   group node["icinga"]["group"]
   mode 0640
 end
-template "/etc/check_mk/multisite.d/wato_config.mk" do
-  source "check_mk/server/wato_config.mk.erb"
+template "/etc/check_mk/multisite.d/wato-configuration.mk" do
+  source "check_mk/server/multisite.d/wato-configuration.mk.erb"
   owner node["icinga"]["user"]
   group node["icinga"]["group"]
   mode 0640
 end
 template "/etc/check_mk/multisite.d/business-intelligence.mk" do
-  source "check_mk/server/business_intelligence.mk.erb"
+  source "check_mk/server/multisite.d/business-intelligence.mk.erb"
   owner node["icinga"]["user"]
   group node["icinga"]["group"]
   mode 0640
@@ -44,7 +44,7 @@ end
 
 # check_mk livestatus xinetd template
 template "/etc/xinetd.d/livestatus" do
-  source "check_mk/server/livestatus.erb"
+  source "check_mk/server/xinetd/livestatus.erb"
   owner 'root'
   group 'root'
   mode 0640
@@ -53,7 +53,7 @@ end
 
 # check_mk default template for icinga
 template "/usr/share/check_mk/check_mk_templates.cfg" do
-  source "check_mk/server/check_mk_templates.cfg.erb"
+  source "check_mk/server/check_mk/check_mk_templates.cfg.erb"
   owner 'root'
   group 'root'
   mode "644"
@@ -101,7 +101,7 @@ end
 
 # Ensure these users also have multisite access
 template "/etc/check_mk/multisite.d/users.mk" do
-  source "check_mk/server/users.mk.erb"
+  source "check_mk/server/multisite.d/users.mk.erb"
   owner 'root'
   group 'root'
   mode "644"
@@ -112,7 +112,7 @@ end
 
 # Global configuration settings
 template "/etc/check_mk/conf.d/global-configuration.mk" do
-  source "check_mk/server/global_config.mk.erb"
+  source "check_mk/server/conf.d/global-configuration.mk.erb"
   owner node["icinga"]["user"]
   group node["icinga"]["group"]
   mode 0640

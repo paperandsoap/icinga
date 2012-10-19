@@ -24,8 +24,6 @@ package "ssl-cert"
 include_recipe "apache2::mod_ssl"
 include_recipe "apache2::mod_python"
 
-# Enable default ssl host and disable default vhost
+# Enable default vhosts
 apache_site "default-ssl"
-apache_site "default" do
-  enable false
-end
+apache_site "default"
