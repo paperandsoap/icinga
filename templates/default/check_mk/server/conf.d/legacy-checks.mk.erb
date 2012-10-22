@@ -1,0 +1,22 @@
+# Defined service check commands
+extra_nagios_conf += r"""
+<% node["check_mk"]["legacy"]["commands"].each do |command,field|  %>
+    define command {
+        command_name    <%= field["name"] %>
+        command_line    <%= field["line"] %>
+    }
+<% end %>
+"""
+
+# Defined legacy active service checks
+legacy_checks += [
+<%
+   @nodes.each do |client_node|
+     client_node["recipes"].find_all { |recipe| node["check_mk"]["legacy"]["checks"].include?(recipe) }.each do |recipe|
+-%>
+        ( ( "<%= node["check_mk"]["legacy"]["checks"]["#{recipe}"]["name"] %>!<%= node["check_mk"]["legacy"]["checks"]["#{recipe}"]["opts"] %>", "<%= node["check_mk"]["legacy"]["checks"]["#{recipe}"]["alias"] %>", <%= node["check_mk"]["legacy"]["checks"]["#{recipe}"]["perfdata"] %>), [ "<%= client_node["hostname"] %>" ] ),
+<%
+     end
+   end
+%>
+]

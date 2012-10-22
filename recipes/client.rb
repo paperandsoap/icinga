@@ -28,11 +28,11 @@ end
 # runs /etc/init.d/xinetd (start|stop|restart), etc.
 service "xinetd" do
   supports :status => true, :restart => true, :reload => true
-  action [ :enable, :start ]
+  action [:enable, :start]
 end
 
 # Platform specific installation path  : Debian
-if [ "debian", "ubuntu" ].member? node["platform"]
+if ["debian", "ubuntu"].member? node["platform"]
   # Create our version string to fetch the appropriate file
   version = node['check_mk']['version'] + "-" + node['check_mk']['deb']['release']
 
@@ -62,7 +62,7 @@ if [ "debian", "ubuntu" ].member? node["platform"]
 end
 
 # Platform specific installation path  : CentOS/RedHat/SuSE
-if [ "centos", "redhat", "suse", "fedora" ].member? node["platform"]
+if ["centos", "redhat", "suse", "fedora"].member? node["platform"]
   # Create our version string to fetch the appropriate file
   version = node['check_mk']['version'] + "-" + node["check_mk"]["rpm"]["release"]
 
@@ -91,7 +91,30 @@ if [ "centos", "redhat", "suse", "fedora" ].member? node["platform"]
   end
 end
 
-# Ensure service is enabled
+# Install all client plugins
+if node["os"] == "linux"
+  %w{ apache_status mk_jolokia mk_mysql mk_postgres }.each do |plugin|
+    cookbook_file node["check_mk"]["setup"]["agentslibdir"] + "/plugins/" + plugin do
+      source "plugins/linux/" + plugin
+      mode 0750
+    end
+  end
+  template node["check_mk"]["setup"]["confdir"] + "/jolokia.cfg" do
+    source "check_mk/client/plugin_configs/jolokia.cfg.erb"
+    owner 'root'
+    group 'root'
+    mode 0640
+  end
+elsif node["os"] == "windows"
+  %w{ ad_replication.bat }.each do |plugin|
+    cookbook_file "C:\\Program Files (x86)\\check_mk\\plugins\\" + plugin do
+      source "plugins/windows/" + plugin
+      mode 0750
+    end
+  end
+end
+
+# Reload xinetd if config changed
 template "/etc/xinetd.d/check_mk" do
   source "check_mk/client/check_mk.erb"
   owner 'root'

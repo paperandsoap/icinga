@@ -50,6 +50,42 @@ default["check_mk"]["setup"]["livebackendsdir"] = '/usr/share/check_mk/livestatu
 default["check_mk"]["setup"]["multisite"]["config"]["file"] = "/etc/check_mk/multisite.mk"
 default["check_mk"]["setup"]["multisite"]["config"]["nagvis_base_url"] = "/nagvis"
 default["check_mk"]["module"]["file"] = "#{node["check_mk"]["setup"]["libdir"]}/livestatus.o"
+default["check_mk"]["legacy"]["checks"] = {
+    "apache2" => {
+        "name" => "check-http",
+        "alias" => "Legacy_HTTP",
+        "perfdata" => "True",
+        "opts" => "-p 80"
+    },
+    "apache2::mod_ssl" => {
+        "name" => "check-http",
+        "alias" => "Legcay_HTTPs",
+        "perfdata" => "True",
+        "opts" => "-p 443 -S"
+    },
+    "jetty" => {
+        "name" => "check-http",
+        "alias" => "Legcay_Jetty",
+        "perfdata" => "True",
+        "opts" => "-p 8080"
+    },
+    "memcached" => {
+        "name" => "check-tcp",
+        "alias" => "Legcay_Memcached",
+        "perfdata" => "True",
+        "opts" => "-p 11211"
+    }
+}
+default["check_mk"]["legacy"]["commands"] = {
+    "check-http" => {
+        "name" => "check-http",
+        "line" => "$USER1$/check_http -I $HOSTADDRESS$ $ARG1$"
+    },
+    "check-tcp" => {
+        "name" => "check-tcp",
+        "line" => "$USER1$/check_tcp -H $HOSTADDRESS$ $ARG1$"
+    }
+}
 
 # npcd
 default["npcd"]["setup"]["config"]["file"] = "/etc/pnp4nagios/npcd.cfg"

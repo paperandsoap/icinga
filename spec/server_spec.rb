@@ -81,7 +81,7 @@ require 'chefspec'
       /etc/pnp4nagios/config.php
       /etc/check_mk/multisite.mk
       /etc/check_mk/multisite.d/business-intelligence.mk
-      /etc/check_mk/multisite.d/wato_config.mk
+      /etc/check_mk/multisite.d/wato-configuration.mk
       /etc/icinga/icinga.cfg
       /etc/xinetd.d/livestatus
       /usr/share/check_mk/check_mk_templates.cfg
@@ -91,6 +91,7 @@ require 'chefspec'
       /etc/check_mk/conf.d/monitoring-nodes-localhost.mk
       /etc/check_mk/conf.d/hostgroups-localhost.mk
       /etc/check_mk/conf.d/global-configuration.mk
+      /etc/check_mk/conf.d/legacy-checks.mk
     }.each do |file|
       it "should create file from template #{file}" do
         chef_run.should create_file file
