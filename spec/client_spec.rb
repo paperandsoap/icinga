@@ -5,6 +5,12 @@ require 'chefspec'
     before (:all) {
       @chef_run = ChefSpec::ChefRunner.new
       @chef_run.node.automatic_attrs["platform"] = platform
+      @chef_run.node.automatic_attrs["os"] = "linux"
+      @chef_run.node["check_mk"] = {
+        "setup" => {
+            "agentslibdir" => "/usr/lib/check_mk_agent"
+        }
+      }
       @chef_run.converge 'icinga::client'
     }
 
@@ -21,9 +27,25 @@ require 'chefspec'
       @chef_run.should start_service 'xinetd'
     end
 
-    # Check that our template file is created to enable the check_mk agent
-    it "should create file /etc/xinet.d/check_mk" do
-      @chef_run.should create_file "/etc/xinetd.d/check_mk"
+    # Check all templated files were created
+    %w{
+      /etc/xinetd.d/check_mk
+    }.each do |file|
+      it "should create file from template #{file}" do
+        @chef_run.should create_file file
+      end
+    end
+
+    # Check all files are copied
+    %w{
+      /usr/lib/check_mk_agent/plugins/apache_status
+      /usr/lib/check_mk_agent/plugins/mk_jolokia
+      /usr/lib/check_mk_agent/plugins/mk_mysql
+      /usr/lib/check_mk_agent/plugins/mk_postgres
+    }.each do |file|
+      it "should copy file #{file}" do
+        @chef_run.should create_cookbook_file file
+      end
     end
   end
 end

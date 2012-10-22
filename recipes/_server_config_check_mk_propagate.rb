@@ -43,9 +43,21 @@ end
 os_list.uniq
 tags.uniq
 
+# Add all defined legacy cehcks
+template "/etc/check_mk/conf.d/legacy-checks.mk" do
+  source "check_mk/server/conf.d/legacy-checks.mk.erb"
+  owner node["icinga"]["user"]
+  group node["icinga"]["group"]
+  mode 0640
+  variables(
+      :nodes => nodes
+  )
+  notifies :run, "execute[reload-check-mk]"
+end
+
 # Add all found nodes to this server
 template "/etc/check_mk/conf.d/monitoring-nodes-#{node['hostname']}.mk" do
-  source "check_mk/server/client_nodes.mk.erb"
+  source "check_mk/server/conf.d/monitoring-nodes.mk.erb"
   owner node["icinga"]["user"]
   group node["icinga"]["group"]
   mode 0640
@@ -57,7 +69,7 @@ end
 
 # Add all roles as hostgroups as they are used as tags for nodes
 template "/etc/check_mk/conf.d/hostgroups-#{node['hostname']}.mk" do
-  source "check_mk/server/hostgroups.mk.erb"
+  source "check_mk/server/conf.d/hostgroups.mk.erb"
   owner node["icinga"]["user"]
   group node["icinga"]["group"]
   mode 0640
