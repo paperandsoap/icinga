@@ -2,7 +2,7 @@ require 'chefspec'
 
 # Required for proper recipe testing by platform
 %w{ debian }.each do |platform|
-  describe "The icinga::server #{platform} Recipe" do
+  describe "The icinga::server #{platform} recipe" do
     let (:chef_run) {
       # Define some data bag items and searches that are used in the recipe
       Chef::Recipe.any_instance.stub(:data_bag_item).and_return(Hash.new)
@@ -26,19 +26,11 @@ require 'chefspec'
       # Create our object
       runner = ChefSpec::ChefRunner.new
       # Required for template path testing
-      runner.node.check_mk = {
-        "setup" => {"vardir" => "/var/lib/check_mk"}
-      }
+      runner.node.set["check_mk"] = { "setup" => {"vardir" => "/var/lib/check_mk" } }
 
       # Required for file/directory ownerships
-      runner.node.apache = {
-        "user" => "www-data",
-        "group" => "www-data"
-      }
-      runner.node.icinga = {
-        "user" => "nagios",
-        "group" => "nagios"
-      }
+      runner.node.set["apache"] = { "user" => "www-data", "group" => "www-data" }
+      runner.node.set["icinga"] = { "user" => "nagios", "group" => "nagios" }
 
       # Required for template file name
       runner.node.automatic_attrs["hostname"] = "localhost"
