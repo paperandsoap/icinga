@@ -191,6 +191,15 @@ specific_vars = {
   "jboss" : [
       ( "*:type=Manager,*/activeSessions,maxActiveSessions",  None,                      [ "path", "context" ] ),
   ],
+  "jetty" : [
+      ( "org.eclipse.jetty.server.handler:type=statisticshandler,id=*/requestTimeMax",  None, ["type", "id"] ),
+      ( "org.eclipse.jetty.server.handler:type=statisticshandler,id=*/requestTimeStdDev",  None, ["type", "id"] ),
+      ( "org.eclipse.jetty.server.handler:type=statisticshandler,id=*/requestTimeMean",  None, ["type", "id"] ),
+      ( "org.eclipse.jetty.server.session:type=*,context=*,id=*/sessionTimeMean",  None, ["context"] ),
+      ( "org.eclipse.jetty.server.session:type=*,context=*,id=*/sessionTimeStdDev",  None, ["context"] ),
+      ( "org.eclipse.jetty.server.session:type=*,context=*,id=*/sessionTimeMax",  None, ["context"] ),
+      ( "org.eclipse.jetty.server.session:type=*,context=*,id=*/sessions",  None, ["context"] ),
+  ],
 }
 
 
@@ -237,6 +246,3 @@ for inst in instances:
     inst["instance"] = inst["instance"].replace(" ", "_")
 
     query_instance(inst)
-
-
-
