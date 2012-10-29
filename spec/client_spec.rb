@@ -1,10 +1,10 @@
 require 'chefspec'
 
-%w{ debian centos ubuntu fedora redhat }.each do |platform|
-  describe "The icinga::client #{platform} recipe" do
+%w{ debian rhel }.each do |platform_family|
+  describe "The icinga::client #{platform_family} recipe" do
     before (:all) {
       @chef_run = ChefSpec::ChefRunner.new
-      @chef_run.node.automatic_attrs["platform"] = platform
+      @chef_run.node.automatic_attrs["platform_family"] = platform_family
       @chef_run.node.automatic_attrs["os"] = "linux"
       @chef_run.node.set["check_mk"] = {
         "setup" => { "agentslibdir" => "/usr/lib/check_mk_agent" }

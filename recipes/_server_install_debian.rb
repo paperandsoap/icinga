@@ -7,7 +7,7 @@
 # All rights reserved - Do Not Redistribute
 #
 
-if ['debian', 'ubuntu'].member? node["platform"]
+if ['debian'].member? node["platform"]
 # We need the backports repository for up-to-date Icinga version
   apt_repository node["lsb"]["codename"] + "-backports" do
     uri "http://backports.debian.org/debian-backports"
