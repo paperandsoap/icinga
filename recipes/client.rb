@@ -10,13 +10,9 @@
 include_recipe "apt"
 
 # Install required packages based on platform
-pkgs = value_for_platform(
-    ["centos", "redhat", "suse", "fedora"] => {
-        "default" => %w{ xinetd ethtool }
-    },
-    ["ubuntu", "debian"] => {
-        "default" => %w{ xinetd ethtool }
-    },
+pkgs = value_for_platform_family(
+    "rhel" => %w{ xinetd ethtool },
+    "debian" => %w{ xinetd ethtool },
     "default" => %w{ xinetd ethtool }
 )
 pkgs.each do |pkg|
@@ -32,7 +28,7 @@ service "xinetd" do
 end
 
 # Platform specific installation path  : Debian
-if ["debian", "ubuntu"].member? node["platform"]
+if platform_family?("debian")
   # Create our version string to fetch the appropriate file
   version = node['check_mk']['version'] + "-" + node['check_mk']['deb']['release']
 
@@ -62,7 +58,7 @@ if ["debian", "ubuntu"].member? node["platform"]
 end
 
 # Platform specific installation path  : CentOS/RedHat/SuSE
-if ["centos", "redhat", "suse", "fedora"].member? node["platform"]
+if platform_family?("rhel")
   # Create our version string to fetch the appropriate file
   version = node['check_mk']['version'] + "-" + node["check_mk"]["rpm"]["release"]
 
