@@ -9,19 +9,16 @@ require 'chefspec'
       Chef::Recipe.any_instance.stub(:data_bag_item).with("groups", "check-mk-admin").and_return(
         {
           "id" => "check-mk-admin",
-          "members" => ["sebgrewe"]
+          "members" => ["icingaadmin"]
         }
       )
-      Chef::Recipe.any_instance.stub(:data_bag_item).with("users", "sebgrewe").and_return("id" => "sebgrewe")
+      Chef::Recipe.any_instance.stub(:data_bag_item).with("users", "icingaadmin").and_return("id" => "icingaadmin", "htpasswd" => "plaintext")
       Chef::Recipe.any_instance.stub(:search).with(:node, 'hostname:[* TO *] AND chef_environment:_default').and_return(
-        [{
-          'hostname' => 'localhost',
-          'tags' => ["testing"],
-          'os' => "linux"
-        }]
+        [ { 'chef_environment' => '_default', 'hostname' => 'localhost', 'roles' => ["monitoring-server"], 'tags' => ["testing"],
+            'os' => "linux", "recipes" => ["apache2"], "lsb" => { "codename" => "squeeze" } } ]
       )
-      Chef::Recipe.any_instance.stub(:search).with(:role, 'name:*').and_return('name' => 'monitoring-server')
-      Chef::Recipe.any_instance.stub(:search).with(:environment, 'name:*').and_return('name' => '_default')
+      Chef::Recipe.any_instance.stub(:search).with(:role, 'name:*').and_return(["role\[monitoring-server\]"])
+      Chef::Recipe.any_instance.stub(:search).with(:environment, 'name:*').and_return(['_default'])
 
       # Create our object
       runner = ChefSpec::ChefRunner.new
@@ -36,6 +33,18 @@ require 'chefspec'
       runner.node.automatic_attrs["hostname"] = "localhost"
       runner.node.automatic_attrs["platform"] = platform
       runner.node.automatic_attrs["lsb"] = { "codename" => "squeeze" }
+      runner.node.set["check_mk"] = {
+        "legacy"=> {
+          "checks" => {
+            "apache2::mod_ssl" => { "name" => "check-http", "opts" => "-p 443 -S", "alias" => "Legcay_HTTPs", "perfdata" => "True" },
+            "apache2" => { "name" => "check-http", "opts" => "-p 80", "alias" => "Legacy_HTTP", "perfdata" => "True" }
+          },
+          "commands" => {
+            "check-http" => { "name" => "check-http", "line" => "$USER1$/check_http -I $HOSTADDRESS$ $ARG1$" },
+            "check-tcp" => { "name" => "check-tcp", "line" => "$USER1$/check_tcp -H $HOSTADDRESS$ $ARG1$" }
+          }
+        }
+      }
       runner.converge 'icinga::server'
       runner
     }
@@ -56,7 +65,7 @@ require 'chefspec'
     end
 
     # Check for all directories created
-    %w{ /var/lib/check_mk/web/sebgrewe }.each do |dir|
+    %w{ /var/lib/check_mk/web/icingaadmin }.each do |dir|
       it "should create path #{dir}" do
         chef_run.should create_directory dir
       end
@@ -74,10 +83,11 @@ require 'chefspec'
       /etc/check_mk/multisite.mk
       /etc/check_mk/multisite.d/business-intelligence.mk
       /etc/check_mk/multisite.d/wato-configuration.mk
+      /etc/check_mk/multisite.d/users.mk
       /etc/icinga/icinga.cfg
       /etc/xinetd.d/livestatus
       /usr/share/check_mk/check_mk_templates.cfg
-      /var/lib/check_mk/web/sebgrewe/sidebar.mk
+      /var/lib/check_mk/web/icingaadmin/sidebar.mk
       /etc/icinga/htpasswd.users
       /etc/check_mk/multisite.d/users.mk
       /etc/check_mk/conf.d/monitoring-nodes-localhost.mk
@@ -87,6 +97,54 @@ require 'chefspec'
     }.each do |file|
       it "should create file from template #{file}" do
         chef_run.should create_file file
+      end
+    end
+
+    it "should create hostgroups-localhost.mk with four hostgroups" do
+      [
+        "host_groups += [",
+        "( 'role: monitoring-server', [ 'monitoring-server' ], ALL_HOSTS ),",
+        "( 'environment: _default', [ '_default' ], ALL_HOSTS ),",
+        "( 'tag: testing', [ 'testing' ], ALL_HOSTS ),",
+        "( 'os: linux', [ 'linux' ], ALL_HOSTS ),"
+      ].each do |content|
+        chef_run.should create_file_with_content('/etc/check_mk/conf.d/hostgroups-localhost.mk', content)
+      end
+    end
+
+    it "should create users.mk with at least one use" do
+      chef_run.should create_file_with_content(
+        '/etc/check_mk/multisite.d/users.mk',
+        "'icingaadmin': {'alias': u' ', 'locked': True, 'roles': ['admin']},"
+      )
+    end
+
+    it "should create htpasswd.users with at least one user" do
+      chef_run.should create_file_with_content(
+        '/etc/icinga/htpasswd.users',
+        "icingaadmin:plaintext"
+      )
+    end
+
+    it "should create monitoring-nodes-localhost.mk with at least one node" do
+      chef_run.should create_file_with_content(
+        '/etc/check_mk/conf.d/monitoring-nodes-localhost.mk',
+        '\'localhost|squeeze|site:localhost|chefspec|_default|monitoring-server|testing\','
+      )
+    end
+
+    it "should create legacy-checks.mk with command definitions" do
+      [
+        "extra_nagios_conf += r\"\"\"",
+        "define command",
+        "command_name    check-http",
+        "command_line    $USER1$/check_http -I $HOSTADDRESS$ $ARG1$",
+        "command_name    check-tcp",
+        "command_line    $USER1$/check_tcp -H $HOSTADDRESS$ $ARG1$",
+        "legacy_checks += [",
+        "( ( \"check-http!-p 80\", \"Legacy_HTTP\", True), [ \"localhost\" ] ),"
+      ].each do |content|
+        chef_run.should create_file_with_content('/etc/check_mk/conf.d/legacy-checks.mk', content)
       end
     end
 
