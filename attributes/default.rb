@@ -8,14 +8,14 @@ default["icinga"]["user"] = "nagios"
 default["icinga"]["group"] = "nagios"
 default["icinga"]["htpasswd"]["file"] = "/etc/icinga/htpasswd.users"
 default["check_mk"]["url"] = "http://mathias-kettner.de/download"
-default["check_mk"]["version"] = '1.2.1i1'
+default["check_mk"]["version"] = '1.2.1i3'
 default["check_mk"]["deb"]["release"] = '2'
 default["check_mk"]["rpm"]["release"] = '1'
-default["check_mk"]["agent"]["rpm"]["checksum"] = "a3288f8bee0c1f5a313ceb1b3146458cabd7f41218b937dabb65656ca0313fe3"
-default["check_mk"]["logwatch"]["rpm"]["checksum"] = "7e865b843c96b57e1743b5b2f8b9a68125e59bc05fdad760274032297c1d8093"
-default["check_mk"]["agent"]["deb"]["checksum"] = "6df2cf15f735d0e0f4ea80b34993d1fd4414d9e399ec49751c9855e0d28cda0b"
-default["check_mk"]["logwatch"]["deb"]["checksum"] = "8f931be926bc088bddf8865344ff70ba7a7bb2d787b9812acd0c0b9b25d91002"
-default["check_mk"]["source"]["tar"]["checksum"] = "c52644af14d306f5a2d0a2234d7b914411ad22266849cab56214ef2bfe052559"
+default["check_mk"]["agent"]["rpm"]["checksum"] = "70aa6f170cde31ada985b7f3892acd4a1c78ef99dc4b10f3a08944f7eaca5f9d"
+default["check_mk"]["logwatch"]["rpm"]["checksum"] = "ffa67f28afd84702df44a95f4ee4699ef3afeb75f2b31d4f206af5f242952ba3"
+default["check_mk"]["agent"]["deb"]["checksum"] = "357cac4a378ce92c74df55cdf8e4a23c9e2b80467a80de7a00fcf18c0df78ac5"
+default["check_mk"]["logwatch"]["deb"]["checksum"] = "4633e3cad98584e2f2b2abb77e3d9247ded6f9d796408df19c75dfc03ac524e9"
+default["check_mk"]["source"]["tar"]["checksum"] = "845b3bf16480d8e267b77e88cd1bd3c93b39d15bb0e534b62d12a4086e817045"
 default["check_mk"]["groups"] = ["check-mk-admin"]
 
 # Check_mk settings
