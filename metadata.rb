@@ -3,7 +3,7 @@ maintainer_email "sebgrewe@bigpoint.net"
 license "All rights reserved"
 description "Installs/Configures Icinga and check_mk Monitoring Solution"
 long_description IO.read(File.join(File.dirname(__FILE__), 'README.md'))
-version "0.1.32"
+version           "0.1.35"
 
 recipe "icinga", "Icinga Client Monitoring"
 recipe "icinga::server", "Icinga Monitoring Server and node discovery for the server node environment"

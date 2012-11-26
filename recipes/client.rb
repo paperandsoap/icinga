@@ -36,22 +36,26 @@ if platform_family?("debian")
     source "http://mathias-kettner.de/download/check-mk-agent_#{version}_all.deb"
     mode "0644"
     checksum node["check_mk"]["agent"]["deb"]["checksum"] # A SHA256 (or portion thereof) of the file.
+    action :create_if_missing
+    notifies :install, "package[check-mk-agent]", :immediately
   end
 
   remote_file "/var/cache/apt/archives/check-mk-agent-logwatch_#{version}_all.deb" do
     source "http://mathias-kettner.de/download/check-mk-agent-logwatch_#{version}_all.deb"
     mode "0644"
     checksum node["check_mk"]["logwatch"]["deb"]["checksum"] # A SHA256 (or portion thereof) of the file.
+    action :create_if_missing
+    notifies :install, "package[check-mk-agent-logwatch]", :immediately
   end
 
   package "check-mk-agent" do
-    action :install
+    action :nothing
     source "/var/cache/apt/archives/check-mk-agent_#{version}_all.deb"
     provider Chef::Provider::Package::Dpkg
   end
 
   package "check-mk-agent-logwatch" do
-    action :install
+    action :nothing
     source "/var/cache/apt/archives/check-mk-agent-logwatch_#{version}_all.deb"
     provider Chef::Provider::Package::Dpkg
   end
@@ -66,22 +70,26 @@ if platform_family?("rhel")
     source "#{node["check_mk"]["url"]}/check_mk-agent-#{version}.noarch.rpm"
     mode "0644"
     checksum node["check_mk"]["agent"]["rpm"]["checksum"] # A SHA256 (or portion thereof) of the file.
+    action :create_if_missing
+    notifies :install, "package[check-mk-agent]", :immediately
   end
 
   remote_file "#{Chef::Config[:file_cache_path]}/check_mk-agent-logwatch-#{version}.noarch.rpm" do
     source "#{node["check_mk"]["url"]}/check_mk-agent-logwatch-#{version}.noarch.rpm"
     mode "0644"
     checksum node["check_mk"]["logwatch"]["rpm"]["checksum"] # A SHA256 (or portion thereof) of the file.
+    action :create_if_missing
+    notifies :install, "package[check-mk-agent-logwatch]", :immediately
   end
 
   package "check-mk-agent" do
-    action :install
+    action :nothing
     source "#{Chef::Config[:file_cache_path]}/check_mk-agent-#{version}.noarch.rpm"
     provider Chef::Provider::Package::Rpm
   end
 
   package "check-mk-agent-logwatch" do
-    action :install
+    action :nothing
     source "#{Chef::Config[:file_cache_path]}/check_mk-agent-logwatch-#{version}.noarch.rpm"
     provider Chef::Provider::Package::Rpm
   end

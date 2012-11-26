@@ -17,6 +17,8 @@ remote_file "#{Chef::Config[:file_cache_path]}/check_mk-#{version}.tar.gz" do
   source "#{node["check_mk"]["url"]}/check_mk-#{version}.tar.gz"
   mode "0644"
   checksum node["check_mk"]["source"]["tar"]["checksum"] # A SHA256 (or portion thereof) of the file.
+  action :create_if_missing
+  notifies :run, "bash[build_check_mk]", :immediately
 end
 
 # Add the setup template to compile check_mk
@@ -28,7 +30,7 @@ template "/root/.check_mk_setup.conf" do
   only_if { platform?("ubuntu", "debian", "ubuntu") }
 end
 
-bash "build check_mk" do
+bash "build_check_mk" do
   cwd Chef::Config[:file_cache_path]
   code <<-EOF
     tar -xzf check_mk-#{version}.tar.gz
@@ -37,5 +39,4 @@ bash "build check_mk" do
     # Add www-data to Nagios group (Better in chef?)
     usermod -G nagios www-data
   EOF
-  not_if "which check_mk"
 end
