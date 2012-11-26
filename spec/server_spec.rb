@@ -72,32 +72,42 @@ require 'chefspec'
     end
 
     # Check all templated files were created
-    %w{
-      /root/.check_mk_setup.conf
-      /etc/apache2/conf.d/pnp4nagios.conf
-      /etc/pnp4nagios/apache.conf
-      /etc/default/npcd
-      /etc/pnp4nagios/process_perfdata.cfg
-      /etc/default/rrdcached
-      /etc/pnp4nagios/config.php
-      /etc/check_mk/multisite.mk
-      /etc/check_mk/multisite.d/business-intelligence.mk
-      /etc/check_mk/multisite.d/wato-configuration.mk
-      /etc/check_mk/multisite.d/users.mk
-      /etc/icinga/icinga.cfg
-      /etc/xinetd.d/livestatus
-      /usr/share/check_mk/check_mk_templates.cfg
-      /var/lib/check_mk/web/icingaadmin/sidebar.mk
-      /etc/icinga/htpasswd.users
-      /etc/check_mk/multisite.d/users.mk
-      /etc/check_mk/conf.d/monitoring-nodes-localhost.mk
-      /etc/check_mk/conf.d/hostgroups-localhost.mk
-      /etc/check_mk/conf.d/global-configuration.mk
-      /etc/check_mk/conf.d/legacy-checks.mk
+    %w{/etc/apache2/conf.d/pnp4nagios.conf
+       /etc/pnp4nagios/apache.conf
+       /etc/default/npcd
+       /etc/pnp4nagios/process_perfdata.cfg
+       /etc/default/rrdcached
+       /etc/pnp4nagios/config.php
+       /etc/check_mk/multisite.mk
+       /etc/check_mk/multisite.d/business-intelligence.mk
+       /etc/check_mk/multisite.d/wato-configuration.mk
+       /etc/check_mk/multisite.d/users.mk
+       /etc/icinga/icinga.cfg
+       /etc/xinetd.d/livestatus
+       /usr/share/check_mk/check_mk_templates.cfg
+       /var/lib/check_mk/web/icingaadmin/sidebar.mk
+       /etc/icinga/htpasswd.users
+       /etc/check_mk/multisite.d/users.mk
+       /etc/check_mk/conf.d/monitoring-nodes-localhost.mk
+       /etc/check_mk/conf.d/hostgroups-localhost.mk
+       /etc/check_mk/conf.d/global-configuration.mk
+       /etc/check_mk/conf.d/legacy-checks.mk
     }.each do |file|
       it "should create file from template #{file}" do
         chef_run.should create_file file
       end
+    end
+
+    it "should download check_mk source" do
+      chef_run.should create_remote_file "#{Chef::Config[:file_cache_path]}/check_mk-#{chef_run.node['check_mk']['version']}.tar.gz"
+    end
+
+    it "should notify template creation for /root/.check_mk_setup.conf" do
+      chef_run.remote_file("#{Chef::Config[:file_cache_path]}/check_mk-#{chef_run.node['check_mk']['version']}.tar.gz").should notify 'template[/root/.check_mk_setup.conf]', 'create'
+    end
+
+    it "should notify source compile script" do
+      chef_run.template('/root/.check_mk_setup.conf').should notify 'bash[build_check_mk]', 'run'
     end
 
     it "should create hostgroups-localhost.mk with four hostgroups" do
