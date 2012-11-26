@@ -107,7 +107,7 @@ status_update_interval=<%= node[:icinga][:setup][:config][:status_update_interva
 # This determines the effective user that Icinga should run as.  
 # You can either supply a username or a UID.
 
-icinga_user=<%= node[:icinga][:setup][:config][:icinga_user] %>
+icinga_user=<%= node[:icinga][:user] %>
 
 
 
@@ -115,7 +115,7 @@ icinga_user=<%= node[:icinga][:setup][:config][:icinga_user] %>
 # This determines the effective group that Icinga should run as.  
 # You can either supply a group name or a GID.
 
-icinga_group=<%= node[:icinga][:setup][:config][:icinga_group] %>
+icinga_group=<%= node[:icinga][:group] %>
 
 
 
@@ -253,10 +253,10 @@ event_broker_options=<%= node[:icinga][:setup][:config][:event_broker_options] %
 #broker_module=/usr/lib/icinga/idomod.so config_file=/etc/icinga/idomod.cfg
 
 # Load Livestatus Module
-broker_module=<%= node[:icinga][:setup][:config][:broker_module][:livestatus][:path] %> <%= node[:icinga][:setup][:config][:broker_module][:livestatus][:socket] %> <%= node[:icinga][:setup][:config][:broker_module][:livestatus][:options] %>
+broker_module=<%= node[:check_mk][:setup][:libdir]%>/<%= node[:check_mk][:module][:file] %> <%= node[:check_mk][:setup][:livesock] %> <%= node[:icinga][:setup][:config][:broker_module][:livestatus][:options] %>
 
 # Load the pnp4nagios Performance Broker Module
-broker_module=<%= node[:icinga][:setup][:config][:broker_module][:npcd][:path] %> config_file=<%= node[:icinga][:setup][:config][:broker_module][:npcd][:config] %>
+broker_module=<%= node[:npcd][:module][:file] %> config_file=<%= node[:npcd][:setup][:config][:file] %>
 
 
 # LOG ROTATION METHOD

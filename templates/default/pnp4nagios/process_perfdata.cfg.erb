@@ -16,7 +16,7 @@ USE_RRDs = <%= node[:pnp4nagios][:setup][:config][:process_perfdata][:USE_RRDs] 
 #
 # Path to XML/RRD files 
 #
-RRDPATH = <%= node[:pnp4nagios][:setup][:config][:process_perfdata][:RRDPATH] %>
+RRDPATH = <%= node[:pnp4nagios][:config][:rrdbase] %>
 
 #
 # Location of RRDtool binary
@@ -83,7 +83,7 @@ XML_UPDATE_DELAY = <%= node[:pnp4nagios][:setup][:config][:process_perfdata][:XM
 # Use only with rrdtool svn revision 1511+
 #
 # RRD_DAEMON_OPTS = unix:/tmp/rrdcached.sock
-RRD_DAEMON_OPTS = <%= node[:pnp4nagios][:setup][:config][:process_perfdata][:RRD_DAEMON_OPTS] %>
+RRD_DAEMON_OPTS = <%= node[:rrdcached][:config][:socket] %>
 
 #
 # Spool Directory used for internal statistic 
