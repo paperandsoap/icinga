@@ -18,19 +18,22 @@ remote_file "#{Chef::Config[:file_cache_path]}/check_mk-#{version}.tar.gz" do
   mode "0644"
   checksum node["check_mk"]["source"]["tar"]["checksum"] # A SHA256 (or portion thereof) of the file.
   action :create_if_missing
-  notifies :run, "bash[build_check_mk]", :immediately
+  notifies :create, "template[/root/.check_mk_setup.conf]", :immediately
 end
 
 # Add the setup template to compile check_mk
 template "/root/.check_mk_setup.conf" do
+  action :nothing
   source "check_mk/server/check_mk_setup.conf.erb"
   owner 'root'
   group 'root'
   mode 0640
-  only_if { platform?("ubuntu", "debian", "ubuntu") }
+  only_if { platform_family?("debian") }
+  notifies :run, "bash[build_check_mk]", :immediately
 end
 
 bash "build_check_mk" do
+  action :nothing
   cwd Chef::Config[:file_cache_path]
   code <<-EOF
     tar -xzf check_mk-#{version}.tar.gz
