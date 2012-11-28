@@ -107,7 +107,7 @@ require 'chefspec'
     end
 
     it "should notify source compile script" do
-      chef_run.template('/root/.check_mk_setup.conf').should notify 'bash[build_check_mk]', 'run'
+      chef_run.remote_file("#{Chef::Config[:file_cache_path]}/check_mk-#{chef_run.node['check_mk']['version']}.tar.gz").should notify 'bash[build_check_mk]', 'run'
     end
 
     it "should create hostgroups-localhost.mk with four hostgroups" do

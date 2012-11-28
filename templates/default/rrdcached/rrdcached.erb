@@ -7,7 +7,7 @@ DISABLE=<%= node[:rrdcached][:setup][:config][:rrdcached][:DISABLE] %>
 # options to be passed to rrdcached
 # (do not specify -p <pidfile> - this is handled by the init script)
 # default: see /etc/init.d/rrdcached
-OPTS="<%= node[:rrdcached][:setup][:config][:rrdcached][:OPTS] %>"
+OPTS="-s <%= node[:rrdcached][:setup][:config][:socket_group]  %> -m 0660 -l <%= node[:rrdcached][:config][:socket]  %> -F -b <%= node[:pnp4nagios][:config][:rrdbase] %> -B -w  <%= node[:rrdcached][:setup][:config][:write_time] %> -z <%= node[:rrdcached][:setup][:config][:write_delay] %>"
 
 # number of seconds to wait for rrdcached to shut down
 # (writing the data to disk may take some time;

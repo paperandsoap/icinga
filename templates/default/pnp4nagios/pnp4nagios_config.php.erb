@@ -53,7 +53,7 @@ $conf['pdf_graph_opt'] = "<%= node[:pnp4nagios][:setup][:config][:config_php][:p
 #
 # Directory where the RRD Files will be stored
 #
-$conf['rrdbase'] = "<%= node[:pnp4nagios][:setup][:config][:config_php][:rrdbase] %>";
+$conf['rrdbase'] = "<%= node[:pnp4nagios][:config][:rrdbase] %>";
 #
 # Location of "page" configs
 #
@@ -206,7 +206,7 @@ $views[] = array('title' => 'One Year',  'start' => (60*60*24*380) );
 # Use only with rrdtool svn revision 1511+
 #
 # $conf['RRD_DAEMON_OPTS'] = 'unix:/tmp/rrdcached.sock';
-$conf['RRD_DAEMON_OPTS'] = '<%= node[:pnp4nagios][:setup][:config][:config_php][:RRD_DAEMON_OPTS] %>';
+$conf['RRD_DAEMON_OPTS'] = '<%= node[:rrdcached][:config][:socket] %>';
 
 # A list of directories to search for templates
 # /usr/share/pnp4nagios/html/templates.dist is always the last directory to be searched for templates
