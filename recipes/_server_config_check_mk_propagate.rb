@@ -9,15 +9,15 @@
 
 # Command definition to reload check_mk when template changed
 execute "reload-check-mk" do
-  command "check_mk -I ; check_mk -O"
+  command "check_mk -II ; check_mk -O"
   action :nothing
 end
 
 if Chef::Config[:solo]
-# Find nodes in our environment
-  nodes = search(:node, "hostname:[* TO *] AND chef_environment:#{node.chef_environment}")
+  # Find nodes in our environment
+  nodes = search(:node, node['check_mk']['search']['nodes'])
 else
-  nodes = search(:node, "hostname:[* TO *] AND chef_environment:#{node.chef_environment}")
+  nodes = search(:node, node['check_mk']['search']['nodes'])
 end
 
 # If no nodes are found only add ourselves
