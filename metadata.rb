@@ -3,11 +3,11 @@ maintainer_email "sebgrewe@bigpoint.net"
 license "All rights reserved"
 description "Installs/Configures Icinga and check_mk Monitoring Solution"
 long_description IO.read(File.join(File.dirname(__FILE__), 'README.md'))
-version           "0.1.37"
+version           "0.1.38"
 
 recipe "icinga", "Icinga Client Monitoring"
-recipe "icinga::server", "Icinga Monitoring Server and node discovery for the server node environment"
-recipe "icinga::master", "Icinga Monitoring Server and Master with monitoring-server role discovery"
+recipe "icinga::server", "Icinga Monitoring Server and configurable monitoring node discovery"
+recipe "icinga::master", "Icinga Monitoring Server and Master Setup with configurable role discovery"
 
 # Default settings used in configuration options below
 attribute "pnp4nagios/config/rrdbase",
@@ -67,4 +67,4 @@ attribute "check_mk/groups",
 
 depends "build-essential", ">= 1.1.2"
 depends "apache2", ">= 1.1.16"
-depends "apt", ">= 1.4.8"
+depends "apt"           # required to properly install Debian based server and adding backports
