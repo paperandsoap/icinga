@@ -45,8 +45,6 @@ Packages
 
  * xinetd (for check_mk livestatus and agent)
  * ethtool (for check_mk agent, net link speed detection)
- * openssl (for SSL certificate creation)
- * ssl-cert (default certificates)
 
 Attributes
 ==========
@@ -129,6 +127,7 @@ Search Functions
 To allow searching for nodes, roles, environments as used in this recipe ensure you have created the required
 data bags and have the ChefSolo search library installed.
 
+```
  --- data_bags
              \- node
              |      \- nodeN.json
@@ -136,6 +135,7 @@ data bags and have the ChefSolo search library installed.
              |      \- roleN.json
              |- environment
                     \- envN.json
+```
 
 Vagrantfile
 -----------
