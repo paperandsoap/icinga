@@ -50,7 +50,7 @@ require 'chefspec'
     }
 
     # Check if all packages required are installed
-    %w{ openssl ssl-cert xinetd python rrdcached icinga icinga-cgi icinga-core icinga-doc pnp4nagios }.each do |pkg|
+    %w{ xinetd python rrdcached icinga icinga-cgi icinga-core icinga-doc pnp4nagios }.each do |pkg|
       it "should install #{pkg}" do
         chef_run.should install_package pkg
       end
@@ -84,7 +84,6 @@ require 'chefspec'
        /etc/check_mk/multisite.d/users.mk
        /etc/icinga/icinga.cfg
        /etc/xinetd.d/livestatus
-       /usr/share/check_mk/check_mk_templates.cfg
        /var/lib/check_mk/web/icingaadmin/sidebar.mk
        /etc/icinga/htpasswd.users
        /etc/check_mk/multisite.d/users.mk
@@ -167,7 +166,7 @@ require 'chefspec'
 
     # Ensure check_mk re-scans all found hosts and reloads Icinga if the templates changed
     it "should execute check_mk re-inventory and reload" do
-      chef_run.should execute_command "check_mk -I ; check_mk -O"
+      chef_run.should execute_command "check_mk -II ; check_mk -O"
     end
   end
 end

@@ -51,15 +51,6 @@ template "/etc/xinetd.d/livestatus" do
   notifies :reload, resources(:service => "xinetd")
 end
 
-# check_mk default template for icinga
-template "/usr/share/check_mk/check_mk_templates.cfg" do
-  source "check_mk/server/check_mk/check_mk_templates.cfg.erb"
-  owner 'root'
-  group 'root'
-  mode "644"
-  notifies :reload, resources(:service => "icinga")
-end
-
 users = Array.new
 # get group from databag
 node['check_mk']['groups'].each do |groupid|

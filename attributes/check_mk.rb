@@ -1,4 +1,9 @@
 # Check_mk settings
+# Customizable search queries
+default["check_mk"]["search"]["servers"] = "role:monitoring-server"
+default["check_mk"]["search"]["nodes"] = "hostname:[* TO *] AND chef_environment:#{node.chef_environment}"
+
+# Some defaults
 default["check_mk"]["url"] = "http://mathias-kettner.de/download"
 default["check_mk"]["version"] = '1.2.1i3'
 default["check_mk"]["deb"]["release"] = '2'
