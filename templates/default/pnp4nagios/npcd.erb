@@ -4,4 +4,4 @@
 RUN="<%= node[:npcd][:setup][:config][:run] %>"
 
 # Additional options that are passed to the daemon.
-DAEMON_OPTS="<%= node[:npcd][:setup][:config][:options] %>"
+DAEMON_OPTS="<%= node[:npcd][:setup][:config][:options] %> -f <%= node[:npcd][:setup][:config][:file] %>"

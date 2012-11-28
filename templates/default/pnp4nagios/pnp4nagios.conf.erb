@@ -11,7 +11,7 @@ Alias <%= node[:pnp4nagios][:setup][:config][:vhost][:alias_url] %> "<%= node[:p
    	#
    	AuthName "<%= node[:pnp4nagios][:setup][:config][:vhost][:auth_name] %>"
    	AuthType Basic
-   	AuthUserFile <%= node[:icinga][:setup][:config][:htpasswd_file] %>
+   	AuthUserFile <%= node[:icinga][:htpasswd][:file] %>
    	Require valid-user
 	<IfModule mod_rewrite.c>
 		# Turn on URL rewriting
