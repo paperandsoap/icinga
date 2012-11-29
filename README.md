@@ -1,13 +1,14 @@
 Description
 ===========
 
-Icinga offers a monitoring package for both servers and clients. In addition to that it can be expanded
+Icinga offers a monitoring package for both servers and clients. In addition to that it can be expanded using check_mk
 to support server aggregation on a single master node.
 
-It is configured to find all nodes in it's segment automatically while the master server looks for all
-monitoring-serer roles in a network segment (environment).
+Node discovery can be configured using a node attribute, defaults to "all hosts in your environment". Check_MK can
+also be configured using a node attribute to find it's monitoring servers for service aggregation, defaults to "all
+monitoring-server roles".
 
-check_mk is used for automated host and service generation in Icinga, chef is used to populate check_mk with the
+Check_MK is used for automated host and service generation in Icinga, chef is used to populate check_mk with the
 appropriate configuration files for this node.
 
 
@@ -29,8 +30,8 @@ Platform
 --------
 
  * Debian 6 (Server + Client)
- * CentOS 6 (Client)
- * Ubuntu 12.04 (Client)
+ * CentOS 6 (Client only)
+ * Ubuntu 12.04 (Client only)
 
 Cookbooks
 ---------
@@ -45,15 +46,21 @@ Packages
 
  * xinetd (for check_mk livestatus and agent)
  * ethtool (for check_mk agent, net link speed detection)
- * openssl (for SSL certificate creation)
- * ssl-cert (default certificates)
+
+Package Sources
+---------------
+
+The server is currently only available for Debian 6. It uses the Squeeze Backports repository to install the 1.7 version
+of Icinga. Newer versions might work but have not been tested with this cookbook.
+
 
 Attributes
 ==========
 
 Please take a look at the default.rb attributes file for further information on all attributes used.
 It includes all variables used in the icinga.cfg and various other configuration files used. For information on each
-variable please use the appropriate application documentation.
+variable please use the appropriate application documentation. Attributes should all be set to a sane environment and
+allow you to deploy Icinga instantly.
 
 
 Recipes
@@ -73,7 +80,7 @@ server
 ------
 
 The `icinga::server` recipe installs Apache as web frontend for check_mk Multisite. User are fetched from the `users`
-data bag.
+data bag and only enabled if they are part of the check-mk-admin group.
 
 The recipe does the following:
 
@@ -81,8 +88,7 @@ The recipe does the following:
  * Search all available nodes in the node's `chef_environment`
  * Create the appropriate check_mk configuration files for the nodes including host tags
  * Create hostgroups configurations in check_mk
- * Disables the 000-default VirtualHost
- * Enables the Icinga and check_mk Multisite web front end configuration
+ * Enables the Icinga and check_mk Multisite web frontend
  * Find users in the defined groups in default["check_mk"]["groups"] and add them as admins
 
 master
@@ -127,8 +133,9 @@ Search Functions
 ----------------
 
 To allow searching for nodes, roles, environments as used in this recipe ensure you have created the required
-data bags and have the ChefSolo search library installed.
+data bags and have the ChefSolo search library installed. Below an overview of different search replacements.
 
+```
  --- data_bags
              \- node
              |      \- nodeN.json
@@ -136,6 +143,7 @@ data bags and have the ChefSolo search library installed.
              |      \- roleN.json
              |- environment
                     \- envN.json
+```
 
 Vagrantfile
 -----------
@@ -144,11 +152,15 @@ Please ensure you have forwarded port 443 to your local machine to access the We
 No other special settings are required in the Vagrantfile for this cookbook to work.
 
 
-TODO
-====
+Software Links
+==============
 
- * Remove version string dependency in the default.rd file and use proper repositories for the client
- * Nice to have: Package for check_mk server components
+This cookbooks uses various pieces of software, either prepackaged or from source code. Please check their sites for
+further documentation.
+
+* Check_MK : http://mathias-kettner.de/check_mk.html
+* Icinga : https://www.icinga.org/
+* pnp4nagios : http://www.pnp4nagios.org/
 
 
 Poem
