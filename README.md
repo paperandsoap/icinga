@@ -5,7 +5,7 @@ Icinga offers a monitoring package for both servers and clients. In addition to 
 to support server aggregation on a single master node.
 
 Node discovery can be configured using a node attribute, defaults to "all hosts in your environment". Check_MK can
-also be configured using a node attribute to find it's monitoring servers for service aggregation, defaults to "all
+also be configured using a node attribute to find its monitoring servers for service aggregation, defaults to "all
 monitoring-server roles".
 
 Check_MK is used for automated host and service generation in Icinga, chef is used to populate check_mk with the
