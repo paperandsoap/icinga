@@ -1,4 +1,7 @@
 #!/usr/bin/python
+#
+# Added to Chef from http://mathias-kettner.de/check_mk
+# under the GPLv2 License according to the author.
 
 import urllib2, sys, os, socket, pprint
 

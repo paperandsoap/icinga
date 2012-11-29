@@ -1,4 +1,7 @@
 @echo off
+REM
+REM Added to Chef from http://mathias-kettner.de/check_mk
+REM under the GPLv2 License according to the author.
 
 REM ***
 REM * To be able to run this check you need apprpriate credentials
