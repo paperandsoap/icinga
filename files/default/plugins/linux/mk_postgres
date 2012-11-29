@@ -1,4 +1,7 @@
 #!/bin/sh
+#
+# Added to Chef from http://mathias-kettner.de/check_mk
+# under the GPLv2 License according to the author.
 
 if id pgsql >/dev/null  ; then
   echo '<<<postgres_sessions>>>'
