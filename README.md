@@ -175,7 +175,7 @@ License and Author
 
 Author:: Sebastian Grewe <sebgrewe@bigpoint.net>
 
-Copyright 2012, BigPoint GmbH
+Copyright 2012, Bigpoint GmbH
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
