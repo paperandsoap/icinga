@@ -68,3 +68,5 @@ attribute "check_mk/groups",
 depends "build-essential", ">= 1.1.2"
 depends "apache2", ">= 1.1.16"
 depends "apt"           # required to properly install Debian based server and adding backports
+depends "rrdcached"
+depends "pnp4nagios"

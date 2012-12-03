@@ -44,6 +44,7 @@ require 'chefspec'
       # Required for template file name
       runner.node.automatic_attrs["hostname"] = "localhost"
       runner.node.automatic_attrs["platform"] = platform
+      runner.node.automatic_attrs["platform_family"] = platform
       runner.node.automatic_attrs["lsb"] = { "codename" => "squeeze" }
       runner.node.set["check_mk"] = {
         "legacy"=> {
@@ -62,14 +63,14 @@ require 'chefspec'
     }
 
     # Check if all packages required are installed
-    %w{ xinetd python rrdcached icinga icinga-cgi icinga-core icinga-doc pnp4nagios }.each do |pkg|
+    %w{xinetd python icinga icinga-cgi icinga-core}.each do |pkg|
       it "should install #{pkg}" do
         chef_run.should install_package pkg
       end
     end
 
     # Check that services used are enabled for bootup and started when installed
-    %w{ icinga npcd xinetd rrdcached }.each do |service|
+    %w{icinga xinetd}.each do |service|
       it "should enable and start service #{service} on boot" do
         chef_run.should set_service_to_start_on_boot service
         chef_run.should start_service service
@@ -84,13 +85,7 @@ require 'chefspec'
     end
 
     # Check all templated files were created
-    %w{/etc/apache2/conf.d/pnp4nagios.conf
-       /etc/pnp4nagios/apache.conf
-       /etc/default/npcd
-       /etc/pnp4nagios/process_perfdata.cfg
-       /etc/default/rrdcached
-       /etc/pnp4nagios/config.php
-       /etc/check_mk/multisite.mk
+    %w{/etc/check_mk/multisite.mk
        /etc/check_mk/multisite.d/business-intelligence.mk
        /etc/check_mk/multisite.d/wato-configuration.mk
        /etc/check_mk/multisite.d/users.mk
