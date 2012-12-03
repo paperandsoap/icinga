@@ -18,7 +18,7 @@
 #
 
 if ['debian'].member? node["platform"]
-# We need the backports repository for up-to-date Icinga version
+  # We need the backports repository for up-to-date Icinga version
   apt_repository node["lsb"]["codename"] + "-backports" do
     uri "http://backports.debian.org/debian-backports"
     distribution node["lsb"]["codename"] + "-backports"
@@ -26,27 +26,15 @@ if ['debian'].member? node["platform"]
     action :add
   end
 
-# TODO: The install process is a bit messy (hard-coded versions)since debian-backports is not used when finding installation candidates
-# Standard packages required by server
-  pkgs = value_for_platform(
-      "default" => %w{ xinetd python }
-  )
-  pkgs.each do |pkg|
+  # TODO: The install process is a bit messy (hard-coded versions)since debian-backports is not used when finding installation candidates
+  # Standard packages required by server
+  %w(xinetd python).each do |pkg|
     package pkg do
       action :install
     end
   end
 
-  package "rrdcached" do
-    version node["rrdcached"]["version"]
-    action :install
-    options "-t " + node["lsb"]["codename"] + "-backports"
-  end
-  pkgsbackports = value_for_platform(
-      ["debian", "ubuntu"] =>
-          {"default" => %w{ icinga icinga-cgi icinga-core icinga-doc }}
-  )
-  %w{ icinga icinga-cgi icinga-core icinga-doc }.each do |pkg|
+  %w(icinga icinga-cgi icinga-core).each do |pkg|
     package pkg do
       version node["icinga"]["version"]
       action :install
@@ -54,15 +42,11 @@ if ['debian'].member? node["platform"]
     end
   end
 
-# Install pnp4nagios now to avoid Nagios3 dependency
-  package "pnp4nagios" do
-    version node["pnp4nagios"]["version"]
-    action :install
-    options "-t " + node["lsb"]["codename"] + "-backports"
-  end
+  include_recipe 'rrdcached'
+  include_recipe 'pnp4nagios'
 
-# Define all services
-  %w{ icinga npcd xinetd rrdcached }.each do |svc|
+  # Define all services
+  %w(icinga xinetd).each do |svc|
     service svc do
       supports :status => true, :restart => true, :reload => true
       action [:enable, :start]
