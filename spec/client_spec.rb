@@ -16,12 +16,12 @@ require 'chefspec'
   describe "The icinga::client #{platform_family} recipe" do
     before (:all) {
       @chef_run = ChefSpec::ChefRunner.new
-      @chef_run.node.automatic_attrs["platform_family"] = platform_family
-      @chef_run.node.automatic_attrs["os"] = "linux"
-      @chef_run.node.set["check_mk"] = {
-        "setup" => { "agentslibdir" => "/usr/lib/check_mk_agent" }
+      @chef_run.node.automatic_attrs['platform_family'] = platform_family
+      @chef_run.node.automatic_attrs['os'] = 'linux'
+      @chef_run.node.set['check_mk'] = {
+        'setup' => { 'agentslibdir' => '/usr/lib/check_mk_agent' }
       }
-      @chef_run.converge "icinga::client"
+      @chef_run.converge 'icinga::client'
     }
 
     # Check all packages that are installed
@@ -32,7 +32,7 @@ require 'chefspec'
     end
 
     # Ensure we notify our package installer after download
-    it "should notify package installation" do
+    it 'should notify package installation' do
       case platform_family
         when 'debian'
           file_agent = "/var/cache/apt/archives/check-mk-agent_#{@chef_run.node['check_mk']['version']}-#{@chef_run.node['check_mk']['deb']['release']}_all.deb"
@@ -46,7 +46,7 @@ require 'chefspec'
     end
 
     # Check that our xinetd service is enabled and running
-    it "should start xinetd and enabled it boot" do
+    it 'should start xinetd and enabled it boot' do
       @chef_run.should set_service_to_start_on_boot 'xinetd'
       @chef_run.should start_service 'xinetd'
     end
