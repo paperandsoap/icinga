@@ -93,13 +93,13 @@ when 'rhel'
 
   package 'check-mk-agent' do
     action :nothing
-    source '#{Chef::Config[:file_cache_path]}/check_mk-agent-#{version}.noarch.rpm'
+    source "#{Chef::Config[:file_cache_path]}/check_mk-agent-#{version}.noarch.rpm"
     provider Chef::Provider::Package::Rpm
   end
 
   package 'check-mk-agent-logwatch' do
     action :nothing
-    source '#{Chef::Config[:file_cache_path]}/check_mk-agent-logwatch-#{version}.noarch.rpm'
+    source "#{Chef::Config[:file_cache_path]}/check_mk-agent-logwatch-#{version}.noarch.rpm"
     provider Chef::Provider::Package::Rpm
   end
 end
