@@ -6,6 +6,6 @@ all_hosts += [
 
 ipaddresses.update({
 <% @nodes.each do |client_node| -%>
-  '<%= client_node['hostname'] %>': u'<%= private_addresses_for_node(client_node).to_s %>',
+  '<%= client_node['hostname'] %>': u'<%= private_addresse_for_node(client_node) %>',
 <% end -%>
 })
