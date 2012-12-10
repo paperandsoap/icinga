@@ -61,13 +61,13 @@ when 'debian'
 
   package 'check-mk-agent' do
     action :nothing
-    source '/var/cache/apt/archives/check-mk-agent_#{version}_all.deb'
+    source "/var/cache/apt/archives/check-mk-agent_#{version}_all.deb"
     provider Chef::Provider::Package::Dpkg
   end
 
   package 'check-mk-agent-logwatch' do
     action :nothing
-    source '/var/cache/apt/archives/check-mk-agent-logwatch_#{version}_all.deb'
+    source "/var/cache/apt/archives/check-mk-agent-logwatch_#{version}_all.deb"
     provider Chef::Provider::Package::Dpkg
   end
 
