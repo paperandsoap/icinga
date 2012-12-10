@@ -3,3 +3,9 @@ all_hosts += [
     '<%= client_node['hostname'] %>|<%= client_node['lsb']['codename'] %>|site:<%= node['hostname'] %>|<%= node['os'] %>|<%= client_node.chef_environment %>|<%= client_node['roles'].join("|") %>|<%= client_node['tags'].join("|") %>',
 <% end -%>
 ]
+
+ipaddresses.update({
+<% @nodes.each do |client_node| -%>
+  '<%= client_node['hostname'] %>': u'<%= private_addresse_for_node(client_node) %>',
+<% end -%>
+})
