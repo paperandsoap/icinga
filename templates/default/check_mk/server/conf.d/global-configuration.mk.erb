@@ -61,7 +61,7 @@ inventory_processes_perf += [
     # Services
     ( "Apache2", "~.*bin/apache2", "www-data", 2, 3, 50, 50 ),
     ( "nginx_Master", "~nginx: master process /usr/sbin/nginx", "root", 1, 1, 1, 1),
-    ( "nginx_Worker", "~nginx: worker process", "www-data", 8, 8, 15, 20),
+    ( "nginx_Worker", "~nginx: worker process", "www-data", 1, 2, 15, 20),
     ( "Jetty", "~/usr/bin/java.*/opt/jetty/start.jar", "jetty", 1, 1, 1, 1),
     ( "Jenkins", "~/usr/bin/java.*/usr/share/jenkins/jenkins.war", "jenkins", 0, 1, 15, 30),
 ]
