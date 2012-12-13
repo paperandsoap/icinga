@@ -6,7 +6,16 @@ def cookbook_metadata
   metadata
 end
 
-COOKBOOK_NAME  = cookbook_metadata.name
+def cookbook_name
+  name = cookbook_metadata.name
+  if name.nil? || name.empty?
+    File.basename(File.dirname(__FILE__))
+  else
+    name
+  end
+end
+
+COOKBOOK_NAME = ENV['COOKBOOK_NAME'] || cookbook_name
 COOKBOOKS_PATH = ENV['COOKBOOKS_PATH'] || 'cookbooks'
 
 
@@ -17,7 +26,7 @@ end
 
 desc 'Run knife cookbook test'
 task :knife => :setup_cookbooks do
-  sh 'knife', 'cookbook', 'test', COOKBOOK_NAME,
+  sh 'knife', 'cookbook', 'test', COOKBOOK_NAME, '--config', '.knife.rb',
     '--cookbook-path', COOKBOOKS_PATH
 end
 
