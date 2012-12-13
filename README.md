@@ -1,4 +1,4 @@
-Description
+Description [![Build Status](https://travis-ci.org/Bigpoint/icinga.png?branch=master)](https://travis-ci.org/Bigpoint/icinga)
 ===========
 
 Icinga offers a monitoring package for both servers and clients. In addition to that it can be expanded using check_mk
