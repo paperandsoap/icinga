@@ -5,3 +5,5 @@
 */cookbooks
 */vendor
 */bundle
+*/.bundle
+*/.chef
