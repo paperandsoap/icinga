@@ -1,11 +1,13 @@
 # Bundler
 /.bundle/
+/bundle/
 /bin/
 /vendor/gems/
 
 # Berkshelf
 /cookbooks/
 Berksfile.lock
+Gemfile.lock
 
 # Vagrant
 .vagrant
