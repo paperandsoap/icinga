@@ -1,3 +1,4 @@
+name             'icinga'
 maintainer       'Bigpoint GmbH'
 maintainer_email 'sebgrewe@bigpoint.net'
 license          'Apache 2.0'
