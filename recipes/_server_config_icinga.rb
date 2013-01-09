@@ -22,7 +22,7 @@ template '/etc/icinga/icinga.cfg' do
   owner node['icinga']['user']
   group node['icinga']['group']
   mode 0640
-  notifies :restart, resources(:service => 'icinga')
+  notifies :restart, 'service[icinga]'
 end
 
 # Remove some default files

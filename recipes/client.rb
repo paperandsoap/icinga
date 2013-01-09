@@ -136,5 +136,5 @@ template '/etc/xinetd.d/check_mk' do
   owner 'root'
   group 'root'
   mode 0640
-  notifies :reload, resources(:service => 'xinetd')
+  notifies :reload, 'service[xinetd]'
 end
