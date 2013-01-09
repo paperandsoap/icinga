@@ -58,7 +58,7 @@ template '/etc/xinetd.d/livestatus' do
   owner 'root'
   group 'root'
   mode 0640
-  notifies :reload, resources(:service => 'xinetd')
+  notifies :reload, 'service[xinetd]'
 end
 
 users = Array.new
