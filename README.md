@@ -26,6 +26,21 @@ be added as admins to view and control the Master and each Server.
 Since it is using a lot of search functionality this cookbook can only be used if the ChefSolo search libraries
 are available.
 
+Chef Solo
+---------
+
+This cookbook is using various search functions offered by Chef Server
+to auto-propagate all configurations in `check_mk`. To allow this
+cookbook to work properly and without restrictions in `Chef Solo` please
+download and add the chef-solo-search library: 
+
+* https://github.com/edelight/chef-solo-search
+
+This can be added either in the Icinga cookbook directly (by copying the libraries
+folder) or as a seperate cookbook.
+
+Please also read the detailed `Chef Solo` section further below.
+
 Platform
 --------
 
@@ -126,14 +141,16 @@ Environments
 The install recipe for the server is using chef environments to find all nodes within the Icinga servers environment.
 Be aware that this is a feature requiring Chef >= 0.10.0 to work.
 
-Vagrant
-=======
+Chef Solo
+=========
 
 Search Functions
 ----------------
 
 To allow searching for nodes, roles, environments as used in this recipe ensure you have created the required
-data bags and have the ChefSolo search library installed. Below an overview of different search replacements.
+data bags and have the ChefSolo search library installed (see
+`Requirements` above). Below is an overview of different data bag items
+used for search stubbing.
 
 ```
  --- data_bags
@@ -222,17 +239,6 @@ Chef Solo
 }
 ```
 
-# Group Data Bag Item
-
-This data bag item is used to match users against access groups.
-
-```
-{
-  "id" : "check-mk-admin",
-  "members" : ["icingaadmin"]
-}
-```
-
 # User Data Bag Item
 
 This data bag item defines the user that will be allowed access if
@@ -247,24 +253,14 @@ by htpasswd. Used here is a hash for the password `test`.
 }
 ```
 
-# Environment Data Bag Item
+# Group Data Bag Item
 
-This item is used by Icinga to create environments as hostgroups and
-tags automatically and must exist for the Cookbook to work in Chef Solo.
+This data bag item is used to match users against access groups.
 
 ```
 {
-    "name":"_default",
-    "description":"The default Chef environment",
-    "cookbook_versions":{
-    },
-    "json_class":"Chef::Environment",
-    "chef_type":"environment",
-    "default_attributes":{
-    },
-    "override_attributes":{
-    },
-    "_rev":"1-8e5cd47aca08b855b1583ac7bf4da2ec"
+  "id" : "check-mk-admin",
+  "members" : ["icingaadmin"]
 }
 ```
 
@@ -298,6 +294,27 @@ tags automatically and must exist for the Cookbook to work in Chef Solo.
     "env_run_lists":{
     },
     "_rev":"4-c82859239100d64b25f2d121baa4cfd2"
+}
+```
+
+# Environment Data Bag Item
+
+This item is used by Icinga to create environments as hostgroups and
+tags automatically and must exist for the Cookbook to work in Chef Solo.
+
+```
+{
+    "name":"_default",
+    "description":"The default Chef environment",
+    "cookbook_versions":{
+    },
+    "json_class":"Chef::Environment",
+    "chef_type":"environment",
+    "default_attributes":{
+    },
+    "override_attributes":{
+    },
+    "_rev":"1-8e5cd47aca08b855b1583ac7bf4da2ec"
 }
 ```
 
