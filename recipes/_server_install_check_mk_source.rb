@@ -48,7 +48,6 @@ bash 'build_check_mk' do
   cwd Chef::Config[:file_cache_path]
   code <<-EOF
     tar -xzf check_mk-#{version}.tar.gz
-    (cd check_mk-#{version} && echo OK)
     (cd check_mk-#{version} && ./setup.sh --yes)
     # Add www-data to Nagios group (Better in chef?)
     usermod -G nagios www-data
