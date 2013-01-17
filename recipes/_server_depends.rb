@@ -22,6 +22,10 @@ include_recipe 'build-essential'
 # Install Apache2
 include_recipe 'apache2'
 
+# Install for mod_ssl
+package 'ca-certificates'
+package 'ssl-cert'
+
 # Apache2 Modules
 include_recipe 'apache2::mod_ssl'
 include_recipe 'apache2::mod_python'
