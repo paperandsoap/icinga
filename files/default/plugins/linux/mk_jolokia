@@ -9,7 +9,12 @@ opt_debug = '--debug' in sys.argv
 
 def fetch_var(server, port, path, suburi, itemspec):
     url = "http://%s:%d/%s/%s" % (server, port, suburi, path)
-    json = urllib2.urlopen(url).read()
+    try:
+        json = urllib2.urlopen(url).read()
+    except Exception, e:
+        sys.stderr.write("ERROR: %s" % e)
+        return []
+
 
     try:
         true = True
@@ -197,13 +202,13 @@ specific_vars = {
       ( "*:type=Manager,*/activeSessions,maxActiveSessions",  None,                      [ "path", "context" ] ),
   ],
   "jetty" : [
-      ( "org.eclipse.jetty.server.handler:type=statisticshandler,id=*/requestTimeMax",  None, ["type", "id"] ),
-      ( "org.eclipse.jetty.server.handler:type=statisticshandler,id=*/requestTimeStdDev",  None, ["type", "id"] ),
-      ( "org.eclipse.jetty.server.handler:type=statisticshandler,id=*/requestTimeMean",  None, ["type", "id"] ),
-      ( "org.eclipse.jetty.server.session:type=*,context=*,id=*/sessionTimeMean",  None, ["context"] ),
-      ( "org.eclipse.jetty.server.session:type=*,context=*,id=*/sessionTimeStdDev",  None, ["context"] ),
-      ( "org.eclipse.jetty.server.session:type=*,context=*,id=*/sessionTimeMax",  None, ["context"] ),
-      ( "org.eclipse.jetty.server.session:type=*,context=*,id=*/sessions",  None, ["context"] ),
+    ( "org.eclipse.jetty.server.handler:type=statisticshandler,id=*/requestTimeMax",  None, ["type", "id"] ),
+    ( "org.eclipse.jetty.server.handler:type=statisticshandler,id=*/requestTimeStdDev",  None, ["type", "id"] ),
+    ( "org.eclipse.jetty.server.handler:type=statisticshandler,id=*/requestTimeMean",  None, ["type", "id"] ),
+    ( "org.eclipse.jetty.server.session:type=*,context=*,id=*/sessionTimeMean",  None, ["context"] ),
+    ( "org.eclipse.jetty.server.session:type=*,context=*,id=*/sessionTimeStdDev",  None, ["context"] ),
+    ( "org.eclipse.jetty.server.session:type=*,context=*,id=*/sessionTimeMax",  None, ["context"] ),
+    ( "org.eclipse.jetty.server.session:type=*,context=*,id=*/sessions",  None, ["context"] ),
   ],
 }
 
@@ -251,3 +256,5 @@ for inst in instances:
     inst["instance"] = inst["instance"].replace(" ", "_")
 
     query_instance(inst)
+
+
