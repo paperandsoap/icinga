@@ -73,7 +73,7 @@ default['check_mk']['legacy']['checks'] = {
         'name' => 'check-http',
         'alias' => 'Legcay_Jetty',
         'perfdata' => 'True',
-        'opts' => '-p 8080'
+        'opts' => '-p 8080 -u /lbstate/'
     },
     'memcached' => {
         'name' => 'check-tcp',
