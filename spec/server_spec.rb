@@ -88,12 +88,11 @@ require 'chefspec'
     %w(/etc/check_mk/multisite.mk
        /etc/check_mk/multisite.d/business-intelligence.mk
        /etc/check_mk/multisite.d/wato-configuration.mk
-       /etc/check_mk/multisite.d/users.mk
        /etc/icinga/icinga.cfg
        /etc/xinetd.d/livestatus
        /var/lib/check_mk/web/icingaadmin/sidebar.mk
        /etc/icinga/htpasswd.users
-       /etc/check_mk/multisite.d/users.mk
+       /etc/check_mk/multisite.d/wato/users.mk
        /etc/check_mk/conf.d/monitoring-nodes-localhost.mk
        /etc/check_mk/conf.d/hostgroups-localhost.mk
        /etc/check_mk/conf.d/global-configuration.mk
@@ -129,7 +128,7 @@ require 'chefspec'
 
     it 'should create users.mk with at least one use' do
       chef_run.should create_file_with_content(
-        '/etc/check_mk/multisite.d/users.mk',
+        '/etc/check_mk/multisite.d/wato/users.mk',
         "'icingaadmin': {'alias': u' ', 'locked': True, 'roles': ['admin']},"
       )
     end

@@ -101,7 +101,7 @@ template node['icinga']['htpasswd']['file'] do
 end
 
 # Ensure these users also have multisite access
-template '/etc/check_mk/multisite.d/users.mk' do
+template '/etc/check_mk/multisite.d/wato/users.mk' do
   source 'check_mk/server/multisite.d/users.mk.erb'
   owner 'root'
   group 'root'
