@@ -17,14 +17,14 @@ default['check_mk']['search']['nodes'] = "hostname:[* TO *] AND chef_environment
 
 # Some defaults
 default['check_mk']['url'] = 'http://mathias-kettner.de/download'
-default['check_mk']['version'] = '1.2.1i4'
+default['check_mk']['version'] = '1.2.1i5'
 default['check_mk']['deb']['release'] = '2'
 default['check_mk']['rpm']['release'] = '1'
-default['check_mk']['agent']['rpm']['checksum'] = 'f5a8fb00b3525fe592bd4a932bffc7b4875ad275c2514585519dfed89d18cadc'
-default['check_mk']['logwatch']['rpm']['checksum'] = '8d4fd2a2f36ae9609dca3cddaf66c5ecd6f172c0fac76e278c6f05d387b6c06a'
-default['check_mk']['agent']['deb']['checksum'] = 'c02c7cc96a9ab95dc54d0a9f03a57245e32fd7b54427b3e5a33a74fe108629b2'
-default['check_mk']['logwatch']['deb']['checksum'] = '5351b172a09157e3051bf17e35af6d8af2458f92f016ac20cf2fbb194d12d7ae'
-default['check_mk']['source']['tar']['checksum'] = '22f7d6b6a1ac38b4817bb8866ed6ad3a81421e979cc8291241260b19b6b768cf'
+default['check_mk']['agent']['rpm']['checksum'] = 'ef16ac9bb14e87668f4cf772007f997b56c0f1133eb69d179d2b87150afe3b15'
+default['check_mk']['logwatch']['rpm']['checksum'] = 'a4d0b35ce1b5cec37b1b4b20f982591c884ba462d9c3788fa2d7c82ed2935752'
+default['check_mk']['agent']['deb']['checksum'] = 'e247b89b41b50a3b40bc8edb2f1624dd1540dae9ddfca86ae633a4680605c121'
+default['check_mk']['logwatch']['deb']['checksum'] = 'ec691ecb1106ecef1ca0cd991b11b636b3886c8813310d46a1b3a689cb2abac9'
+default['check_mk']['source']['tar']['checksum'] = '09de13ff6f7822186ffdeb78d4366a38de4546bb9f3a2380582c45f274527d27'
 default['check_mk']['groups'] = ['check-mk-admin']
 default['check_mk']['setup']['bindir'] = '/usr/bin'
 default['check_mk']['setup']['confdir'] = '/etc/check_mk'
