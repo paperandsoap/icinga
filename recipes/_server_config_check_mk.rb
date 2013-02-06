@@ -104,8 +104,8 @@ end
 template '/etc/check_mk/multisite.d/wato/users.mk' do
   source 'check_mk/server/multisite.d/users.mk.erb'
   owner 'root'
-  group 'root'
-  mode '644'
+  group 'www-data'
+  mode '664'
   variables(
       :users => users
   )
