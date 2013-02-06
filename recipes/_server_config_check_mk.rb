@@ -67,7 +67,7 @@ node['check_mk']['groups'].each do |groupid|
   # get the group data bag
   group = data_bag_item('groups', groupid)
   # for every member
-  group['members'].each do |userid|
+  group[node.chef_environment]['members'].each do |userid|
     users.push(data_bag_item('users', userid))
   end
 end
@@ -104,8 +104,8 @@ end
 template '/etc/check_mk/multisite.d/wato/users.mk' do
   source 'check_mk/server/multisite.d/users.mk.erb'
   owner 'root'
-  group 'root'
-  mode '644'
+  group 'www-data'
+  mode '664'
   variables(
       :users => users
   )
