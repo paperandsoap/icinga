@@ -15,13 +15,13 @@ require 'chefspec'
 # Required for proper recipe testing by platform
 %w(debian).each do |platform|
   describe "The icinga::server #{platform} recipe" do
-    let (:chef_run) {
+    let(:chef_run) {
       # Define some data bag items and searches that are used in the recipe
       Chef::Recipe.any_instance.stub(:data_bag_item).and_return(Hash.new)
       Chef::Recipe.any_instance.stub(:data_bag_item).with('groups', 'check-mk-admin').and_return(
         {
           'id' => 'check-mk-admin',
-          'members' => ['icingaadmin']
+          '_default' => { 'members' => ['icingaadmin'] }
         }
       )
       Chef::Recipe.any_instance.stub(:data_bag_item).with('users', 'icingaadmin').and_return('id' => 'icingaadmin', 'htpasswd' => 'plaintext')
@@ -36,6 +36,10 @@ require 'chefspec'
       runner = ChefSpec::ChefRunner.new
       # Required for template path testing
       runner.node.set['check_mk'] = { 'setup' => {'vardir' => '/var/lib/check_mk' } }
+      env = Chef::Environment.new
+      env.name '_default'
+      runner.node.stub(:chef_environment).and_return env.name
+      Chef::Environment.stub(:load).and_return env
 
       # Required for file/directory ownerships
       runner.node.set['apache'] = { 'user' => 'www-data', 'group' => 'www-data' }
@@ -43,6 +47,7 @@ require 'chefspec'
 
       # Required for template file name
       runner.node.automatic_attrs['hostname'] = 'localhost'
+      runner.node.automatic_attrs['chef_environment'] = '_default'
       runner.node.automatic_attrs['platform'] = platform
       runner.node.automatic_attrs['platform_family'] = platform
       runner.node.automatic_attrs['lsb'] = { 'codename' => 'squeeze' }
@@ -88,11 +93,11 @@ require 'chefspec'
     %w(/etc/check_mk/multisite.mk
        /etc/check_mk/multisite.d/business-intelligence.mk
        /etc/check_mk/multisite.d/wato-configuration.mk
+       /etc/check_mk/multisite.d/wato/users.mk
        /etc/icinga/icinga.cfg
        /etc/xinetd.d/livestatus
        /var/lib/check_mk/web/icingaadmin/sidebar.mk
        /etc/icinga/htpasswd.users
-       /etc/check_mk/multisite.d/wato/users.mk
        /etc/check_mk/conf.d/monitoring-nodes-localhost.mk
        /etc/check_mk/conf.d/hostgroups-localhost.mk
        /etc/check_mk/conf.d/global-configuration.mk
