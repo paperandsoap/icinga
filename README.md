@@ -255,12 +255,17 @@ by htpasswd. Used here is a hash for the password `test`.
 
 # Group Data Bag Item
 
-This data bag item is used to match users against access groups.
+This data bag item is used to match users against access groups. This is
+done on a per-environment setting. *_default* is always part of Chef but
+if you added your own environments you have to add the members for them
+too.
 
 ```
 {
   "id" : "check-mk-admin",
-  "members" : ["icingaadmin"]
+  "_default" : { 
+    "members" : ["icingaadmin"]
+  }
 }
 ```
 

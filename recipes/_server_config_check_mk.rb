@@ -67,7 +67,7 @@ node['check_mk']['groups'].each do |groupid|
   # get the group data bag
   group = data_bag_item('groups', groupid)
   # for every member
-  group['members'].each do |userid|
+  group[node.chef_environment]['members'].each do |userid|
     users.push(data_bag_item('users', userid))
   end
 end
