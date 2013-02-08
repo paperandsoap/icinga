@@ -1,6 +1,6 @@
 all_hosts += [
 <% @nodes.each do |client_node| -%>
-    '<%= client_node['hostname'] %>|<%= client_node['lsb']['codename'] %>|site:<%= node['hostname'] %>|<%= node['os'] %>|<%= client_node.chef_environment %>|<%= client_node['roles'].join("|") %>|<%= client_node['tags'].join("|") %>',
+    '<%= client_node['hostname'] %>|all|<%= client_node['lsb']['codename'] %>|site:<%= node['hostname'] %>|<%= node['os'] %>|<%= client_node.chef_environment %>|<%= client_node['roles'].join("|") %>|<%= client_node['tags'].join("|") %>',
 <% end -%>
 ]
 
@@ -9,3 +9,11 @@ ipaddresses.update({
   '<%= client_node['hostname'] %>': u'<%= private_addresse_for_node(client_node) %>',
 <% end -%>
 })
+
+# Settings for alias
+extra_host_conf.setdefault('alias', []).extend([
+  <% @nodes.each do |client_node| -%>
+    <% unless client_node['roles'].nil? %>(u'<%= client_node['roles'].join("-") %>', ['<%= client_node['hostname'] %>']),<% end %>
+  <% end %>
+])
+

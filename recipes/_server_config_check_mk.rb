@@ -17,6 +17,7 @@
 # limitations under the License.
 #
 
+include_recipe "icinga::_define_services"
 
 # Change some permissions
 file '/etc/check_mk/conf.d/distributed_wato.mk' do
@@ -30,6 +31,12 @@ end
     group node['apache']['user']
     mode '770'
   end
+end
+
+directory "/var/lib/check_mk/notify" do
+  user "root"
+  group node['icinga']['group']
+  mode 0775
 end
 
 # Multisite Configuration
@@ -94,10 +101,18 @@ template node['icinga']['htpasswd']['file'] do
   source 'icinga/htpasswd.users.erb'
   owner 'root'
   group node['apache']['user']
-  mode '440'
-  variables(
-      :users => users
-  )
+  mode '660'
+  variables(:users => users)
+end
+
+# Create contacts for proper notifications if enabled
+template '/etc/check_mk/conf.d/wato/contacts.mk' do
+  source 'check_mk/server/conf.d/contacts.mk.erb'
+  owner 'root'
+  group 'www-data'
+  mode '664'
+  variables(:users => users)
+  notifies :run, 'execute[restart-check-mk]', :delayed
 end
 
 # Ensure these users also have multisite access
@@ -106,9 +121,7 @@ template '/etc/check_mk/multisite.d/wato/users.mk' do
   owner 'root'
   group 'www-data'
   mode '664'
-  variables(
-      :users => users
-  )
+  variables(:users => users)
 end
 
 # Global configuration settings
@@ -117,5 +130,5 @@ template '/etc/check_mk/conf.d/global-configuration.mk' do
   owner node['icinga']['user']
   group node['icinga']['group']
   mode 0640
-  notifies :run, 'execute[reload-check-mk]'
+  notifies :run, 'execute[reload-check-mk]', :delayed
 end
