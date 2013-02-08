@@ -17,11 +17,7 @@
 # limitations under the License.
 
 
-# Command definition to reload check_mk when template changed
-execute 'reload-check-mk' do
-  command 'check_mk -II ; check_mk -O'
-  action :nothing
-end
+include_recipe "icinga::_define_services"
 
 if Chef::Config[:solo]
   # Find nodes in our environment
@@ -62,11 +58,11 @@ template '/etc/check_mk/conf.d/legacy-checks.mk' do
   variables(
       :nodes => nodes
   )
-  notifies :run, 'execute[reload-check-mk]'
+  notifies :run, 'execute[reload-check-mk]', :delayed
 end
 
 # Add all found nodes to this server
-template "/etc/check_mk/conf.d/monitoring-nodes-#{node['hostname']}.mk" do
+template "/etc/check_mk/conf.d/wato/hosts.mk" do
   source 'check_mk/server/conf.d/monitoring-nodes.mk.erb'
   owner node['icinga']['user']
   group node['icinga']['group']
@@ -74,7 +70,7 @@ template "/etc/check_mk/conf.d/monitoring-nodes-#{node['hostname']}.mk" do
   variables(
       :nodes => nodes
   )
-  notifies :run, 'execute[reload-check-mk]'
+  notifies :run, 'execute[reload-check-mk]', :delayed
 end
 
 # Add all roles as hostgroups as they are used as tags for nodes
@@ -89,5 +85,5 @@ template "/etc/check_mk/conf.d/hostgroups-#{node['hostname']}.mk" do
       :tags => tags,
       :os_list => os_list
   )
-  notifies :run, 'execute[reload-check-mk]'
+  notifies :run, 'execute[reload-check-mk]', :delayed
 end
