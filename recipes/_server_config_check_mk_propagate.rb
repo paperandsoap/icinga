@@ -17,11 +17,7 @@
 # limitations under the License.
 
 
-# Command definition to reload check_mk when template changed
-execute 'reload-check-mk' do
-  command 'check_mk -II ; check_mk -O'
-  action :nothing
-end
+include_recipe "icinga::_define_services"
 
 if Chef::Config[:solo]
   # Find nodes in our environment

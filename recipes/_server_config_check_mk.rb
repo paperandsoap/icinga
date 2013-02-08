@@ -17,6 +17,7 @@
 # limitations under the License.
 #
 
+include_recipe "icinga::_define_services"
 
 # Change some permissions
 file '/etc/check_mk/conf.d/distributed_wato.mk' do
@@ -111,7 +112,7 @@ template '/etc/check_mk/conf.d/wato/contacts.mk' do
   group 'www-data'
   mode '664'
   variables(:users => users)
-  notifies :run, 'execute[reload-check-mk]', :delayed
+  notifies :run, 'execute[restart-check-mk]', :delayed
 end
 
 # Ensure these users also have multisite access
