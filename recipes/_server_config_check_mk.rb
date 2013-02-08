@@ -111,6 +111,7 @@ template '/etc/check_mk/conf.d/wato/contacts.mk' do
   group 'www-data'
   mode '664'
   variables(:users => users)
+  notifies :run, 'execute[reload-check-mk]', :delayed
 end
 
 # Ensure these users also have multisite access
@@ -128,5 +129,5 @@ template '/etc/check_mk/conf.d/global-configuration.mk' do
   owner node['icinga']['user']
   group node['icinga']['group']
   mode 0640
-  notifies :run, 'execute[reload-check-mk]'
+  notifies :run, 'execute[reload-check-mk]', :delayed
 end
