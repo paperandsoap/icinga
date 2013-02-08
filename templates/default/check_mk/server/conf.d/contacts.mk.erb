@@ -2,18 +2,19 @@
 # Used for notifications in check_mk
 #
 contacts.update(
+  {
 <% @users.each do |user| %>
-  {'<%= user['id'] %>': {'alias': '<%= user['firstname'] %> <%= user['lastname'] %>',
-    'contactgroups': ['<% unless user['icinga'].nil? %><%= user['icinga']['contactgroups'].join(",'")%><% end %>'],
-    'email': '<%= user['email'] %>',
-    'host_notification_commands': 'check-mk-notify',
-    'host_notification_options': 'durfs',
-    'notification_method': 'email',
-    'notification_period': '24X7',
-    'notifications_enabled': True,
-    'pager': '<%= user['pager'] %>',
-    'service_notification_commands': 'check-mk-notify',
-    'service_notification_options': 'wucrfs'}
-  },
+    '<%= user['id'] %>': {'alias': '<%= user['firstname'] %> <%= user['lastname'] %>',
+      'contactgroups': ['<% unless user['icinga'].nil? %><%= user['icinga']['contactgroups'].join(",'")%><% end %>'],
+      'email': '<%= user['email'] %>',
+      'host_notification_commands': 'check-mk-notify',
+      'host_notification_options': 'durfs',
+      'notification_method': 'email',
+      'notification_period': '24X7',
+      'notifications_enabled': True,
+      'pager': '<%= user['pager'] %>',
+      'service_notification_commands': 'check-mk-notify',
+      'service_notification_options': 'wucrfs'},
 <% end %>
+  },
 )
