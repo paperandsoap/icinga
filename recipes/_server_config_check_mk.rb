@@ -32,6 +32,12 @@ end
   end
 end
 
+directory "/var/lib/check_mk/notify" do
+  user "root"
+  group node['icinga']['group']
+  mode 0775
+end
+
 # Multisite Configuration
 template '/etc/check_mk/multisite.mk' do
   source 'check_mk/server/multisite.d/multisite.mk.erb'
@@ -94,10 +100,26 @@ template node['icinga']['htpasswd']['file'] do
   source 'icinga/htpasswd.users.erb'
   owner 'root'
   group node['apache']['user']
-  mode '440'
-  variables(
-      :users => users
-  )
+  mode '660'
+  variables(:users => users)
+end
+
+# Create contactgroups automatically if referred to by hosts
+template '/etc/check_mk/conf.d/wato/groups.mk' do
+  source 'check_mk/server/conf.d/contactgroups.mk.erb'
+  owner 'root'
+  group 'www-data'
+  mode '664'
+  variables(:users => users)
+end
+
+# Create contacts for proper notifications if enabled
+template '/etc/check_mk/conf.d/wato/contacts.mk' do
+  source 'check_mk/server/conf.d/contacts.mk.erb'
+  owner 'root'
+  group 'www-data'
+  mode '664'
+  variables(:users => users)
 end
 
 # Ensure these users also have multisite access
@@ -106,9 +128,7 @@ template '/etc/check_mk/multisite.d/wato/users.mk' do
   owner 'root'
   group 'www-data'
   mode '664'
-  variables(
-      :users => users
-  )
+  variables(:users => users)
 end
 
 # Global configuration settings

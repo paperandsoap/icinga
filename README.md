@@ -139,7 +139,19 @@ Environments
 ------------
 
 The install recipe for the server is using chef environments to find all nodes within the Icinga servers environment.
-Be aware that this is a feature requiring Chef >= 0.10.0 to work.
+Be aware that this is a feature requiring Chef >= 0.10.0 to work. You can adjust the search via a node attribute.
+
+Notifications
+-------------
+
+Icinga Cookbook 0.1.67 introduced support for notifications. Currently a default group 'all' is created which matches all
+machines tagged with 'all'. The tag is added to all machines by default inside the monitoring-nodes template.
+
+By adding notifications the user data bag item has changed. Please look below for a detailed view on how the data bag
+item is setup now.
+
+Future releases of this cookbooks will add support for custom notification groups that can be added to machines,
+e.g. role based, environment, tag based notificiations.
 
 Chef Solo
 =========
@@ -245,10 +257,28 @@ This data bag item defines the user that will be allowed access if
 member of the check-mk-admin group. The password is the hash as created
 by htpasswd. Used here is a hash for the password `test`.
 
+In order to use notifications the user will need to be setup with some
+default fields:
+
+* email
+* pager
+* firstname
+* lastname
+* icinga => contactgroups
+
+The default contactroup added for all machines is 'all'. Add your user
+to this contactgroup to receive all notifications. Currently only 'all'
+is supported but this will change in the future.
+
 ```
 {
   "id": "icingaadmin",
   "htpasswd" : "$apr1$mXxUCwMY$dePujmMXMOd9yPZyXaQ6Q0",
+  "email": "admin@nodomain.com",
+  "pager": "",
+  "firstname": "Icinga",
+  "lastname" : "Admin",
+  "icinga": { "contactgroups": ["all"] },
   "enabled" : true
 }
 ```
