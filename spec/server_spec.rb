@@ -98,7 +98,7 @@ require 'chefspec'
        /etc/xinetd.d/livestatus
        /var/lib/check_mk/web/icingaadmin/sidebar.mk
        /etc/icinga/htpasswd.users
-       /etc/check_mk/conf.d/monitoring-nodes-localhost.mk
+       /etc/check_mk/conf.d/wato/hosts.mk
        /etc/check_mk/conf.d/hostgroups-localhost.mk
        /etc/check_mk/conf.d/global-configuration.mk
        /etc/check_mk/conf.d/legacy-checks.mk
@@ -148,7 +148,7 @@ require 'chefspec'
     it 'should create monitoring-nodes-localhost.mk with at least one node' do
       chef_run.should create_file_with_content(
         '/etc/check_mk/conf.d/monitoring-nodes-localhost.mk',
-        '\'localhost|squeeze|site:localhost|chefspec|_default|monitoring-server|testing\','
+        '\'localhost|all|squeeze|site:localhost|chefspec|_default|monitoring-server|testing\','
       )
     end
 
