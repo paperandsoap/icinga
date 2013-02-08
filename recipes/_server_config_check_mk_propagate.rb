@@ -66,7 +66,7 @@ template '/etc/check_mk/conf.d/legacy-checks.mk' do
 end
 
 # Add all found nodes to this server
-template "/etc/check_mk/conf.d/monitoring-nodes-#{node['hostname']}.mk" do
+template "/etc/check_mk/conf.d/wato/hosts.mk" do
   source 'check_mk/server/conf.d/monitoring-nodes.mk.erb'
   owner node['icinga']['user']
   group node['icinga']['group']
