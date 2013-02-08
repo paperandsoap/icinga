@@ -104,15 +104,6 @@ template node['icinga']['htpasswd']['file'] do
   variables(:users => users)
 end
 
-# Create contactgroups automatically if referred to by hosts
-template '/etc/check_mk/conf.d/wato/groups.mk' do
-  source 'check_mk/server/conf.d/contactgroups.mk.erb'
-  owner 'root'
-  group 'www-data'
-  mode '664'
-  variables(:users => users)
-end
-
 # Create contacts for proper notifications if enabled
 template '/etc/check_mk/conf.d/wato/contacts.mk' do
   source 'check_mk/server/conf.d/contacts.mk.erb'
