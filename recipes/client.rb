@@ -16,9 +16,6 @@
 # limitations under the License.
 #
 
-# Include apt recipe to ensure system is updated prior to installing
-include_recipe 'apt'
-
 # Install required packages based on platform
 pkgs = value_for_platform_family(
   'rhel' => %w{ xinetd ethtool },
