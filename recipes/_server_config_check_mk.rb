@@ -109,7 +109,7 @@ end
 template '/etc/check_mk/conf.d/wato/contacts.mk' do
   source 'check_mk/server/conf.d/contacts.mk.erb'
   owner 'root'
-  group 'www-data'
+  group node['apache']['group']
   mode '664'
   variables(:users => users)
   notifies :run, 'execute[restart-check-mk]', :delayed
@@ -119,7 +119,7 @@ end
 template '/etc/check_mk/multisite.d/wato/users.mk' do
   source 'check_mk/server/multisite.d/users.mk.erb'
   owner 'root'
-  group 'www-data'
+  group node['apache']['group']
   mode '664'
   variables(:users => users)
 end
