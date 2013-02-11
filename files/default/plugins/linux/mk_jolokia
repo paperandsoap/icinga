@@ -106,8 +106,8 @@ def query_instance(inst):
 
     # Determine type of server
     server_info = fetch_var(inst["server"], inst["port"], "", inst["suburi"], "")
-    sys.stdout.write('<<<jolokia_info>>>\n')
     if server_info:
+       sys.stdout.write('<<<jolokia_info>>>\n')
        d = dict(server_info)
        version = d.get(('info', 'version'), "unknown")
        product = d.get(('info', 'product'), "unknown")
