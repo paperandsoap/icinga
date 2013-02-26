@@ -145,6 +145,12 @@ require 'chefspec'
       )
     end
 
+    %w(redis).each do |check|
+      it "should create service check #{check}" do
+        chef_run.should create_cookbook_file "/usr/share/check_mk/checks/#{check}"
+      end
+    end
+
     it 'should create hosts.mk with at least one node' do
       chef_run.should create_file_with_content(
         '/etc/check_mk/conf.d/wato/hosts.mk',
