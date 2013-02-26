@@ -104,7 +104,7 @@ end
 # Install all client plugins
 case node['os']
 when 'linux'
-  %w(apache_status mk_jolokia mk_mysql mk_postgres).each do |plugin|
+  %w(apache_status mk_jolokia mk_mysql mk_postgres mk_redis).each do |plugin|
     cookbook_file node['check_mk']['setup']['agentslibdir'] + '/plugins/' + plugin do
       source 'plugins/linux/' + plugin
       mode 0750

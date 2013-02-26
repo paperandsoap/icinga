@@ -1,0 +1,12 @@
+#!/bin/bash
+# -*- encoding: utf-8; py-indent-offset: 4 -*-
+#
+
+# Find redis server on this host
+IP=$( netstat -plan 2>/dev/null | grep "LISTEN.*/redis-server" | awk '{print $4}' | cut -f1 -d: )
+if which redis-cli >/dev/null && [ "$IP" != "" ]
+then
+echo "<<<redis>>>"
+  redis-cli -h $IP ping
+fi
+
