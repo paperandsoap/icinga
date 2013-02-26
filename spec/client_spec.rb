@@ -14,7 +14,7 @@ require 'chefspec'
 
 %w(debian rhel).each do |platform_family|
   describe "The icinga::client #{platform_family} recipe" do
-    before (:all) {
+    before(:all) {
       @chef_run = ChefSpec::ChefRunner.new
       @chef_run.node.automatic_attrs['platform_family'] = platform_family
       @chef_run.node.automatic_attrs['os'] = 'linux'
@@ -63,6 +63,7 @@ require 'chefspec'
        /usr/lib/check_mk_agent/plugins/mk_jolokia
        /usr/lib/check_mk_agent/plugins/mk_mysql
        /usr/lib/check_mk_agent/plugins/mk_postgres
+       /usr/lib/check_mk_agent/plugins/mk_redis
     ).each do |file|
       it "should copy file #{file}" do
         @chef_run.should create_cookbook_file file
