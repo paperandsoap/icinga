@@ -2,6 +2,13 @@
 
 This file is used to list changes made in each version of icinga.
 
+## 0.1.75:
+
+* Support redis services via check_mk agent
+* Fixed mk_mysql agent with new version
+* Fixed mk_jolokia agent
+* Removed dependency with apt cookbook
+
 ## 0.1.67:
 
 * Initial support for notifications, please check the README.md for usage and to adjust your data bag items for your users.
