@@ -132,3 +132,11 @@ template '/etc/check_mk/conf.d/global-configuration.mk' do
   mode 0640
   notifies :run, 'execute[reload-check-mk]', :delayed
 end
+
+# Additional service checks
+%w( redis ).each do |check|
+  cookbook_file node['check_mk']['setup']['sharedir'] + '/checks/' + check do
+    source 'checks/' + check
+    mode 0750
+  end
+end
