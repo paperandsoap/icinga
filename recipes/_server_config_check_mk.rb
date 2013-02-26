@@ -137,6 +137,6 @@ end
 %w( redis ).each do |check|
   cookbook_file node['check_mk']['setup']['sharedir'] + '/checks/' + check do
     source 'checks/' + check
-    mode 0750
+    mode 0644
   end
 end
