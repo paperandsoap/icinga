@@ -30,7 +30,7 @@ end
 
 # runs /etc/init.d/xinetd (start|stop|restart), etc.
 service 'xinetd' do
-  supports :status => true, :restart => true, :reload => true
+  supports :status => false, :restart => true, :reload => true
   action [:enable, :start]
 end
 
