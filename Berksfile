@@ -2,8 +2,8 @@
 
 metadata
 
-cookbook 'apt'
-cookbook 'yum'
+cookbook 'up2date',          :github => 'TheSerapher/chef-up2date'
 cookbook 'apache2'
-cookbook 'rrdcached',  :github => 'Bigpoint/rrdcached'
-cookbook 'pnp4nagios', :github => 'Bigpoint/pnp4nagios'
+cookbook 'chef-solo-search', :github => 'edelight/chef-solo-search'
+cookbook 'rrdcached',  :github => 'Bigpoint/rrdcached',   :protocol => :ssh
+cookbook 'pnp4nagios', :github => 'Bigpoint/pnp4nagios',  :protocol => :ssh
