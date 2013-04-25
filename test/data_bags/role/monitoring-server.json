@@ -1,0 +1,25 @@
+{
+    "name":"monitoring-server",
+    "description":"Icinga Monitoring Host",
+    "json_class":"Chef::Role",
+    "default_attributes":{
+        "apache2":{
+            "listen_ports":[
+                "80",
+                "443"
+            ]
+        }
+    },
+    "override_attributes":{
+    },
+    "chef_type":"role",
+    "run_list":[
+        "recipe[apache2]",
+        "recipe[apache2::mod_ssl]",
+        "recipe[icinga::server]",
+        "recipe[icinga::client]"
+    ],
+    "env_run_lists":{
+    },
+    "_rev":"4-c82859239100d64b25f2d121baa4cfd2"
+}

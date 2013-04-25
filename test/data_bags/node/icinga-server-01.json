@@ -1,0 +1,65 @@
+{
+  "name":"icinga-server-01",
+  "chef_environment":"_default",
+  "json_class":"Chef::Node",
+  "automatic":{
+    "network":{
+      "interfaces":{
+        "eth0":{
+          "addresses":{
+            "10.0.2.15":{
+              "scope": "Global",
+              "netmask": "255.255.255.0",
+              "broadcast": "10.0.2.255",
+              "prefixlen": "24",
+              "family": "inet"
+            }
+          }
+        },
+        "eth1":{
+          "addresses":{
+            "8.1.1.8":{
+              "scope": "Global",
+              "netmask": "255.255.255.0",
+              "broadcast": "8.1.1.255",
+              "prefixlen": "24",
+              "family": "inet"
+            }
+          }
+        }
+      }
+    },
+    "platform_version":"6.0.5",
+    "domain": "local",
+    "fqdn":"icinga-server-01.local",
+    "ipaddress":"127.0.0.1",
+    "os":"linux",
+    "lsb":{
+      "codename":"squeeze",
+      "id":"Debian",
+      "description":"Debian GNU/Linux 6.0.5 (squeeze)",
+      "release":"6.0.5"
+    },
+    "os_version":"2.6.32-5-amd64",
+    "platform_family":"debian",
+    "recipes":[
+    ],
+    "hostname":"icinga-server-01"
+  },
+  "normal": {
+    "tags":[
+      "testing-tag-01"
+    ],
+    "id":"icinga-server-01",
+    "roles": [
+      "base",
+      "monitoring-server"
+    ],
+    "platform": "debian"
+  },
+  "chef_type":"node",
+  "run_list":[
+    "role[base]",
+    "role[monitoring-server]"
+  ]
+}

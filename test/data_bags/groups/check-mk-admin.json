@@ -1,0 +1,6 @@
+{
+	"id" : "check-mk-admin",
+  "_default" : {
+    "members" : ["icingaadmin"]
+  }
+}
