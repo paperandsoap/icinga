@@ -6,23 +6,11 @@ Vagrant.require_plugin "vagrant-aws"
 Vagrant.configure("2") do |config|
   config.vm.box = "squeeze64"
   config.vm.box_url = "http://debbuild.bigpoint.net/squeeze64.box"
-<<<<<<< HEAD
-  config.vm.host_name = "icinga-server-01.local"
-  config.vm.network :hostonly, "8.1.1.8"
-  config.vm.customize ["modifyvm", :id, "--memory", 1024]
-  config.vm.customize ["modifyvm", :id, "--cpus", "2"]
-=======
   config.vm.hostname = "icinga-server-01.local"
   config.vm.network :forwarded_port, guest: 80, host: 8080
   config.vm.network :forwarded_port, guest: 8080, host: 8081
   config.vm.network :forwarded_port, guest: 443, host: 4443
   config.vm.network :private_network, ip: "8.1.1.8"
-
-  config.vm.provider :virtualbox do |vb|
-    vb.customize ["modifyvm", :id, "--memory", 2048]
-    vb.customize ["modifyvm", :id, "--cpus", "2"]
-  end
->>>>>>> adb754590be064dcf861c5bb62636a9c4d29ccb4
 
   config.vm.provider :aws do |aws, override|
     override.vm.box = "aws"
@@ -44,11 +32,8 @@ Vagrant.configure("2") do |config|
     chef.add_recipe "up2date"
     chef.add_recipe "chef-solo-search"
     chef.add_recipe "icinga::server"
-<<<<<<< HEAD
     chef.add_recipe "exim4-light"
     chef.log_level = :debug
-=======
->>>>>>> adb754590be064dcf861c5bb62636a9c4d29ccb4
     chef.json = {
       "exim4" => { "configtype" => "internet" },
       "lsb" => { "codename" => "squeeze" },
