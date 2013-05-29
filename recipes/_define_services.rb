@@ -25,6 +25,6 @@ execute 'reload-check-mk' do
 end
 
 execute 'restart-check-mk' do
-  command 'check_mk -II ; check_mk -O'
+  command 'check_mk -II ; check_mk -R'
   action :nothing
 end

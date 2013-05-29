@@ -11,9 +11,9 @@ Vagrant.configure("2") do |config|
   config.vm.network :forwarded_port, guest: 8080, host: 8081
   config.vm.network :forwarded_port, guest: 443, host: 4443
   config.vm.network :private_network, ip: "8.1.1.8"
-
+  
   config.vm.provider :virtualbox do |vb|
-    vb.customize ["modifyvm", :id, "--memory", 2048]
+    vb.customize ["modifyvm", :id, "--memory", 1024]
     vb.customize ["modifyvm", :id, "--cpus", "2"]
   end
 
@@ -37,7 +37,10 @@ Vagrant.configure("2") do |config|
     chef.add_recipe "up2date"
     chef.add_recipe "chef-solo-search"
     chef.add_recipe "icinga::server"
+    chef.add_recipe "exim4-light"
+    chef.log_level = :debug
     chef.json = {
+      "exim4" => { "configtype" => "internet" },
       "lsb" => { "codename" => "squeeze" },
       "pnp4nagios" => { "htpasswd" => { "file" => "/etc/icinga/htpasswd.users" } },
       "rrdcached" => { "config" => {

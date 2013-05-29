@@ -9,7 +9,16 @@ contacts.update(
       'email': '<%= user['email'] %>',
       'host_notification_commands': 'check-mk-notify',
       'host_notification_options': 'durfs',
-      'notification_method': 'email',
+      'notification_method': ('flexible',
+                                [{
+                                    'disabled': False,
+                                    'host_events': ['d', 'u'],
+                                    'parameters': [],
+                                    'plugin': None,
+                                    'service_events': ['w', 'u','c'],
+                                    'timeperiod': '24X7'
+                                }]
+                            ),
       'notification_period': '24X7',
       'notifications_enabled': True,
       'pager': '<%= user['pager'] %>',
