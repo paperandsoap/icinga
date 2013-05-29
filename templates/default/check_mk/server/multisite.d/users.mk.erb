@@ -4,6 +4,11 @@
 multisite_users = \
 {
 <% @users.each do |user| -%>
-'<%= user['id'] %>': {'alias': u'<%= user['firstname'] %> <%= user['lastname'] %>', 'locked': <%= (!user['enabled']).to_s.capitalize %>, 'roles': ['admin']},
+'<%= user['id'] %>': {
+    'alias': u'<%= user['firstname'] %> <%= user['lastname'] %>',
+    'force_authuser': False,
+    'force_authuser_webservice': False,
+    'locked': <%= (!user['enabled']).to_s.capitalize %>,
+    'roles': ['admin']},
 <% end -%>
 }
