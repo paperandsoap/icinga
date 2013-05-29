@@ -134,7 +134,7 @@ require 'chefspec'
     it 'should create users.mk with at least one use' do
       chef_run.should create_file_with_content(
         '/etc/check_mk/multisite.d/wato/users.mk',
-        "'icingaadmin': {'alias': u' ', 'locked': True, 'roles': ['admin']},"
+        "'icingaadmin': {"
       )
     end
 
@@ -180,8 +180,8 @@ require 'chefspec'
     end
 
     # Ensure check_mk re-scans all found hosts and reloads Icinga if the templates changed
-    it 'should execute check_mk re-inventory and reload' do
-      chef_run.should execute_command 'check_mk -II ; check_mk -O'
+    it 'should execute check_mk re-inventory and restart' do
+      chef_run.should execute_command 'check_mk -II ; check_mk -R'
     end
   end
 end
