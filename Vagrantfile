@@ -11,6 +11,11 @@ Vagrant.configure("2") do |config|
   config.vm.network :forwarded_port, guest: 8080, host: 8081
   config.vm.network :forwarded_port, guest: 443, host: 4443
   config.vm.network :private_network, ip: "8.1.1.8"
+  
+  config.vm.provider :virtualbox do |vb|
+    vb.customize ["modifyvm", :id, "--memory", 1024]
+    vb.customize ["modifyvm", :id, "--cpus", "2"]
+  end
 
   config.vm.provider :aws do |aws, override|
     override.vm.box = "aws"

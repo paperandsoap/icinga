@@ -1,5 +1,9 @@
 {
   "id": "icingaadmin",
+  "firstname" : "moni",
+  "lastname" : "toring",
   "htpasswd" : "$apr1$mXxUCwMY$dePujmMXMOd9yPZyXaQ6Q0",
-  "enabled" : true
+  "enabled" : true,
+  "email" : "YOUREMAIL@EXAMPLE.COM",
+  "icinga" : { "contactgroups" : ["all"] }
 }

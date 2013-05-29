@@ -92,3 +92,12 @@ template "/etc/check_mk/conf.d/hostgroups-#{node['hostname']}.mk" do
   )
   notifies :run, 'execute[reload-check-mk]', :delayed
 end
+
+template "/etc/check_mk/conf.d/wato/rules.mk" do 
+  source 'check_mk/server/conf.d/rules.mk.erb'
+  owner node['icinga']['user']
+  group node['icinga']['group']
+  mode 0640
+  variables()
+  notifies :run, 'execute[restart-check-mk]', :delayed
+end
