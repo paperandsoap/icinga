@@ -17,6 +17,14 @@ contacts.update(
                                     'plugin': None,
                                     'service_events': ['w', 'u','c'],
                                     'timeperiod': '24X7'
+                                },
+                                {
+                                    'disabled': False,
+                                    'host_events': ['d', 'u'],
+                                    'parameters': [],
+                                    'plugin': 'sms.php',
+                                    'service_events': ['u','c'],
+                                    'timeperiod': 'oncall'
                                 }]
                             ),
       'notification_period': '24X7',

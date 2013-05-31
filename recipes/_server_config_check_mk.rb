@@ -105,6 +105,15 @@ template node['icinga']['htpasswd']['file'] do
   variables(:users => users)
 end
 
+# Create timeperiods, needs to be done before contacts
+template '/etc/check_mk/conf.d/wato/timeperiods.mk' do
+  source 'check_mk/server/conf.d/timeperiods.mk.erb'
+  owner node['icinga']['user']
+  group node['icinga']['group']
+  mode 0640
+  notifies :run, 'execute[restart-check-mk]', :delayed
+end
+
 # Create contacts for proper notifications if enabled
 template '/etc/check_mk/conf.d/wato/contacts.mk' do
   source 'check_mk/server/conf.d/contacts.mk.erb'

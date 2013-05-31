@@ -17,6 +17,8 @@ default['check_mk']['search']['nodes'] = "hostname:[* TO *] AND chef_environment
 
 # Some defaults
 default['check_mk']['wato']['enabled'] = 'False'
+default['check_mk']['notifications']['smsUser'] = 'SMSUSER'
+default['check_mk']['notifications']['smsPassword'] = 'SMSPASSWORD'
 default['check_mk']['url'] = 'http://mathias-kettner.de/download'
 default['check_mk']['version'] = '1.2.2'
 default['check_mk']['deb']['release'] = '2'

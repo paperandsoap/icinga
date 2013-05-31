@@ -101,3 +101,11 @@ template "/etc/check_mk/conf.d/wato/rules.mk" do
   variables()
   notifies :run, 'execute[restart-check-mk]', :delayed
 end
+
+template "/usr/share/check_mk/notifications/sms.php" do
+  source 'check_mk/server/notifications/sms.php.erb'
+  owner node['icinga']['user']
+  group node['icinga']['group']
+  mode 0770
+  variables()
+end
