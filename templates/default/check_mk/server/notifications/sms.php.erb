@@ -2,12 +2,15 @@
 <?php
 /**
  * flexible notifications by sms
+ * smsGatewayUrl needs to have %RECIPIENT%, %SENDER%, %CONTENT%, %SMSUSER%, %SMSPASSWORD%
  * @author nbartels
  **/
 
 $smsUser = '<%= @node['check_mk']['notifications']['smsUser'] %>';
 $smsPassword = '<%= @node['check_mk']['notifications']['smsPassword'] %>';
+$smsGatewayUrl = '<%= @node['check_mk']['notifications']['smsGatewayUrl'] %>';
 $pagerNumber = getenv('NOTIFY_CONTACTPAGER');
+$sender = 'monitoring';
 
 $hostName = getenv('NOTIFY_HOSTNAME');
 $hostState = getenv('NOTIFY_HOSTSTATE');
@@ -18,7 +21,10 @@ $serviceDesc = getenv('NOTIFY_SERVICEDESC');
 
 $content = $hostName . ': ' . $hostCommand . ' -> ' . $hostState . ' | ' . $serviceCommand . ' (' . $serviceDesc . ') -> ' . $serviceState;
 
-$smsGatewayUrl = 'http://gateway.smskaufen.de/?id='.$smsUser.'&pw='.$smsPassword.'&empfaenger='.urlencode($pagerNumber).'&absender=monitoring&type=4&text='.urlencode($content);
+$smsGatewayUrl = str_replace(
+    array('%RECIPIENT%', '%CONTENT%', '%SENDER%', '%SMSUSER%', '%SMSPASSWORD%'),
+    array(urlencode($pagerNumber), urlencode($content), urlencode($sender), $smsUser, $smsPassword),
+    $smsGatewayUrl);
 
 $ch = curl_init();
 curl_setopt($ch, CURLOPT_URL, $smsGatewayUrl);
