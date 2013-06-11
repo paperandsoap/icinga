@@ -61,6 +61,7 @@ Packages
 
  * xinetd (for check_mk livestatus and agent)
  * ethtool (for check_mk agent, net link speed detection)
+ * php5-curl (for check_mk notification scripts)
 
 Package Sources
 ---------------
