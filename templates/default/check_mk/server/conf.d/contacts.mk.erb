@@ -11,7 +11,7 @@ contacts.update(
       'host_notification_options': 'durfs',
       'notification_method': ('flexible',
                                 [{
-                                    'disabled': False,
+                                    'disabled': <%= @node['check_mk']['notifications']['email']['disabled'] %>,
                                     'host_events': ['d', 'u'],
                                     'parameters': [],
                                     'plugin': None,
@@ -19,7 +19,7 @@ contacts.update(
                                     'timeperiod': '24X7'
                                 },
                                 {
-                                    'disabled': False,
+                                    'disabled': <%= @node['check_mk']['notifications']['sms']['disabled'] %>,
                                     'host_events': ['d', 'u'],
                                     'parameters': [],
                                     'plugin': 'sms.php',

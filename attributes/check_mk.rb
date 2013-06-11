@@ -17,9 +17,11 @@ default['check_mk']['search']['nodes'] = "hostname:[* TO *] AND chef_environment
 
 # Some defaults
 default['check_mk']['wato']['enabled'] = 'False'
-default['check_mk']['notifications']['smsUser'] = 'SMSUSER'
-default['check_mk']['notifications']['smsPassword'] = 'SMSPASSWORD'
-default['check_mk']['notifications']['smsGatewayUrl'] = 'http://gateway.smskaufen.de/?id=%SMSUSER%&pw=%SMSPASSWORD%&empfaenger=%RECIPIENT%&absender=%SENDER%&type=4&text=%CONTENT%'
+default['check_mk']['notifications']['email']['disabled'] = 'False'
+default['check_mk']['notifications']['sms']['disabled'] = 'True'
+default['check_mk']['notifications']['sms']['user'] = 'SMSUSER'
+default['check_mk']['notifications']['sms']['password'] = 'SMSPASSWORD'
+default['check_mk']['notifications']['sms']['gatewayUrl'] = 'http://gateway.smskaufen.de/?id=%SMSUSER%&pw=%SMSPASSWORD%&empfaenger=%RECIPIENT%&absender=%SENDER%&type=4&text=%CONTENT%'
 default['check_mk']['url'] = 'http://mathias-kettner.de/download'
 default['check_mk']['version'] = '1.2.2'
 default['check_mk']['deb']['release'] = '2'

@@ -6,9 +6,9 @@
  * @author nbartels
  **/
 
-$smsUser = '<%= @node['check_mk']['notifications']['smsUser'] %>';
-$smsPassword = '<%= @node['check_mk']['notifications']['smsPassword'] %>';
-$smsGatewayUrl = '<%= @node['check_mk']['notifications']['smsGatewayUrl'] %>';
+$smsUser = '<%= @node['check_mk']['notifications']['sms']['user'] %>';
+$smsPassword = '<%= @node['check_mk']['notifications']['sms']['password'] %>';
+$smsGatewayUrl = '<%= @node['check_mk']['notifications']['sms']['gatewayUrl'] %>';
 $pagerNumber = getenv('NOTIFY_CONTACTPAGER');
 $sender = 'monitoring';
 
