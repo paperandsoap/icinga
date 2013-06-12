@@ -71,19 +71,19 @@ default['check_mk']['legacy']['checks'] = {
     },
     'apache2::mod_ssl' => {
         'name' => 'check-http',
-        'alias' => 'Legcay_HTTPs',
+        'alias' => 'Legacy_HTTPs',
         'perfdata' => 'True',
         'opts' => '-p 443 -S'
     },
     'jetty' => {
         'name' => 'check-http',
-        'alias' => 'Legcay_Jetty',
+        'alias' => 'Legacy_Jetty',
         'perfdata' => 'True',
         'opts' => '-p 8080 -u /status/'
     },
     'memcached' => {
         'name' => 'check-tcp',
-        'alias' => 'Legcay_Memcached',
+        'alias' => 'Legacy_Memcached',
         'perfdata' => 'True',
         'opts' => '-p 11211'
     }
