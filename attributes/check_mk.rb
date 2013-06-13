@@ -86,7 +86,7 @@ default['check_mk']['legacy']['checks'] = {
 default['check_mk']['legacy']['commands'] = {
     'check-http' => {
         'name' => 'check-http',
-        'line' => '$USER1$/check_http -I $HOSTADDRESS$ $ARG1$'
+        'line' => '$USER1$/check_http -H $HOSTADDRESS$ $ARG1$'
     },
     'check-tcp' => {
         'name' => 'check-tcp',
