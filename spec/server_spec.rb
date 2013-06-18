@@ -54,7 +54,7 @@ require 'chefspec'
       runner.node.set['check_mk'] = {
         'legacy'=> {
           'checks' => {
-            'apache2::mod_ssl' => { 'name' => 'check-http', 'opts' => '-p 443 -S', 'alias' => 'Legcay_HTTPs', 'perfdata' => 'True' },
+            'apache2::mod_ssl' => { 'name' => 'check-http', 'opts' => '-p 443 -S', 'alias' => 'Legacy_HTTPs', 'perfdata' => 'True' },
             'apache2' => { 'name' => 'check-http', 'opts' => '-p 80', 'alias' => 'Legacy_HTTP', 'perfdata' => 'True' }
           },
           'commands' => {
