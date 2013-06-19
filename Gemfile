@@ -1,8 +1,8 @@
-source :rubygems
+source 'https://rubygems.org'
 
-gem "berkshelf",  "~>1.1.0"
-gem "chefspec",   "~>0.9.0"
-gem "foodcritic", "~>1.6.1"
+gem "berkshelf"
+gem "chefspec"
+gem "foodcritic"
 gem "rake"
-gem "vagrant",    "~>1.0.5"
-gem "chef",       "< 11.0.0"
+gem "vagrant"
+gem "chef"
