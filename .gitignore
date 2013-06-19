@@ -9,5 +9,12 @@
 Berksfile.lock
 Gemfile.lock
 
+# Librarian
+/tmp/
+Cheffile.lock
+
+# Kitchen
+/.kitchen/
+
 # Vagrant
 .vagrant

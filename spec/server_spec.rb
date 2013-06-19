@@ -54,7 +54,7 @@ require 'chefspec'
       runner.node.set['check_mk'] = {
         'legacy'=> {
           'checks' => {
-            'apache2::mod_ssl' => { 'name' => 'check-http', 'opts' => '-p 443 -S', 'alias' => 'Legcay_HTTPs', 'perfdata' => 'True' },
+            'apache2::mod_ssl' => { 'name' => 'check-http', 'opts' => '-p 443 -S', 'alias' => 'Legacy_HTTPs', 'perfdata' => 'True' },
             'apache2' => { 'name' => 'check-http', 'opts' => '-p 80', 'alias' => 'Legacy_HTTP', 'perfdata' => 'True' }
           },
           'commands' => {
@@ -96,7 +96,6 @@ require 'chefspec'
        /etc/check_mk/multisite.d/wato/users.mk
        /etc/icinga/icinga.cfg
        /etc/xinetd.d/livestatus
-       /var/lib/check_mk/web/icingaadmin/sidebar.mk
        /etc/icinga/htpasswd.users
        /etc/check_mk/conf.d/wato/hosts.mk
        /etc/check_mk/conf.d/hostgroups-localhost.mk
@@ -108,9 +107,9 @@ require 'chefspec'
       end
     end
 
-    it 'should download check_mk source' do
-      chef_run.should create_remote_file "#{Chef::Config[:file_cache_path]}/check_mk-#{chef_run.node['check_mk']['version']}.tar.gz"
-    end
+#    it 'should download check_mk source' do
+#      chef_run.should create_remote_file "#{Chef::Config[:file_cache_path]}/check_mk-#{chef_run.node['check_mk']['version']}.tar.gz"
+#    end
 
     it 'should notify template creation for /root/.check_mk_setup.conf' do
       chef_run.remote_file("#{Chef::Config[:file_cache_path]}/check_mk-#{chef_run.node['check_mk']['version']}.tar.gz").should notify 'template[/root/.check_mk_setup.conf]', 'create'

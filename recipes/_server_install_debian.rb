@@ -28,7 +28,7 @@ if ['debian'].member? node['platform']
 
   # TODO: The install process is a bit messy (hard-coded versions)since debian-backports is not used when finding installation candidates
   # Standard packages required by server
-  %w(xinetd python).each do |pkg|
+  %w(xinetd python php5-curl).each do |pkg|
     package pkg do
       action :install
     end
