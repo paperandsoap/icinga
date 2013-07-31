@@ -34,7 +34,6 @@ end
 
 # Add the setup template to compile check_mk
 template '/root/.check_mk_setup.conf' do
-  action :nothing
   source 'check_mk/server/check_mk_setup.conf.erb'
   owner 'root'
   group 'root'
@@ -44,7 +43,6 @@ template '/root/.check_mk_setup.conf' do
 end
 
 bash 'build_check_mk' do
-  action :nothing
   cwd Chef::Config[:file_cache_path]
   code <<-EOF
     tar -xzf check_mk-#{version}.tar.gz
