@@ -127,14 +127,14 @@ when 'linux'
   end
 
 when 'windows'
+  windows_package "Check_MK Agent #{node['check_mk']['version']}" do
+    source "#{node['check_mk']['url']}/check-mk-agent-#{node['check_mk']['version']}.exe"
+    action :install
+  end
   %w(ad_replication.bat).each do |plugin|
     cookbook_file 'C:\\Program Files (x86)\\check_mk\\plugins\\' + plugin do
       source 'plugins/windows/' + plugin
       mode 0750
     end
-  end
-  windows_package "Check_MK Agent #{node['check_mk']['version']}" do
-    source "#{node['check_mk']['url']}/check-mk-agent-#{node['check_mk']['version']}.exe"
-    action :install
   end
 end
