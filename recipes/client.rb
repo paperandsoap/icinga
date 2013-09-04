@@ -18,6 +18,7 @@
 
 # Install required packages based on platform
 pkgs = value_for_platform_family(
+  'windows' => %w{ },
   'rhel' => %w{ xinetd ethtool },
   'debian' => %w{ xinetd ethtool },
   'default' => %w{ xinetd ethtool }
@@ -28,12 +29,6 @@ pkgs.each do |pkg|
   end
 end
 
-# runs /etc/init.d/xinetd (start|stop|restart), etc.
-service 'xinetd' do
-  supports :status => false, :restart => true, :reload => true
-  action [:enable, :start]
-end
-
 # Platform specific installation path  : Debian
 case node['platform_family']
 when 'debian'
@@ -41,7 +36,7 @@ when 'debian'
   version = node['check_mk']['version'] + '-' + node['check_mk']['deb']['release']
 
   remote_file "/var/cache/apt/archives/check-mk-agent_#{version}_all.deb" do
-    source "http://mathias-kettner.de/download/check-mk-agent_#{version}_all.deb"
+    source "#{node['check_mk']['url']}/check-mk-agent_#{version}_all.deb"
     mode '0644'
     checksum node['check_mk']['agent']['deb']['checksum'] # A SHA256 (or portion thereof) of the file.
     action :create_if_missing
@@ -49,7 +44,7 @@ when 'debian'
   end
 
   remote_file "/var/cache/apt/archives/check-mk-agent-logwatch_#{version}_all.deb" do
-    source "http://mathias-kettner.de/download/check-mk-agent-logwatch_#{version}_all.deb"
+    source "#{node['check_mk']['url']}/check-mk-agent-logwatch_#{version}_all.deb"
     mode '0644'
     checksum node['check_mk']['logwatch']['deb']['checksum'] # A SHA256 (or portion thereof) of the file.
     action :create_if_missing
@@ -101,9 +96,22 @@ when 'rhel'
   end
 end
 
-# Install all client plugins
 case node['os']
 when 'linux'
+  # runs /etc/init.d/xinetd (start|stop|restart), etc.
+  service 'xinetd' do
+    supports :status => false, :restart => true, :reload => true
+    action [:enable, :start]
+  end
+  # Reload xinetd if config changed
+  template '/etc/xinetd.d/check_mk' do
+    source 'check_mk/client/check_mk.erb'
+    owner 'root'
+    group 'root'
+    mode 0640
+    notifies :reload, 'service[xinetd]'
+  end
+
   %w(apache_status mk_jolokia mk_mysql mk_postgres mk_redis).each do |plugin|
     cookbook_file node['check_mk']['setup']['agentslibdir'] + '/plugins/' + plugin do
       source 'plugins/linux/' + plugin
@@ -125,13 +133,8 @@ when 'windows'
       mode 0750
     end
   end
-end
-
-# Reload xinetd if config changed
-template '/etc/xinetd.d/check_mk' do
-  source 'check_mk/client/check_mk.erb'
-  owner 'root'
-  group 'root'
-  mode 0640
-  notifies :reload, 'service[xinetd]'
+  windows_package "Check_MK Agent #{node['check_mk']['version']}" do
+    source "#{node['check_mk']['url']}/check-mk-agent-#{node['check_mk']['version']}.exe"
+    action :install
+  end
 end
