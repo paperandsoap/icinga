@@ -51,7 +51,7 @@ end
 
 # Change some permissions
 %w(/var/lib/icinga/rw /etc/icinga).each do |d|
-  file d do
+  directory d do
     owner node['icinga']['user']
     group node['apache']['user']
     mode '770'

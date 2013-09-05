@@ -26,7 +26,7 @@ file '/etc/check_mk/conf.d/distributed_wato.mk' do
   group node['icinga']['group']
 end
 %w(/etc/check_mk/conf.d /etc/check_mk/conf.d/wato /etc/check_mk/conf.d /etc/check_mk/multisite.d /etc/check_mk/multisite.d/wato).each do |d|
-  file d do
+  directory d do
     owner node['icinga']['user']
     group node['apache']['user']
     mode '770'
