@@ -16,6 +16,20 @@ default['check_mk']['search']['servers'] = 'role:monitoring-server'
 default['check_mk']['search']['nodes'] = "hostname:[* TO *] AND chef_environment:#{node.chef_environment}"
 
 # Some defaults
+default['check_mk']['config']['ignored_services'] = [
+    'ALL_HOSTS, [ "Monitoring" ]',
+    'ALL_HOSTS, [ "NFS mount /var/userhome/.*" ]',
+    'ALL_HOSTS, [ "IPMI Sensor Fan_Fan4" ]',
+    'ALL_HOSTS, [ "IPMI Sensor Fan_Fan5" ]',
+    'ALL_HOSTS, [ "IPMI Sensor Fan_Fan6" ]',
+    'ALL_HOSTS, [ "IPMI Sensor Fan_Fan7/CPU1" ]',
+    'ALL_HOSTS, [ "IPMI Sensor Fan_Fan8/CPU2" ]',
+    '["switch"], ALL_HOSTS, ["Interface\s\d+"]',
+    '["router"], ALL_HOSTS, ["Interface\s\d+"]',
+]
+default['check_mk']['config']['ignored_checks'] = [
+    '[ "mysql_capacity" ], ALL_HOSTS'
+]
 default['check_mk']['wato']['enabled'] = 'False'
 default['check_mk']['notifications']['email']['disabled'] = 'False'
 default['check_mk']['notifications']['sms']['disabled'] = 'False'
