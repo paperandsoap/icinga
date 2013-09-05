@@ -26,7 +26,7 @@ file '/etc/check_mk/conf.d/distributed_wato.mk' do
   group node['icinga']['group']
 end
 %w(/etc/check_mk/conf.d /etc/check_mk/conf.d/wato /etc/check_mk/conf.d /etc/check_mk/multisite.d /etc/check_mk/multisite.d/wato).each do |d|
-  file d do
+  directory d do
     owner node['icinga']['user']
     group node['apache']['user']
     mode '770'
@@ -140,6 +140,19 @@ template '/etc/check_mk/conf.d/global-configuration.mk' do
   group node['icinga']['group']
   mode 0640
   notifies :run, 'execute[reload-check-mk]', :delayed
+end
+
+# Simple configuration
+node['check_mk']['config'].each do |config,data|
+    template '/etc/check_mk/conf.d/'+config+'.mk' do
+      source 'check_mk/server/conf.d/simple-config.mk.erb'
+      owner node['icinga']['user']
+      group node['icinga']['group']
+      mode 0640
+      notifies :run, 'execute[reload-check-mk]', :delayed
+      variables('variable' => config)
+      not_if node['check_mk']['config'].nil?
+    end
 end
 
 # Additional service checks

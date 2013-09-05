@@ -61,6 +61,16 @@ require 'chefspec'
             'check-http' => { 'name' => 'check-http', 'line' => '$USER1$/check_http -I $HOSTADDRESS$ $ARG1$' },
             'check-tcp' => { 'name' => 'check-tcp', 'line' => '$USER1$/check_tcp -H $HOSTADDRESS$ $ARG1$' }
           }
+        },
+        'config' => {
+           'ignored_services' => [
+               'ALL_HOSTS, [ "Monitoring" ]',
+               'ALL_HOSTS, [ "NFS mount .*" ]'
+            ],
+            'ignored_checks' => [
+                '[ "mysql_capacity" ], ALL_HOSTS',
+                '[ "mysql_status" ], ALL_HOSTS'
+            ]
         }
       }
       runner.converge 'icinga::server'
@@ -101,6 +111,8 @@ require 'chefspec'
        /etc/check_mk/conf.d/hostgroups-localhost.mk
        /etc/check_mk/conf.d/global-configuration.mk
        /etc/check_mk/conf.d/legacy-checks.mk
+       /etc/check_mk/conf.d/ignored_services.mk
+       /etc/check_mk/conf.d/ignored_checks.mk
       ).each do |file|
       it "should create file from template #{file}" do
         chef_run.should create_file file
@@ -142,6 +154,22 @@ require 'chefspec'
         '/etc/icinga/htpasswd.users',
         'icingaadmin:plaintext'
       )
+    end
+    
+    it 'should create ignored_services.mk with lines' do
+      ['( ALL_HOSTS, [ "Monitoring" ] ),',
+       '( ALL_HOSTS, [ "NFS mount .*" ] ),'
+      ].each do |content|
+        chef_run.should create_file_with_content('/etc/check_mk/conf.d/ignored_services.mk', content)
+      end
+    end
+    
+    it 'should create ignored_checks.mk with lines' do
+      ['( [ "mysql_capacity" ], ALL_HOSTS ),',
+       '( [ "mysql_status" ], ALL_HOSTS )'
+      ].each do |content|
+        chef_run.should create_file_with_content('/etc/check_mk/conf.d/ignored_checks.mk', content)
+      end
     end
 
     %w(redis).each do |check|

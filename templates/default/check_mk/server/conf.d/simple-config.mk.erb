@@ -1,0 +1,5 @@
+<%= @variable %> += [
+  <% node['check_mk']['config'][@variable].each do |line| %>
+     ( <%= line %> ),
+  <%end %>
+]

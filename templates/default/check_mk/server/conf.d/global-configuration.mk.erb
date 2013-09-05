@@ -28,24 +28,6 @@ check_parameters += [
     ( { "levels" : (95, 98)} , ALL_HOSTS, [ "fs_/boot" ] ),
 ]
 
-# Ignore some services
-ignored_services += [
-    # Disable some monitoring events that are causing false positives
-    ( ALL_HOSTS, [ "Monitoring" ] ),
-    ( ALL_HOSTS, [ 'NFS mount /var/userhome/.*' ] ),
-    # These often deliver false positives
-    ( ALL_HOSTS, [ "IPMI Sensor Fan_Fan4" ] ),
-    ( ALL_HOSTS, [ "IPMI Sensor Fan_Fan5" ] ),
-    ( ALL_HOSTS, [ "IPMI Sensor Fan_Fan6" ] ),
-    ( ALL_HOSTS, [ "IPMI Sensor Fan_Fan7/CPU1" ] ),
-    ( ALL_HOSTS, [ "IPMI Sensor Fan_Fan8/CPU2" ] ),
-    ( ALL_HOSTS, [ "MySQL DB .* Size" ] ),
-
-    # Ignore interfaces on network devices that have no string alias/description set
-    ( ["switch"], ALL_HOSTS, ["Interface\s\d+"]),
-    ( ["router"], ALL_HOSTS, ["Interface\s\d+"]),
-]
-
 # Our SNMP default community for SNMP scans
 snmp_default_community = "phN7RY5s163nE"
 

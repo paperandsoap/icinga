@@ -40,6 +40,12 @@ Vagrant.configure("2") do |config|
     chef.add_recipe "exim4-light"
     chef.log_level = :debug
     chef.json = {
+      "check_mk" => {
+        "config" => {
+          "ignored_services" => [ "ALL_HOSTS, [ \"Monitoring\" ]" ],
+          "ignored_checks" => [ "[ \"mysql_capacity\" ], ALL_HOSTS" ]
+        }
+      },
       "exim4" => { "configtype" => "internet" },
       "lsb" => { "codename" => "squeeze" },
       "pnp4nagios" => { "htpasswd" => { "file" => "/etc/icinga/htpasswd.users" } },
