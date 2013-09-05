@@ -39,6 +39,7 @@ ignored_services += [
     ( ALL_HOSTS, [ "IPMI Sensor Fan_Fan6" ] ),
     ( ALL_HOSTS, [ "IPMI Sensor Fan_Fan7/CPU1" ] ),
     ( ALL_HOSTS, [ "IPMI Sensor Fan_Fan8/CPU2" ] ),
+    ( ALL_HOSTS, [ "MySQL DB .* Size" ] ),
 
     # Ignore interfaces on network devices that have no string alias/description set
     ( ["switch"], ALL_HOSTS, ["Interface\s\d+"]),
