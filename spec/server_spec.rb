@@ -153,7 +153,7 @@ require 'chefspec'
     it 'should create hosts.mk with at least one node' do
       chef_run.should create_file_with_content(
         '/etc/check_mk/conf.d/wato/hosts.mk',
-        '\'localhost|all|squeeze|site:localhost|chefspec|_default|monitoring-server|testing\','
+        '\'localhost|all|squeeze|site:localhost|linux|_default|monitoring-server|testing\','
       )
     end
 
