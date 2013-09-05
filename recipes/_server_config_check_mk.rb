@@ -151,6 +151,7 @@ node['check_mk']['config'].each do |config,data|
       mode 0640
       notifies :run, 'execute[reload-check-mk]', :delayed
       variables('variable' => config)
+      not_if node['check_mk']['config'].nil?
     end
 end
 

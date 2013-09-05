@@ -18,7 +18,7 @@ default['check_mk']['search']['nodes'] = "hostname:[* TO *] AND chef_environment
 # Some defaults
 default['check_mk']['config']['ignored_services'] = [
     'ALL_HOSTS, [ "Monitoring" ]',
-    'ALL_HOSTS, [ "NFS mount /var/userhome/.*" ]',
+    'ALL_HOSTS, [ "NFS mount /var/userhome/*" ]',
     'ALL_HOSTS, [ "IPMI Sensor Fan_Fan4" ]',
     'ALL_HOSTS, [ "IPMI Sensor Fan_Fan5" ]',
     'ALL_HOSTS, [ "IPMI Sensor Fan_Fan6" ]',
