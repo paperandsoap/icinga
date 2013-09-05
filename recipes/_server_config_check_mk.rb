@@ -142,6 +142,19 @@ template '/etc/check_mk/conf.d/global-configuration.mk' do
   notifies :run, 'execute[reload-check-mk]', :delayed
 end
 
+# Simple configuration
+node['check_mk']['config'].each do |config,data|
+    template '/etc/check_mk/conf.d/'+config+'.mk' do
+      source 'check_mk/server/conf.d/simple-config.mk.erb'
+      owner node['icinga']['user']
+      group node['icinga']['group']
+      mode 0640
+      notifies :run, 'execute[reload-check-mk]', :delayed
+      variables('variable' => config)
+      not_if node['check_mk']['config'].nil?
+    end
+end
+
 # Additional service checks
 %w( redis ).each do |check|
   cookbook_file node['check_mk']['setup']['sharedir'] + '/checks/' + check do
