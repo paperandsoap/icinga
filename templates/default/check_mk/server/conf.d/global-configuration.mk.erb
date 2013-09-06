@@ -22,47 +22,6 @@ filesystem_default_levels["levels"] = ( 90, 95 )
 # Ignore ipmi entries with no records
 ipmi_ignore_nr = True
 
-# Adjust some check parameters
-check_parameters += [
-    # /boot is usually pretty small and doesn't change often
-    ( { "levels" : (95, 98)} , ALL_HOSTS, [ "fs_/boot" ] ),
-]
-
 # Our SNMP default community for SNMP scans
 snmp_default_community = "phN7RY5s163nE"
 
-inventory_processes += [
-    # System processes
-    ( "NTPD", "/usr/sbin/ntpd", ANY_USER, 1, 1, 1, 1),
-    ( "SSH", "/usr/sbin/sshd", ANY_USER, 1, 1, 5, 6),
-    ( "rsyslogd", "/usr/sbin/rsyslogd", "syslog", 1, 1, 1, 1),
-    # Services
-    ( "Memcached", "/usr/bin/memcached", "nobody", 1, 1, 1, 1),
-]
-
-inventory_processes_perf += [
-    # Services
-    ( "Apache2", "~.*bin/apache2", "www-data", 2, 3, 50, 50 ),
-    ( "nginx_Master", "~nginx: master process /usr/sbin/nginx", "root", 1, 1, 1, 1),
-    ( "nginx_Worker", "~nginx: worker process", "www-data", 0, 1, 15, 20),
-    ( "Jetty", "~/usr/bin/java.*/opt/jetty/start.jar", "jetty", 1, 1, 1, 1),
-    ( "Jenkins", "~/usr/bin/java.*/usr/share/jenkins/jenkins.war", "jenkins", 0, 1, 15, 30),
-]
-
-
-service_groups += [
-    ( "Filesystems", ALL_HOSTS, [ "fs" ] ),
-    ( "Performance", ALL_HOSTS, [
-        "CPU load",
-        "CPU utilization",
-        "Disk IO SUMMARY",
-        "Interface.*",
-        "Memory used" ] ),
-    ( "Heartbeat", ALL_HOSTS, [ "Heartbeat.*" ] ),
-    ( "MySQL", ALL_HOSTS, [ "MySQL.*" ] ),
-    ( "Apache", ALL_HOSTS, [ "proc_Apache2" ] ),
-    ( "Logfiles", ALL_HOSTS, [ "LOG.*" ] ),
-    ( "IPMI", ALL_HOSTS, [ "IPMI.*" ] ),
-    ( "RAID", ALL_HOSTS, [ "RAID.*", "MD.*" ] ),
-    ( "Processes", ALL_HOSTS, [ "proc_.*" ] ),
-]
