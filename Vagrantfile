@@ -41,9 +41,18 @@ Vagrant.configure("2") do |config|
     chef.log_level = :debug
     chef.json = {
       "check_mk" => {
+        "isMaster" => 'True',
         "config" => {
           "ignored_services" => [ "ALL_HOSTS, [ \"Monitoring\" ]" ],
           "ignored_checks" => [ "[ \"mysql_capacity\" ], ALL_HOSTS" ]
+        },
+        "notifications" => {
+            "email" => {
+                "disabled" => "True"
+            },
+            "sms" => {
+                "disabled" => "True"
+            }
         }
       },
       "exim4" => { "configtype" => "internet" },
