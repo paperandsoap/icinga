@@ -15,6 +15,9 @@
 default['check_mk']['search']['servers'] = 'role:monitoring-server'
 default['check_mk']['search']['nodes'] = "hostname:[* TO *] AND chef_environment:#{node.chef_environment}"
 
+# Master or slave?
+default['check_mk']['isMaster'] = 'False'
+
 # Custom configurations
 default['check_mk']['config'] = nil
 
