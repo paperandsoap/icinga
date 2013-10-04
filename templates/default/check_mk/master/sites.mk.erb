@@ -11,7 +11,7 @@ sites = \
     'disabled': False,
     'insecure': False,
     'multisiteurl': 'http://<%= monitoring_node['fqdn'] %>/check_mk/',
-    'persist': True,
+    'persist': False,
     'repl_priority': 0,
     'timeout': 10,
     'socket': 'tcp:<%= monitoring_node['fqdn'] %>:6557',
