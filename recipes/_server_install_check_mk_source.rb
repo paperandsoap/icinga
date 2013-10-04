@@ -43,18 +43,10 @@ template '/root/.check_mk_setup.conf' do
 end
 
 # We need to write some templates already here as setup.sh falls back if not exists
-# Write the htaccess file for check_mk users
-template node['icinga']['htpasswd']['file'] do
-  source 'icinga/htpasswd.users.erb'
-  owner 'root'
-  group node['apache']['user']
-  mode '660'
-  variables(:users => users)
-end
-
 bash 'build_check_mk' do
   cwd Chef::Config[:file_cache_path]
   code <<-EOF
+    touch #{node['icinga']['htpasswd']['file']}
     tar -xzf check_mk-#{version}.tar.gz
     (cd check_mk-#{version} && ./setup.sh --yes)
     # Add www-data to Nagios group (Better in chef?)
