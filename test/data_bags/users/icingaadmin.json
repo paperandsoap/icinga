@@ -6,5 +6,15 @@
   "enabled" : true,
   "email" : "YOUREMAIL@EXAMPLE.COM",
   "pager" : "YOURPAGERNUMBER",
-  "icinga" : { "contactgroups" : ["all"] }
+  "icinga" : {
+      "contactgroups" : ["all"],
+      "notifications" : {
+          "email"   : {
+              "disabled" : "False"
+          },
+          "sms"     : {
+              "disabled" : "False"
+          }
+      }
+  }
 }

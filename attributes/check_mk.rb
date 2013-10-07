@@ -23,8 +23,7 @@ default['check_mk']['config'] = nil
 
 # Some defaults
 default['check_mk']['wato']['enabled'] = 'False'
-default['check_mk']['notifications']['email']['disabled'] = 'False'
-default['check_mk']['notifications']['sms']['disabled'] = 'False'
+default['check_mk']['notifications']['enabled'] = 'False'
 default['check_mk']['notifications']['sms']['user'] = 'SMSUSER'
 default['check_mk']['notifications']['sms']['password'] = 'SMSPASSWORD'
 default['check_mk']['notifications']['sms']['gatewayUrl'] = 'http://gateway.smskaufen.de/?id=%SMSUSER%&pw=%SMSPASSWORD%&empfaenger=%RECIPIENT%&absender=%SENDER%&type=4&text=%CONTENT%'
