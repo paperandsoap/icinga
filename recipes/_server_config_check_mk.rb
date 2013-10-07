@@ -79,6 +79,8 @@ node['check_mk']['groups'].each do |groupid|
   end
 end
 
+users = users.sort
+
 # Ensure all users run the default sidebar, do not overwrite if it exists already
 users.each do |user|
   directory node['check_mk']['setup']['vardir'] + '/web/' + user['id'] do
@@ -94,15 +96,6 @@ users.each do |user|
     mode 0640
     action :create_if_missing
   end
-end
-
-# Write the htaccess file for check_mk users
-template node['icinga']['htpasswd']['file'] do
-  source 'icinga/htpasswd.users.erb'
-  owner 'root'
-  group node['apache']['user']
-  mode '660'
-  variables(:users => users)
 end
 
 # Create timeperiods, needs to be done before contacts
@@ -143,7 +136,7 @@ template '/etc/check_mk/conf.d/global-configuration.mk' do
 end
 
 # Simple configuration
-node['check_mk']['config'].each do |config,data|
+node['check_mk']['config'].sort.each do |config,data|
     template '/etc/check_mk/conf.d/'+config+'.mk' do
       source 'check_mk/server/conf.d/simple-config.mk.erb'
       owner node['icinga']['user']
