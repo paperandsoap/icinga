@@ -11,7 +11,7 @@ contacts.update(
       'host_notification_options': 'durfs',
       'notification_method': ('flexible',
                                 [{
-                                    'disabled': <%= @node['check_mk']['notifications']['email']['disabled'] %>,
+                                    'disabled': <%= user['icinga']['notifications']['email']['disabled'] %>,
                                     'host_events': ['d', 'u'],
                                     'parameters': [],
                                     'plugin': None,
@@ -19,7 +19,7 @@ contacts.update(
                                     'timeperiod': '24X7'
                                 },
                                 {
-                                    'disabled': <%= @node['check_mk']['notifications']['sms']['disabled'] %>,
+                                    'disabled': <%= user['icinga']['notifications']['sms']['disabled'] %>,
                                     'host_events': ['d', 'u'],
                                     'parameters': [],
                                     'plugin': 'sms.php',
@@ -28,7 +28,7 @@ contacts.update(
                                 }]
                             ),
       'notification_period': '24X7',
-      'notifications_enabled': True,
+      'notifications_enabled': <%= @node['check_mk']['notifications']['enabled'] %>,
       'pager': '<%= user['pager'] %>',
       'service_notification_commands': 'check-mk-notify',
       'service_notification_options': 'wucrfs'},
