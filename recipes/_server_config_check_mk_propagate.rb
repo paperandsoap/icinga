@@ -35,7 +35,6 @@ end
 
 # Search for all roles and environments to create hostgroups to use as check_mk tags
 roles = search(:role, 'name:*');
-roles = roles.sort
 
 if Chef::Config[:solo]
   environments = [ '_default' ]
