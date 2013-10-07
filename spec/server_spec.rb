@@ -149,11 +149,8 @@ require 'chefspec'
       )
     end
 
-    it 'should create htpasswd.users with at least one user' do
-      chef_run.should create_file_with_content(
-        '/etc/icinga/htpasswd.users',
-        'icingaadmin:plaintext'
-      )
+    it 'should create htpasswd.users' do
+      chef_run.should create_file '/etc/icinga/htpasswd.users'
     end
     
     it 'should create ignored_services.mk with lines' do
