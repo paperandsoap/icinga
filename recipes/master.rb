@@ -34,7 +34,7 @@ if ['debian', 'ubuntu'].member? node['platform']
     group 'nagios'
     mode 0640
     variables(
-        :nodes => nodes.sort
+        :nodes => nodes
     )
   end
 end

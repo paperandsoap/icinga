@@ -32,18 +32,15 @@ if nodes.empty?
   nodes = Array.new
   nodes << node
 end
-nodes = nodes.sort
 
 # Search for all roles and environments to create hostgroups to use as check_mk tags
 roles = search(:role, 'name:*');
-roles = roles.sort
 
 if Chef::Config[:solo]
   environments = [ '_default' ]
 else
   environments = search(:environment, 'name:*')
 end
-environments = environments.sort
 
 # Search all nodes for tags and os and add them to check_mk tagging and hostgroups
 tags = Array.new
