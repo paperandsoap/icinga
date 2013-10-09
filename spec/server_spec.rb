@@ -14,7 +14,8 @@ require 'chefspec'
 
 # Required for proper recipe testing by platform
 %w(debian).each do |platform|
-  describe "The icinga::server #{platform} recipe" do
+%w(squeeze wheezy).each do |codename|
+  describe "The icinga::server #{platform} #{codename} recipe" do
     let(:chef_run) {
       # Define some data bag items and searches that are used in the recipe
       Chef::Recipe.any_instance.stub(:data_bag_item).and_return(Hash.new)
@@ -27,7 +28,7 @@ require 'chefspec'
       Chef::Recipe.any_instance.stub(:data_bag_item).with('users', 'icingaadmin').and_return('id' => 'icingaadmin', 'htpasswd' => 'plaintext')
       Chef::Recipe.any_instance.stub(:search).with(:node, 'hostname:[* TO *] AND chef_environment:_default').and_return(
         [ { 'chef_environment' => '_default', 'hostname' => 'localhost', 'roles' => ['monitoring-server'], 'tags' => ['testing'],
-            'os' => 'linux', 'recipes' => ['apache2'], 'lsb' => { 'codename' => 'squeeze' } } ]
+            'os' => 'linux', 'recipes' => ['apache2'], 'lsb' => { 'codename' => codename } } ]
       )
       Chef::Recipe.any_instance.stub(:search).with(:role, 'name:*').and_return(['role[monitoring-server]'])
       Chef::Recipe.any_instance.stub(:search).with(:environment, 'name:*').and_return(['_default'])
@@ -50,7 +51,7 @@ require 'chefspec'
       runner.node.automatic_attrs['chef_environment'] = '_default'
       runner.node.automatic_attrs['platform'] = platform
       runner.node.automatic_attrs['platform_family'] = platform
-      runner.node.automatic_attrs['lsb'] = { 'codename' => 'squeeze' }
+      runner.node.automatic_attrs['lsb'] = { 'codename' => codename }
       runner.node.set['check_mk'] = {
         'legacy'=> {
           'checks' => {
@@ -78,10 +79,14 @@ require 'chefspec'
     }
 
     # Check if all packages required are installed
-    %w(xinetd python icinga icinga-cgi icinga-core).each do |pkg|
+    %w(xinetd python).each do |pkg|
       it "should install #{pkg}" do
         chef_run.should install_package pkg
       end
+    end
+
+    it "should install icinga icinga-core icinga-cgi" do
+        chef_run.should install_package "icinga icinga-core icinga-cgi"
     end
 
     # Check that services used are enabled for bootup and started when installed
@@ -178,7 +183,7 @@ require 'chefspec'
     it 'should create hosts.mk with at least one node' do
       chef_run.should create_file_with_content(
         '/etc/check_mk/conf.d/wato/hosts.mk',
-        '\'localhost|all|squeeze|site:localhost|linux|_default|monitoring-server|testing\','
+        '\'localhost|all|' + codename + '|site:localhost|linux|_default|monitoring-server|testing\','
       )
     end
 
@@ -208,4 +213,5 @@ require 'chefspec'
       chef_run.should execute_command 'check_mk -II ; check_mk -R'
     end
   end
+end
 end
