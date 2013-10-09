@@ -4,8 +4,8 @@ Vagrant.require_plugin "vagrant-berkshelf"
 Vagrant.require_plugin "vagrant-aws"
 
 Vagrant.configure("2") do |config|
-  config.vm.box = "squeeze64"
-  config.vm.box_url = "http://debbuild.bigpoint.net/squeeze64.box"
+  config.vm.box = "wheezy64"
+  config.vm.box_url = "http://debbuild.bigpoint.net/wheezy64.box"
   config.vm.hostname = "icinga-server-01.local"
   config.vm.network :forwarded_port, guest: 80, host: 8080
   config.vm.network :forwarded_port, guest: 8080, host: 8081
@@ -41,7 +41,7 @@ Vagrant.configure("2") do |config|
     chef.log_level = :debug
     chef.json = {
       "check_mk" => {
-        "isMaster" => 'True',
+        "isMaster" => 'False',
         "config" => {
           "ignored_services" => [ "ALL_HOSTS, [ \"Monitoring\" ]" ],
           "ignored_checks" => [ "[ \"mysql_capacity\" ], ALL_HOSTS" ]
@@ -56,7 +56,7 @@ Vagrant.configure("2") do |config|
         }
       },
       "exim4" => { "configtype" => "internet" },
-      "lsb" => { "codename" => "squeeze" },
+      "lsb" => { "codename" => "wheezy" },
       "pnp4nagios" => { "htpasswd" => { "file" => "/etc/icinga/htpasswd.users" } },
       "rrdcached" => { "config" => {
         "options" => "-s nagios -m 0660 -l unix:/var/run/rrdcached/rrdcached.sock -F -w 1800 -z 1800",
