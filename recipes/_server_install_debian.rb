@@ -19,14 +19,14 @@
 
 if ['debian'].member? node['platform']
   # We need the backports repository for up-to-date Icinga version
-  apt_repository node['lsb']['codename'] + '-backports' do
-    uri 'http://backports.debian.org/debian-backports'
-    distribution node['lsb']['codename'] + '-backports'
+  apt_repository 'debmon-' + node['lsb']['codename'] do
+    key 'http://debmon.org/debmon/repo.key'
+    uri 'http://debmon.org/debmon'
+    distribution 'debmon-' + node['lsb']['codename']
     components ['main', 'non-free']
     action :add
   end
-
-  # TODO: The install process is a bit messy (hard-coded versions)since debian-backports is not used when finding installation candidates
+  
   # Standard packages required by server
   %w(xinetd python php5-curl).each do |pkg|
     package pkg do
@@ -34,12 +34,9 @@ if ['debian'].member? node['platform']
     end
   end
 
-  %w(icinga icinga-cgi icinga-core).each do |pkg|
-    package pkg do
-      version node['icinga']['version']
-      action :install
-      options '-t ' + node['lsb']['codename'] + '-backports'
-    end
+  package "icinga icinga-core icinga-cgi" do
+    action :install
+    options '-t ' + 'debmon-' + node['lsb']['codename']
   end
 
   include_recipe 'rrdcached'

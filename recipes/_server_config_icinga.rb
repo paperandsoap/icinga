@@ -36,6 +36,11 @@ end
   end
 end
 
+# symlink /usr/lib/ as /usr/lib64/
+link "/usr/lib64" do
+  to "/usr/lib"
+end
+
 # Needs suid to run as root from by nagios
 file '/usr/lib64/nagios/plugins/check_icmp' do
   mode '4750'

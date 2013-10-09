@@ -11,7 +11,7 @@
 # limitations under the License.
 
 # Icinga settings
-default['icinga']['version'] = '1.7.1-5~bpo60+1'
+default['icinga']['version'] = '1.9.3-2~debmon60+1'
 default['icinga']['user'] = 'nagios'
 default['icinga']['group'] = 'nagios'
 default['icinga']['htpasswd']['file'] = '/etc/icinga/htpasswd.users'
