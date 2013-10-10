@@ -66,13 +66,11 @@ require 'chefspec'
 
     before do
       stub_data_bag_item('groups', 'check-mk-admin').and_return(
-        {
           'id' => 'check-mk-admin',
           '_default' => { 'members' => ['icingaadmin'] }
-        }
       )
       stub_data_bag_item('users', 'icingaadmin').and_return(
-        { 'id' => 'icingaadmin', 'htpasswd' => 'plaintext' }
+        'id' => 'icingaadmin', 'htpasswd' => 'plaintext'
       )
       stub_search('node', 'hostname:[* TO *] AND chef_environment:_default').and_return(
         [{ 'chef_environment' => '_default', 'hostname' => 'Fauxhai',
