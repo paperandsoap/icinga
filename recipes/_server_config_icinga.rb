@@ -37,8 +37,8 @@ end
 end
 
 # symlink /usr/lib/ as /usr/lib64/
-link "/usr/lib64" do
-  to "/usr/lib"
+link 'g/usr/lib64' do
+  to 'g/usr/lib'
 end
 
 # Needs suid to run as root from by nagios

@@ -17,7 +17,7 @@
 # limitations under the License.
 #
 
-include_recipe "icinga::_define_services"
+include_recipe 'icinga::_define_services'
 
 # Change some permissions
 file '/etc/check_mk/conf.d/distributed_wato.mk' do
@@ -33,8 +33,8 @@ end
   end
 end
 
-directory "/var/lib/check_mk/notify" do
-  user "root"
+directory '/var/lib/check_mk/notify' do
+  user 'root'
   group node['icinga']['group']
   mode 0775
 end
@@ -68,7 +68,7 @@ template '/etc/xinetd.d/livestatus' do
   notifies :reload, 'service[xinetd]'
 end
 
-users = Array.new
+users = []
 # get group from databag
 node['check_mk']['groups'].each do |groupid|
   # get the group data bag
@@ -145,16 +145,16 @@ template '/etc/check_mk/conf.d/global-configuration.mk' do
 end
 
 # Simple configuration
-node['check_mk']['config'].sort.each do |config,data|
-    template '/etc/check_mk/conf.d/'+config+'.mk' do
-      source 'check_mk/server/conf.d/simple-config.mk.erb'
-      owner node['icinga']['user']
-      group node['icinga']['group']
-      mode 0640
-      notifies :run, 'execute[reload-check-mk]', :delayed
-      variables('variable' => config)
-      not_if node['check_mk']['config'].nil?
-    end
+node['check_mk']['config'].sort.each do |config, data|
+  template '/etc/check_mk/conf.d/' + config + '.mk' do
+    source 'check_mk/server/conf.d/simple-config.mk.erb'
+    owner node['icinga']['user']
+    group node['icinga']['group']
+    mode 0640
+    notifies :run, 'execute[reload-check-mk]', :delayed
+    variables('variable' => config)
+    not_if node['check_mk']['config'].nil?
+  end
 end
 
 # Additional service checks

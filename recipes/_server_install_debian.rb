@@ -23,10 +23,10 @@ if ['debian'].member? node['platform']
     key 'http://debmon.org/debmon/repo.key'
     uri 'http://debmon.org/debmon'
     distribution 'debmon-' + node['lsb']['codename']
-    components ['main', 'non-free']
+    components %w('main', 'non-free')
     action :add
   end
-  
+
   # Standard packages required by server
   %w(xinetd python php5-curl).each do |pkg|
     package pkg do
@@ -34,7 +34,7 @@ if ['debian'].member? node['platform']
     end
   end
 
-  package "icinga icinga-core icinga-cgi" do
+  package 'icinga icinga-core icinga-cgi' do
     action :install
     options '-t ' + 'debmon-' + node['lsb']['codename']
   end

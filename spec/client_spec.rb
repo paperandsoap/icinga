@@ -14,7 +14,7 @@ require 'chefspec'
 
 %w(debian rhel).each do |platform_family|
   describe "The icinga::client #{platform_family} recipe" do
-    before(:all) {
+    before(:all) do
       @chef_run = ChefSpec::ChefRunner.new
       @chef_run.node.automatic_attrs['platform_family'] = platform_family
       @chef_run.node.automatic_attrs['os'] = 'linux'
@@ -22,7 +22,7 @@ require 'chefspec'
         'setup' => { 'agentslibdir' => '/usr/lib/check_mk_agent' }
       }
       @chef_run.converge 'icinga::client'
-    }
+    end
 
     # Check all packages that are installed
     %w(xinetd ethtool).each do |pkg|
@@ -34,12 +34,12 @@ require 'chefspec'
     # Ensure we notify our package installer after download
     it 'should notify package installation' do
       case platform_family
-        when 'debian'
-          file_agent = "/var/cache/apt/archives/check-mk-agent_#{@chef_run.node['check_mk']['version']}-#{@chef_run.node['check_mk']['deb']['release']}_all.deb"
-          file_logwatch = "/var/cache/apt/archives/check-mk-agent-logwatch_#{@chef_run.node['check_mk']['version']}-#{@chef_run.node['check_mk']['deb']['release']}_all.deb"
-        when 'rhel'
-          file_agent = "#{Chef::Config[:file_cache_path]}/check_mk-agent-#{@chef_run.node['check_mk']['version']}-#{@chef_run.node['check_mk']['rpm']['release']}.noarch.rpm"
-          file_logwatch =  "#{Chef::Config[:file_cache_path]}/check_mk-agent-logwatch-#{@chef_run.node['check_mk']['version']}-#{@chef_run.node['check_mk']['rpm']['release']}.noarch.rpm"
+      when 'debian'
+        file_agent = "/var/cache/apt/archives/check-mk-agent_#{@chef_run.node['check_mk']['version']}-#{@chef_run.node['check_mk']['deb']['release']}_all.deb"
+        file_logwatch = "/var/cache/apt/archives/check-mk-agent-logwatch_#{@chef_run.node['check_mk']['version']}-#{@chef_run.node['check_mk']['deb']['release']}_all.deb"
+      when 'rhel'
+        file_agent = "#{Chef::Config[:file_cache_path]}/check_mk-agent-#{@chef_run.node['check_mk']['version']}-#{@chef_run.node['check_mk']['rpm']['release']}.noarch.rpm"
+        file_logwatch =  "#{Chef::Config[:file_cache_path]}/check_mk-agent-logwatch-#{@chef_run.node['check_mk']['version']}-#{@chef_run.node['check_mk']['rpm']['release']}.noarch.rpm"
       end
       @chef_run.remote_file(file_agent).should notify 'package[check-mk-agent]', 'install'
       @chef_run.remote_file(file_logwatch).should notify 'package[check-mk-agent-logwatch]', 'install'
