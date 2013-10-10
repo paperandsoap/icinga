@@ -1,3 +1,5 @@
+# encoding: utf-8
+#
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
@@ -35,14 +37,23 @@ require 'chefspec'
     it 'should notify package installation' do
       case platform_family
       when 'debian'
-        file_agent = "/var/cache/apt/archives/check-mk-agent_#{@chef_run.node['check_mk']['version']}-#{@chef_run.node['check_mk']['deb']['release']}_all.deb"
-        file_logwatch = "/var/cache/apt/archives/check-mk-agent-logwatch_#{@chef_run.node['check_mk']['version']}-#{@chef_run.node['check_mk']['deb']['release']}_all.deb"
+        file_agent = '/var/cache/apt/archives/check-mk-agent_' +
+          @chef_run.node['check_mk']['version'] +
+          "-#{@chef_run.node['check_mk']['deb']['release']}_all.deb"
+        file_logwatch = '/var/cache/apt/archives/check-mk-agent-logwatch_' +
+          @chef_run.node['check_mk']['version'] +
+          "-#{@chef_run.node['check_mk']['deb']['release']}_all.deb"
       when 'rhel'
-        file_agent = "#{Chef::Config[:file_cache_path]}/check_mk-agent-#{@chef_run.node['check_mk']['version']}-#{@chef_run.node['check_mk']['rpm']['release']}.noarch.rpm"
-        file_logwatch =  "#{Chef::Config[:file_cache_path]}/check_mk-agent-logwatch-#{@chef_run.node['check_mk']['version']}-#{@chef_run.node['check_mk']['rpm']['release']}.noarch.rpm"
+        file_agent = Chef::Config[:file_cache_path] +
+          "/check_mk-agent-#{@chef_run.node['check_mk']['version']}-" +
+          @chef_run.node['check_mk']['rpm']['release'] + '.noarch.rpm'
+        file_logwatch =  Chef::Config[:file_cache_path] +
+          "/check_mk-agent-logwatch-#{@chef_run.node['check_mk']['version']}-" +
+          @chef_run.node['check_mk']['rpm']['release'] + '.noarch.rpm'
       end
       @chef_run.remote_file(file_agent).should notify 'package[check-mk-agent]', 'install'
-      @chef_run.remote_file(file_logwatch).should notify 'package[check-mk-agent-logwatch]', 'install'
+      @chef_run.remote_file(file_logwatch).should notify 'package[check-mk-agent-logwatch]',
+                                                         'install'
     end
 
     # Check that our xinetd service is enabled and running

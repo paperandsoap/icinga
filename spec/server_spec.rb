@@ -1,3 +1,5 @@
+# encoding: utf-8
+#
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
@@ -25,14 +27,25 @@ require 'chefspec'
             '_default' => { 'members' => ['icingaadmin'] }
           }
         )
-        Chef::Recipe.any_instance.stub(:data_bag_item).with('users', 'icingaadmin').and_return('id' => 'icingaadmin', 'htpasswd' => 'plaintext')
-        Chef::Recipe.any_instance.stub(:search).with(:node, 'hostname:[* TO *] AND chef_environment:_default').and_return(
-          [{ 'chef_environment' => '_default', 'hostname' => 'localhost', 'roles' => ['monitoring-server'],
-             'tags' => ['testing'], 'os' => 'linux', 'recipes' => ['apache2'], 'lsb' => { 'codename' => codename }
+        Chef::Recipe.any_instance.stub(:data_bag_item).with(
+          'users', 'icingaadmin'
+        ).and_return(
+          'id' => 'icingaadmin', 'htpasswd' => 'plaintext'
+        )
+        Chef::Recipe.any_instance.stub(:search).with(
+          :node, 'hostname:[* TO *] AND chef_environment:_default'
+        ).and_return(
+          [{ 'chef_environment' => '_default', 'hostname' => 'localhost',
+             'roles' => ['monitoring-server'], 'tags' => ['testing'], 'os' => 'linux',
+             'recipes' => ['apache2'], 'lsb' => { 'codename' => codename }
           }]
         )
-        Chef::Recipe.any_instance.stub(:search).with(:role, 'name:*').and_return(['role[monitoring-server]'])
-        Chef::Recipe.any_instance.stub(:search).with(:environment, 'name:*').and_return(['_default'])
+        Chef::Recipe.any_instance.stub(:search).with(:role, 'name:*').and_return(
+          ['role[monitoring-server]']
+        )
+        Chef::Recipe.any_instance.stub(:search).with(:environment, 'name:*').and_return(
+          ['_default']
+        )
 
         # Create our object
         runner = ChefSpec::ChefRunner.new
@@ -56,12 +69,16 @@ require 'chefspec'
         runner.node.set['check_mk'] = {
           'legacy' => {
             'checks' => {
-              'apache2::mod_ssl' => { 'name' => 'check-http', 'opts' => '-p 443 -S', 'alias' => 'Legacy_HTTPs', 'perfdata' => 'True' },
-              'apache2' => { 'name' => 'check-http', 'opts' => '-p 80', 'alias' => 'Legacy_HTTP', 'perfdata' => 'True' }
+              'apache2::mod_ssl' => { 'name' => 'check-http', 'opts' => '-p 443 -S',
+                                      'alias' => 'Legacy_HTTPs', 'perfdata' => 'True' },
+              'apache2' => { 'name' => 'check-http', 'opts' => '-p 80',
+                             'alias' => 'Legacy_HTTP', 'perfdata' => 'True' }
             },
             'commands' => {
-              'check-http' => { 'name' => 'check-http', 'line' => '$USER1$/check_http -I $HOSTADDRESS$ $ARG1$' },
-              'check-tcp' => { 'name' => 'check-tcp', 'line' => '$USER1$/check_tcp -H $HOSTADDRESS$ $ARG1$' }
+              'check-http' => { 'name' => 'check-http',
+                                'line' => '$USER1$/check_http -I $HOSTADDRESS$ $ARG1$' },
+              'check-tcp' => { 'name' => 'check-tcp',
+                               'line' => '$USER1$/check_tcp -H $HOSTADDRESS$ $ARG1$' }
             }
           },
           'config' => {
@@ -125,16 +142,18 @@ require 'chefspec'
         end
       end
 
-      #    it 'should download check_mk source' do
-      #      chef_run.should create_remote_file "#{Chef::Config[:file_cache_path]}/check_mk-#{chef_run.node['check_mk']['version']}.tar.gz"
-      #    end
-
       it 'should notify template creation for /root/.check_mk_setup.conf' do
-        chef_run.remote_file("#{Chef::Config[:file_cache_path]}/check_mk-#{chef_run.node['check_mk']['version']}.tar.gz").should notify 'template[/root/.check_mk_setup.conf]', 'create'
+        chef_run.remote_file(
+          "#{Chef::Config[:file_cache_path]}" +
+          "/check_mk-#{chef_run.node['check_mk']['version']}.tar.gz"
+        ).should notify 'template[/root/.check_mk_setup.conf]', 'create'
       end
 
       it 'should notify source compile script' do
-        chef_run.remote_file("#{Chef::Config[:file_cache_path]}/check_mk-#{chef_run.node['check_mk']['version']}.tar.gz").should notify 'bash[build_check_mk]', 'run'
+        chef_run.remote_file(
+          "#{Chef::Config[:file_cache_path]}" +
+          "/check_mk-#{chef_run.node['check_mk']['version']}.tar.gz"
+        ).should notify 'bash[build_check_mk]', 'run'
       end
 
       it 'should create hostgroups-localhost.mk with four hostgroups' do
@@ -144,7 +163,9 @@ require 'chefspec'
          '( \'tag: testing\', [ \'testing\' ], ALL_HOSTS ),',
          '( \'os: linux\', [ \'linux\' ], ALL_HOSTS ),'
         ].each do |content|
-          chef_run.should create_file_with_content('/etc/check_mk/conf.d/hostgroups-localhost.mk', content)
+          chef_run.should create_file_with_content(
+            '/etc/check_mk/conf.d/hostgroups-localhost.mk', content
+          )
         end
       end
 
@@ -163,7 +184,9 @@ require 'chefspec'
         ['( ALL_HOSTS, [ "Monitoring" ] ),',
          '( ALL_HOSTS, [ "NFS mount .*" ] ),'
         ].each do |content|
-          chef_run.should create_file_with_content('/etc/check_mk/conf.d/ignored_services.mk', content)
+          chef_run.should create_file_with_content(
+            '/etc/check_mk/conf.d/ignored_services.mk', content
+          )
         end
       end
 
@@ -171,7 +194,9 @@ require 'chefspec'
         ['( [ "mysql_capacity" ], ALL_HOSTS ),',
          '( [ "mysql_status" ], ALL_HOSTS )'
         ].each do |content|
-          chef_run.should create_file_with_content('/etc/check_mk/conf.d/ignored_checks.mk', content)
+          chef_run.should create_file_with_content(
+            '/etc/check_mk/conf.d/ignored_checks.mk', content
+          )
         end
       end
 
@@ -184,7 +209,8 @@ require 'chefspec'
       it 'should create hosts.mk with at least one node' do
         chef_run.should create_file_with_content(
           '/etc/check_mk/conf.d/wato/hosts.mk',
-          '\'localhost|all|' + codename + '|site:localhost|linux|_default|monitoring-server|testing\','
+          '\'localhost|all|' + codename +
+          '|site:localhost|linux|_default|monitoring-server|testing\','
         )
       end
 

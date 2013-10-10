@@ -1,3 +1,4 @@
+# encoding: utf-8
 # Cookbook Name:: icinga
 # Recipe:: client
 #
@@ -33,12 +34,13 @@ end
 case node['platform_family']
 when 'debian'
   # Create our version string to fetch the appropriate file
-  version = node['check_mk']['version'] + '-' + node['check_mk']['deb']['release']
+  version = node['check_mk']['version'] + '-' +
+    node['check_mk']['deb']['release']
 
   remote_file "/var/cache/apt/archives/check-mk-agent_#{version}_all.deb" do
     source "#{node['check_mk']['url']}/check-mk-agent_#{version}_all.deb"
     mode '0644'
-    checksum node['check_mk']['agent']['deb']['checksum'] # A SHA256 (or portion thereof) of the file.
+    checksum node['check_mk']['agent']['deb']['checksum']
     action :create_if_missing
     notifies :install, 'package[check-mk-agent]', :immediately
   end
@@ -46,7 +48,7 @@ when 'debian'
   remote_file "/var/cache/apt/archives/check-mk-agent-logwatch_#{version}_all.deb" do
     source "#{node['check_mk']['url']}/check-mk-agent-logwatch_#{version}_all.deb"
     mode '0644'
-    checksum node['check_mk']['logwatch']['deb']['checksum'] # A SHA256 (or portion thereof) of the file.
+    checksum node['check_mk']['logwatch']['deb']['checksum']
     action :create_if_missing
     notifies :install, 'package[check-mk-agent-logwatch]', :immediately
   end
@@ -70,7 +72,7 @@ when 'rhel'
   remote_file "#{Chef::Config[:file_cache_path]}/check_mk-agent-#{version}.noarch.rpm" do
     source "#{node['check_mk']['url']}/check_mk-agent-#{version}.noarch.rpm"
     mode '0644'
-    checksum node['check_mk']['agent']['rpm']['checksum'] # A SHA256 (or portion thereof) of the file.
+    checksum node['check_mk']['agent']['rpm']['checksum']
     action :create_if_missing
     notifies :install, 'package[check-mk-agent]', :immediately
   end
@@ -78,7 +80,7 @@ when 'rhel'
   remote_file "#{Chef::Config[:file_cache_path]}/check_mk-agent-logwatch-#{version}.noarch.rpm" do
     source "#{node['check_mk']['url']}/check_mk-agent-logwatch-#{version}.noarch.rpm"
     mode '0644'
-    checksum node['check_mk']['logwatch']['rpm']['checksum'] # A SHA256 (or portion thereof) of the file.
+    checksum node['check_mk']['logwatch']['rpm']['checksum']
     action :create_if_missing
     notifies :install, 'package[check-mk-agent-logwatch]', :immediately
   end
@@ -100,7 +102,7 @@ case node['os']
 when 'linux'
   # runs /etc/init.d/xinetd (start|stop|restart), etc.
   service 'xinetd' do
-    supports :status => false, :restart => true, :reload => true
+    supports status => false, restart => true, reload => true
     action [:enable, :start]
   end
   # Reload xinetd if config changed

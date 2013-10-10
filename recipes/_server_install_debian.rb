@@ -1,3 +1,4 @@
+# encoding: utf-8
 #
 # Cookbook Name:: icinga
 # Recipe:: _server_install_debian
@@ -45,7 +46,7 @@ if ['debian'].member? node['platform']
   # Define all services
   %w(icinga xinetd).each do |svc|
     service svc do
-      supports :status => true, :restart => true, :reload => true
+      supports status => true, restart => true, reload => true
       action [:enable, :start]
     end
   end

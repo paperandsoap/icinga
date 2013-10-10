@@ -1,3 +1,4 @@
+# encoding: utf-8
 #
 # Cookbook Name:: icinga
 # Recipe:: _server_config_chec_mk_propagate
@@ -60,7 +61,7 @@ template '/etc/check_mk/conf.d/legacy-checks.mk' do
   group node['icinga']['group']
   mode 0640
   variables(
-      :nodes => nodes
+      nodes => nodes
   )
   notifies :run, 'execute[reload-check-mk]', :delayed
 end
@@ -72,7 +73,7 @@ template '/etc/check_mk/conf.d/wato/hosts.mk' do
   group node['icinga']['group']
   mode 0640
   variables(
-      :nodes => nodes
+      nodes => nodes
   )
   notifies :run, 'execute[reload-check-mk]', :delayed
 end
@@ -84,10 +85,10 @@ template "/etc/check_mk/conf.d/hostgroups-#{node['hostname']}.mk" do
   group node['icinga']['group']
   mode 0640
   variables(
-      :roles => roles,
-      :environments => environments,
-      :tags => tags,
-      :os_list => os_list
+      roles => roles,
+      environments => environments,
+      tags => tags,
+      os_list => os_list
   )
   notifies :run, 'execute[reload-check-mk]', :delayed
 end

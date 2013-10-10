@@ -1,3 +1,4 @@
+# encoding: utf-8
 # Cookbook Name:: icinga
 # Recipe:: master
 #
@@ -33,8 +34,6 @@ if %w('debian', 'ubuntu').member? node['platform']
     owner 'nagios'
     group 'nagios'
     mode 0640
-    variables(
-        :nodes => nodes
-    )
+    variables(nodes => nodes)
   end
 end
