@@ -14,12 +14,10 @@
 #
 require 'chefspec'
 
-%w(debian rhel).each do |platform_family|
-  describe "The icinga::client #{platform_family} recipe" do
-    before(:all) do
-      @chef_run = ChefSpec::ChefRunner.new
-      @chef_run.node.automatic_attrs['platform_family'] = platform_family
-      @chef_run.node.automatic_attrs['os'] = 'linux'
+{ 'debian' => '7.1', 'centos' => '6.4' }.each do |platform, version|
+  describe "The icinga::client #{platform} recipe" do
+    before do
+      @chef_run = ChefSpec::Runner.new(platform: platform, version: version)
       @chef_run.node.set['check_mk'] = {
         'setup' => { 'agentslibdir' => '/usr/lib/check_mk_agent' }
       }
@@ -29,13 +27,13 @@ require 'chefspec'
     # Check all packages that are installed
     %w(xinetd ethtool).each do |pkg|
       it "should install #{pkg}" do
-        @chef_run.should install_package pkg
+        expect(@chef_run).to install_package pkg
       end
     end
 
     # Ensure we notify our package installer after download
     it 'should notify package installation' do
-      case platform_family
+      case platform
       when 'debian'
         file_agent = '/var/cache/apt/archives/check-mk-agent_' +
           @chef_run.node['check_mk']['version'] +
@@ -43,7 +41,7 @@ require 'chefspec'
         file_logwatch = '/var/cache/apt/archives/check-mk-agent-logwatch_' +
           @chef_run.node['check_mk']['version'] +
           "-#{@chef_run.node['check_mk']['deb']['release']}_all.deb"
-      when 'rhel'
+      when 'centos'
         file_agent = Chef::Config[:file_cache_path] +
           "/check_mk-agent-#{@chef_run.node['check_mk']['version']}-" +
           @chef_run.node['check_mk']['rpm']['release'] + '.noarch.rpm'
@@ -51,21 +49,23 @@ require 'chefspec'
           "/check_mk-agent-logwatch-#{@chef_run.node['check_mk']['version']}-" +
           @chef_run.node['check_mk']['rpm']['release'] + '.noarch.rpm'
       end
-      @chef_run.remote_file(file_agent).should notify 'package[check-mk-agent]', 'install'
-      @chef_run.remote_file(file_logwatch).should notify 'package[check-mk-agent-logwatch]',
-                                                         'install'
+
+      expect(@chef_run.remote_file(file_agent)).to notify('package[check-mk-agent]').to(:install)
+      expect(@chef_run.remote_file(file_logwatch)).to notify(
+        'package[check-mk-agent-logwatch]'
+      ).to(:install)
     end
 
     # Check that our xinetd service is enabled and running
     it 'should start xinetd and enabled it boot' do
-      @chef_run.should set_service_to_start_on_boot 'xinetd'
-      @chef_run.should start_service 'xinetd'
+      expect(@chef_run).to enable_service('xinetd')
+      expect(@chef_run).to start_service 'xinetd'
     end
 
     # Check all templated files were created
     %w(/etc/xinetd.d/check_mk).each do |file|
       it "should create file from template #{file}" do
-        @chef_run.should create_file file
+        expect(@chef_run).to render_file file
       end
     end
 
@@ -77,7 +77,7 @@ require 'chefspec'
        /usr/lib/check_mk_agent/plugins/mk_redis
     ).each do |file|
       it "should copy file #{file}" do
-        @chef_run.should create_cookbook_file file
+        expect(@chef_run).to render_file file
       end
     end
   end
