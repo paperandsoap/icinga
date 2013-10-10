@@ -24,7 +24,7 @@ if ['debian'].member? node['platform']
     key 'http://debmon.org/debmon/repo.key'
     uri 'http://debmon.org/debmon'
     distribution 'debmon-' + node['lsb']['codename']
-    components %w('main', 'non-free')
+    components %w(main non-free)
     action :add
   end
 
@@ -46,7 +46,7 @@ if ['debian'].member? node['platform']
   # Define all services
   %w(icinga xinetd).each do |svc|
     service svc do
-      supports status => true, restart => true, reload => true
+      supports 'status' => true, 'restart' => true, 'reload' => true
       action [:enable, :start]
     end
   end

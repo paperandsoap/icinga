@@ -102,7 +102,7 @@ case node['os']
 when 'linux'
   # runs /etc/init.d/xinetd (start|stop|restart), etc.
   service 'xinetd' do
-    supports status => false, restart => true, reload => true
+    supports 'status' => false, 'restart' => true, 'reload' => true
     action [:enable, :start]
   end
   # Reload xinetd if config changed

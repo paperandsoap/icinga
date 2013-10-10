@@ -43,8 +43,8 @@ task :chefspec => :setup_cookbooks do
 end
 
 desc 'Run Rubocop'
-task :rubocop => :setup_cookbooks do
-  sh 'rubocop', File.join(COOKBOOKS_PATH, COOKBOOK_NAME)
+task :rubocop do
+  sh 'rubocop', '-fs'
 end
 
 desc 'Run Kitchen'

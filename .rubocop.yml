@@ -5,6 +5,8 @@ AllCops:
     - attributes/**
     - Cheffile
     - Berksfile
+    - metadata.rb
+    - cookbooks/**
 
 LineLength:
   Max: 100
