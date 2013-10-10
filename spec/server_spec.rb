@@ -24,7 +24,7 @@ require 'chefspec'
       )
       env = Chef::Environment.new
       env.name '_default'
-      runner.node.stub(:chef_environment).and_return env.name
+      runner.node.stub(:chef_environment).and_return(env.name)
       runner.stub(:chef_environment).and_return(env.name)
       Chef::Environment.stub(:load).and_return env
 
@@ -110,23 +110,39 @@ require 'chefspec'
     end
 
     # Check all templated files were created
-    %w(/etc/check_mk/multisite.mk
-       /etc/check_mk/multisite.d/business-intelligence.mk
-       /etc/check_mk/multisite.d/wato-configuration.mk
-       /etc/check_mk/multisite.d/wato/users.mk
-       /etc/icinga/icinga.cfg
-       /etc/xinetd.d/livestatus
-       /etc/icinga/htpasswd.users
-       /etc/check_mk/conf.d/wato/hosts.mk
-       /etc/check_mk/conf.d/hostgroups-Fauxhai.mk
-       /etc/check_mk/conf.d/global-configuration.mk
-       /etc/check_mk/conf.d/legacy-checks.mk
-       /etc/check_mk/conf.d/ignored_services.mk
-       /etc/check_mk/conf.d/ignored_checks.mk
-       /etc/check_mk/multisite.d/wato/users.mk
-    ).each do |file|
-      it "should create file from template #{file}" do
-        expect(chef_run).to render_file file
+    { '/etc/check_mk/multisite.mk' => ['Confguration for Check_MK Multisite'],
+      '/etc/check_mk/multisite.d/business-intelligence.mk' => ['CPU Usage', 'Interfaces'],
+      '/etc/check_mk/multisite.d/wato-configuration.mk' => ['wato_enabled = False'],
+      '/etc/check_mk/multisite.d/wato/users.mk' => ['icingaadmin', '\'locked\': True'],
+      '/etc/icinga/icinga.cfg' => [
+        'broker_module=/usr/lib/check_mk/livestatus.o /var/lib/icinga/rw/live'
+      ],
+      '/etc/xinetd.d/livestatus' => ['disable.*no'],
+      '/etc/icinga/htpasswd.users' => [],
+      '/etc/check_mk/conf.d/wato/hosts.mk' => [],
+      '/etc/check_mk/conf.d/hostgroups-Fauxhai.mk' => [
+        'role: monitoring-server', 'environment: _default', 'tag: testing', 'os: linux'
+      ],
+      '/etc/check_mk/conf.d/global-configuration.mk' => [
+        'if_inventory_uses_alias = True', 'if_inventory_monitor_speed = True',
+        'ipmi_ignore_nr = True', 'filesystem_default_levels\["levels"\] = \( 90, 95 \)'
+      ],
+      '/etc/check_mk/conf.d/legacy-checks.mk' => ['command_name    check-http',
+                                                  'command_name    check-tcp'],
+      '/etc/check_mk/conf.d/ignored_services.mk' => ['Monitoring'],
+      '/etc/check_mk/conf.d/ignored_checks.mk' => ['mysql_capacity'],
+      '/etc/check_mk/multisite.d/wato/users.mk' => ['icingaadmin', '\'locked\': True']
+    }.each do |file, content|
+      if content.any?
+        it "should create file from template #{file} with content" do
+          content.each do |string|
+            expect(chef_run).to render_file(file).with_content(/#{string}/)
+          end
+        end
+      else
+        it "should create file from template #{file}" do
+          expect(chef_run).to render_file(file)
+        end
       end
     end
 

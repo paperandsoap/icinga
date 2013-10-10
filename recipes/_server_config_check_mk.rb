@@ -26,7 +26,7 @@ file '/etc/check_mk/conf.d/distributed_wato.mk' do
   owner node['apache']['user']
   group node['icinga']['group']
 end
-%w(/etc/check_mk/conf.d /etc/check_mk/conf.d/wato /etc/check_mk/conf.d
+%w(/etc/check_mk/conf.d /etc/check_mk/conf.d/wato
    /etc/check_mk/multisite.d /etc/check_mk/multisite.d/wato
 ).each do |d|
   directory d do
@@ -107,7 +107,7 @@ template node['icinga']['htpasswd']['file'] do
   owner 'root'
   group node['apache']['user']
   mode '660'
-  variables(users => users)
+  variables('users' => users)
 end
 
 # Create timeperiods, needs to be done before contacts
@@ -125,7 +125,7 @@ template '/etc/check_mk/conf.d/wato/contacts.mk' do
   owner 'root'
   group node['apache']['group']
   mode '664'
-  variables(users => users)
+  variables('users' => users)
   notifies :run, 'execute[restart-check-mk]', :delayed
 end
 
@@ -135,7 +135,7 @@ template '/etc/check_mk/multisite.d/wato/users.mk' do
   owner 'root'
   group node['apache']['group']
   mode '664'
-  variables(users => users)
+  variables('users' => users)
 end
 
 # Global configuration settings
