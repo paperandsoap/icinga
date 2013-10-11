@@ -1,4 +1,5 @@
 require 'chef/cookbook/metadata'
+require 'ci/reporter/rake/rspec'
 
 def cookbook_metadata
   metadata = Chef::Cookbook::Metadata.new
@@ -37,7 +38,7 @@ task :foodcritic => :setup_cookbooks do
 end
 
 desc 'Run ChefSpec examples'
-task :chefspec => :setup_cookbooks do
+task :chefspec => [:setup_cookbooks, 'ci:setup:rspec'] do
   sh 'rspec', '--color', '--format', 'documentation',
     File.join(COOKBOOKS_PATH, COOKBOOK_NAME, 'spec')
 end
@@ -60,7 +61,6 @@ task :default => :test
 
 # aliases
 task :lint => :foodcritic
-task :spec => :chefspec
 
 # Cleanup testing cookbooks
 at_exit { rm_rf COOKBOOKS_PATH }
