@@ -1,3 +1,4 @@
+# encoding: utf-8
 #
 # Cookbook Name:: icinga
 # Recipe:: _server_config
@@ -20,5 +21,5 @@
 include_recipe 'icinga::_server_config_icinga'
 include_recipe 'icinga::_server_config_check_mk'
 if node['check_mk']['isMaster'] == 'False'
-    include_recipe 'icinga::_server_config_check_mk_propagate'
+  include_recipe 'icinga::_server_config_check_mk_propagate'
 end

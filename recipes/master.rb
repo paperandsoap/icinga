@@ -1,3 +1,4 @@
+# encoding: utf-8
 # Cookbook Name:: icinga
 # Recipe:: master
 #
@@ -19,12 +20,12 @@
 include_recipe 'icinga::server'
 include_recipe 'icinga::client'
 
-if ['debian', 'ubuntu'].member? node['platform']
+if %w('debian', 'ubuntu').member? node['platform']
 
   if Chef::Config[:solo]
-    nodes = search(:node, 'role:monitoring-server');
+    nodes = search(:node, 'role:monitoring-server')
   else
-    nodes = search(:node, 'role:monitoring-server');
+    nodes = search(:node, 'role:monitoring-server')
   end
 
   # Multisite Configuration
@@ -33,8 +34,6 @@ if ['debian', 'ubuntu'].member? node['platform']
     owner 'nagios'
     group 'nagios'
     mode 0640
-    variables(
-        :nodes => nodes
-    )
+    variables(nodes => nodes)
   end
 end

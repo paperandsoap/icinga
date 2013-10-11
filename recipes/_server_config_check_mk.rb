@@ -1,3 +1,4 @@
+# encoding: utf-8
 #
 # Cookbook Name:: icinga
 # Recipe:: _server_config_check_mk
@@ -17,7 +18,7 @@
 # limitations under the License.
 #
 
-include_recipe "icinga::_define_services"
+include_recipe 'icinga::_define_services'
 
 # Change some permissions
 file '/etc/check_mk/conf.d/distributed_wato.mk' do
@@ -25,7 +26,9 @@ file '/etc/check_mk/conf.d/distributed_wato.mk' do
   owner node['apache']['user']
   group node['icinga']['group']
 end
-%w(/etc/check_mk/conf.d /etc/check_mk/conf.d/wato /etc/check_mk/conf.d /etc/check_mk/multisite.d /etc/check_mk/multisite.d/wato).each do |d|
+%w(/etc/check_mk/conf.d /etc/check_mk/conf.d/wato
+   /etc/check_mk/multisite.d /etc/check_mk/multisite.d/wato
+).each do |d|
   directory d do
     owner node['icinga']['user']
     group node['apache']['user']
@@ -33,8 +36,8 @@ end
   end
 end
 
-directory "/var/lib/check_mk/notify" do
-  user "root"
+directory '/var/lib/check_mk/notify' do
+  user 'root'
   group node['icinga']['group']
   mode 0775
 end
@@ -68,7 +71,7 @@ template '/etc/xinetd.d/livestatus' do
   notifies :reload, 'service[xinetd]'
 end
 
-users = Array.new
+users = []
 # get group from databag
 node['check_mk']['groups'].each do |groupid|
   # get the group data bag
@@ -104,7 +107,7 @@ template node['icinga']['htpasswd']['file'] do
   owner 'root'
   group node['apache']['user']
   mode '660'
-  variables(:users => users)
+  variables('users' => users)
 end
 
 # Create timeperiods, needs to be done before contacts
@@ -122,7 +125,7 @@ template '/etc/check_mk/conf.d/wato/contacts.mk' do
   owner 'root'
   group node['apache']['group']
   mode '664'
-  variables(:users => users)
+  variables('users' => users)
   notifies :run, 'execute[restart-check-mk]', :delayed
 end
 
@@ -132,7 +135,7 @@ template '/etc/check_mk/multisite.d/wato/users.mk' do
   owner 'root'
   group node['apache']['group']
   mode '664'
-  variables(:users => users)
+  variables('users' => users)
 end
 
 # Global configuration settings
@@ -145,16 +148,16 @@ template '/etc/check_mk/conf.d/global-configuration.mk' do
 end
 
 # Simple configuration
-node['check_mk']['config'].sort.each do |config,data|
-    template '/etc/check_mk/conf.d/'+config+'.mk' do
-      source 'check_mk/server/conf.d/simple-config.mk.erb'
-      owner node['icinga']['user']
-      group node['icinga']['group']
-      mode 0640
-      notifies :run, 'execute[reload-check-mk]', :delayed
-      variables('variable' => config)
-      not_if node['check_mk']['config'].nil?
-    end
+node['check_mk']['config'].sort.each do |config, data|
+  template '/etc/check_mk/conf.d/' + config + '.mk' do
+    source 'check_mk/server/conf.d/simple-config.mk.erb'
+    owner node['icinga']['user']
+    group node['icinga']['group']
+    mode 0640
+    notifies :run, 'execute[reload-check-mk]', :delayed
+    variables('variable' => config)
+    not_if node['check_mk']['config'].nil?
+  end
 end
 
 # Additional service checks

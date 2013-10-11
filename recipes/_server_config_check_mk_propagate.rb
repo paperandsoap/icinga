@@ -1,3 +1,4 @@
+# encoding: utf-8
 #
 # Cookbook Name:: icinga
 # Recipe:: _server_config_chec_mk_propagate
@@ -16,8 +17,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-
-include_recipe "icinga::_define_services"
+include_recipe 'icinga::_define_services'
 
 if Chef::Config[:solo]
   # Find nodes in our environment
@@ -29,22 +29,22 @@ end
 # If no nodes are found only add ourselves
 if nodes.empty?
   Chef::Log.info('Not able to find any nodes in this environment.')
-  nodes = Array.new
+  nodes = []
   nodes << node
 end
 
 # Search for all roles and environments to create hostgroups to use as check_mk tags
-roles = search(:role, 'name:*');
+roles = search(:role, 'name:*')
 
 if Chef::Config[:solo]
-  environments = [ '_default' ]
+  environments = ['_default']
 else
   environments = search(:environment, 'name:*')
 end
 
 # Search all nodes for tags and os and add them to check_mk tagging and hostgroups
-tags = Array.new
-os_list = Array.new
+tags = []
+os_list = []
 nodes.each do |client_node|
   client_node['tags'].each do |tag|
     tags.push(tag)
@@ -60,21 +60,17 @@ template '/etc/check_mk/conf.d/legacy-checks.mk' do
   owner node['icinga']['user']
   group node['icinga']['group']
   mode 0640
-  variables(
-      :nodes => nodes
-  )
+  variables('nodes' => nodes)
   notifies :run, 'execute[reload-check-mk]', :delayed
 end
 
 # Add all found nodes to this server
-template "/etc/check_mk/conf.d/wato/hosts.mk" do
+template '/etc/check_mk/conf.d/wato/hosts.mk' do
   source 'check_mk/server/conf.d/monitoring-nodes.mk.erb'
   owner node['icinga']['user']
   group node['icinga']['group']
   mode 0640
-  variables(
-      :nodes => nodes
-  )
+  variables('nodes' => nodes)
   notifies :run, 'execute[reload-check-mk]', :delayed
 end
 
@@ -85,27 +81,25 @@ template "/etc/check_mk/conf.d/hostgroups-#{node['hostname']}.mk" do
   group node['icinga']['group']
   mode 0640
   variables(
-      :roles => roles,
-      :environments => environments,
-      :tags => tags,
-      :os_list => os_list
+      'roles' => roles,
+      'environments' => environments,
+      'tags' => tags,
+      'os_list' => os_list
   )
   notifies :run, 'execute[reload-check-mk]', :delayed
 end
 
-template "/etc/check_mk/conf.d/wato/rules.mk" do 
+template '/etc/check_mk/conf.d/wato/rules.mk' do
   source 'check_mk/server/conf.d/rules.mk.erb'
   owner node['icinga']['user']
   group node['icinga']['group']
   mode 0640
-  variables()
   notifies :run, 'execute[restart-check-mk]', :delayed
 end
 
-template "/usr/share/check_mk/notifications/sms.php" do
+template '/usr/share/check_mk/notifications/sms.php' do
   source 'check_mk/server/notifications/sms.php.erb'
   owner node['icinga']['user']
   group node['icinga']['group']
   mode 0770
-  variables()
 end

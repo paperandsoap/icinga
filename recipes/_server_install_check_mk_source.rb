@@ -1,3 +1,4 @@
+# encoding: utf-8
 #
 # Cookbook Name:: icinga
 # Recipe:: _server_install_check_mk_source
@@ -26,7 +27,7 @@ version = node['check_mk']['version']
 remote_file "#{Chef::Config[:file_cache_path]}/check_mk-#{version}.tar.gz" do
   source "#{node["check_mk"]["url"]}/check_mk-#{version}.tar.gz"
   mode '0644'
-  checksum node['check_mk']['source']['tar']['checksum'] # A SHA256 (or portion thereof) of the file.
+  checksum node['check_mk']['source']['tar']['checksum']
   action :create_if_missing
   notifies :create, 'template[/root/.check_mk_setup.conf]', :immediately
   notifies :run, 'bash[build_check_mk]', :immediately

@@ -1,3 +1,4 @@
+# encoding: utf-8
 #
 # Cookbook Name:: icinga
 # Recipe:: _server_config_icinga
@@ -37,8 +38,8 @@ end
 end
 
 # symlink /usr/lib/ as /usr/lib64/
-link "/usr/lib64" do
-  to "/usr/lib"
+link '/usr/lib64' do
+  to '/usr/lib'
 end
 
 # Needs suid to run as root from by nagios
