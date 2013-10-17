@@ -154,7 +154,7 @@ node['check_mk']['config'].sort.each do |config, data|
     owner node['icinga']['user']
     group node['icinga']['group']
     mode 0640
-    notifies :run, 'execute[reload-check-mk]', :delayed
+    notifies :run, 'execute[restart-check-mk]', :delayed
     variables('variable' => config)
     not_if node['check_mk']['config'].nil?
   end
