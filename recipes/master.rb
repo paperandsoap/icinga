@@ -20,7 +20,7 @@
 include_recipe 'icinga::server'
 include_recipe 'icinga::client'
 
-if %w('debian', 'ubuntu').member? node['platform']
+if %w{ debian ubuntu }.member? node['platform']
 
   if Chef::Config[:solo]
     nodes = search(:node, 'role:monitoring-server')
@@ -34,6 +34,6 @@ if %w('debian', 'ubuntu').member? node['platform']
     owner 'nagios'
     group 'nagios'
     mode 0640
-    variables(nodes => nodes)
+    variables(nodes: nodes)
   end
 end
