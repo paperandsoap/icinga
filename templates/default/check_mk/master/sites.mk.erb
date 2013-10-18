@@ -7,7 +7,7 @@ sites = \
 <% @nodes.each do |monitoring_node| -%>
     '<%= monitoring_node['fqdn'] %>':
     {
-    'alias': u'<%= monitoring_node['hostname'] %>',
+    'alias': u'<%= monitoring_node.chef_environment %>',
     'disabled': False,
     'insecure': False,
     'multisiteurl': 'http://<%= monitoring_node['fqdn'] %>/check_mk/',
