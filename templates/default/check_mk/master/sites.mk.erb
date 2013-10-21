@@ -14,7 +14,8 @@ sites = \
     'persist': False,
     'repl_priority': 0,
     'timeout': 10,
-    'socket': 'tcp:<%= monitoring_node['fqdn'] %>:6557',
+    'socket': 'tcp:<%= monitoring_node['ipaddress'] %>:6557',
+    'url_prefix': '/<%= monitoring_node.chef_environment %>/'
     },
 <% end -%>
 }
