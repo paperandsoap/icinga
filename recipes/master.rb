@@ -19,6 +19,8 @@
 
 include_recipe 'icinga::server'
 include_recipe 'icinga::client'
+include_recipe 'apache2::mod_proxy'
+include_recipe 'apache2::mod_proxy_http'
 
 if %w{ debian ubuntu }.member? node['platform']
 
@@ -31,6 +33,15 @@ if %w{ debian ubuntu }.member? node['platform']
   # Multisite Configuration
   template '/etc/check_mk/multisite.d/sites.mk' do
     source 'check_mk/master/sites.mk.erb'
+    owner 'nagios'
+    group 'nagios'
+    mode 0640
+    variables(nodes: nodes)
+  end
+
+  # Proxy configuration
+  template '/etc/apache2/conf.d/multisite_proxy.conf' do
+    source 'check_mk/master/multisite_proxy.conf.erb'
     owner 'nagios'
     group 'nagios'
     mode 0640
