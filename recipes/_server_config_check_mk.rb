@@ -149,16 +149,15 @@ end
 
 # Simple configuration
 node['check_mk']['config'].sort.each do |config, data|
-  template '/etc/check_mk/conf.d/' + config + '.mk' do
+  template "/etc/check_mk/conf.d/#{config}.mk" do
     source 'check_mk/server/conf.d/simple-config.mk.erb'
     owner node['icinga']['user']
     group node['icinga']['group']
     mode 0640
     notifies :run, 'execute[restart-check-mk]', :delayed
     variables('variable' => config)
-    not_if node['check_mk']['config'].nil?
   end
-end
+end unless node['check_mk']['config'].nil?
 
 # Additional service checks
 %w( redis ).each do |check|
