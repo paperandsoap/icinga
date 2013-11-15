@@ -82,8 +82,6 @@ node['check_mk']['groups'].each do |groupid|
   end
 end
 
-users = users.sort
-
 # Ensure all users run the default sidebar, do not overwrite if it exists already
 users.each do |user|
   directory node['check_mk']['setup']['vardir'] + '/web/' + user['id'] do
