@@ -23,9 +23,7 @@ def private_addresse_for_node(node_def)
   return local_addresses if node_def['network'].nil? # node may have no ohai data yet
 
   node_def['network']['interfaces']['eth0']['addresses'].each do |addr, addrdata|
-    if addrdata.family == 'inet' 
-      return addr if is_private_ip(addr)   
-    end
+    return addr if is_private_ip(addr) if addrdata.family == 'inet'
   end
 
   node_def['network']['interfaces'].each_pair do |ifname, ifdata|
