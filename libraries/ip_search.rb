@@ -1,4 +1,5 @@
 # encoding: utf-8
+# rubocop:disable CyclomaticComplexity
 require 'ipaddr'
 
 def is_private_ip(given_ip)
