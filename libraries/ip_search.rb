@@ -11,13 +11,16 @@ def is_private_ip(given_ip)
     found = true if net.include?(ip)
   end
 
-  return found
+  found
 end
 
 def private_addresse_for_node(node_def)
   local_addresses = []
   return local_addresses if node_def['network'].nil? # node may have no ohai data yet
-  return node_def['network']['interfaces']['eth0']['addresses'].keys[0] if is_private_ip(node_def['network']['interfaces']['eth0']['addresses'].keys[0])
+
+  if is_private_ip(node_def['network']['interfaces']['eth0']['addresses'].keys[0])
+    return node_def['network']['interfaces']['eth0']['addresses'].keys[0]
+  end
 
   node_def['network']['interfaces'].each_pair do |ifname, ifdata|
     ifdata['addresses'].nil? && next
