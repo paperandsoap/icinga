@@ -9,6 +9,6 @@ multisite_users = \
     'force_authuser': False,
     'force_authuser_webservice': False,
     'locked': <%= (!user['enabled']).to_s.capitalize %>,
-    'roles': ['admin']},
+    'roles': ['<%= user['role'] %>']},
 <% end -%>
 }
