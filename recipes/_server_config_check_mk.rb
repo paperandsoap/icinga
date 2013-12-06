@@ -76,9 +76,12 @@ users = []
 node['check_mk']['groups'].each do |groupid|
   # get the group data bag
   group = data_bag_item('groups', groupid)
+  group['multisite_role'] = 'admin' if group['multisite_role'].nil?
   # for every member
   group[node.chef_environment]['members'].each do |userid|
-    users.push(data_bag_item('users', userid))
+    user_from_db = data_bag_item('users', userid)
+    user_from_db['role'] = group['multisite_role']
+    users.push(user_from_db)
   end
 end
 

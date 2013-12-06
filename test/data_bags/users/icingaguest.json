@@ -1,0 +1,20 @@
+{
+  "id": "icingaguest",
+  "firstname" : "gu",
+  "lastname" : "est",
+  "htpasswd" : "$apr1$mXxUCwMY$dePujmMXMOd9yPZyXaQ6Q0",
+  "enabled" : true,
+  "email" : "YOUREMAIL@EXAMPLE.COM",
+  "pager" : "YOURPAGERNUMBER",
+  "icinga" : {
+      "contactgroups" : ["all"],
+      "notifications" : {
+          "email"   : {
+              "disabled" : "True"
+          },
+          "sms"     : {
+              "disabled" : "True"
+          }
+      }
+  }
+}

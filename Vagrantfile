@@ -41,6 +41,7 @@ Vagrant.configure("2") do |config|
     chef.log_level = :debug
     chef.json = {
       "check_mk" => {
+        "groups" => ['check-mk-admin', 'check-mk-guest'],
         "isMaster" => 'False',
         "config" => {
           "ignored_services" => [ "ALL_HOSTS, [ \"Monitoring\" ]" ],
