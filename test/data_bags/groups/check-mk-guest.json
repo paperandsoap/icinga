@@ -1,0 +1,7 @@
+{
+	"id" : "check-mk-guest",
+	"multisite_role": "guest",
+  "_default" : {
+    "members" : ["icingaguest"]
+  }
+}
