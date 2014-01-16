@@ -20,10 +20,10 @@
 
 if ['debian'].member? node['platform']
   # We need the backports repository for up-to-date Icinga version
-  apt_repository 'debmon-' + node['lsb']['codename'] do
+  apt_repository "debmon-#{node['lsb']['codename']}" do
     key 'http://debmon.org/debmon/repo.key'
     uri 'http://debmon.org/debmon'
-    distribution 'debmon-' + node['lsb']['codename']
+    distribution "debmon-#{node['lsb']['codename']}"
     components %w(main non-free)
     action :add
   end
@@ -37,7 +37,7 @@ if ['debian'].member? node['platform']
 
   package 'icinga icinga-core icinga-cgi' do
     action :install
-    options '-t ' + 'debmon-' + node['lsb']['codename']
+    options "-t debmon-#{node['lsb']['codename']}"
   end
 
   include_recipe 'rrdcached'
