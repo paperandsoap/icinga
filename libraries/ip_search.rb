@@ -2,7 +2,7 @@
 # rubocop:disable CyclomaticComplexity
 require 'ipaddr'
 
-def is_private_ip(given_ip)
+def private_ip?(given_ip)
   found = false
   begin
     ip = IPAddr.new(given_ip)
@@ -25,14 +25,14 @@ def private_addresse_for_node(node_def)
 
   if node_def['platform_family'] == 'debian'
     node_def['network']['interfaces']['eth0']['addresses'].each do |addr, addrdata|
-      return addr if is_private_ip(addr) if addrdata.family == 'inet'
+      return addr if private_ip?(addr) if addrdata.family == 'inet'
     end
   end
 
   node_def['network']['interfaces'].each_pair do |ifname, ifdata|
     ifdata['addresses'].nil? && next
     ifdata['addresses'].keys.each do |ip_str|
-      return ip_str if is_private_ip(ip_str)
+      return ip_str if private_ip?(ip_str)
     end
   end
   nil

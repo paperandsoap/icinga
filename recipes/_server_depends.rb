@@ -33,26 +33,26 @@ include_recipe 'apache2::mod_python'
 include_recipe 'apache2::mod_rewrite'
 
 if node['icinga']['apache']['default_vhost']
-    node.set['apache']['default_site_enabled'] = false
+  node.set['apache']['default_site_enabled'] = false
 
-    template "#{node['apache']['dir']}/sites-available/000-icinga" do
-      source 'site_default.erb'
-      notifies :restart, 'service[apache2]', :delayed
-    end
-    
-    template "#{node['apache']['dir']}/sites-available/icinga-ssl" do
-      source 'site_default_ssl.erb'
-      notifies :restart, 'service[apache2]', :delayed
-    end
-    
-    # empty - don't want people to explore real htdocs
-    directory node['icinga']['apache']['htdocs'] do
-      owner 'root'
-      group 'root'
-      mode '0755'
-      action :create
-    end
+  template "#{node['apache']['dir']}/sites-available/000-icinga" do
+    source 'site_default.erb'
+    notifies :restart, 'service[apache2]', :delayed
+  end
 
-    apache_site '000-icinga'
-    apache_site 'icinga-ssl'
+  template "#{node['apache']['dir']}/sites-available/icinga-ssl" do
+    source 'site_default_ssl.erb'
+    notifies :restart, 'service[apache2]', :delayed
+  end
+
+  # empty - don't want people to explore real htdocs
+  directory node['icinga']['apache']['htdocs'] do
+    owner 'root'
+    group 'root'
+    mode '0755'
+    action :create
+  end
+
+  apache_site '000-icinga'
+  apache_site 'icinga-ssl'
 end
