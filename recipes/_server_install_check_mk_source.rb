@@ -50,7 +50,7 @@ bash 'build_check_mk' do
     touch #{node['icinga']['htpasswd']['file']}
     tar -xzf check_mk-#{version}.tar.gz
     (cd check_mk-#{version} && ./setup.sh --yes)
-    # Add www-data to Nagios group (Better in chef?)
+    # Add #{node['apache']['group']} to Nagios group (Better in chef?)
     usermod -G nagios www-data
   EOF
   action :nothing

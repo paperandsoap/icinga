@@ -34,8 +34,7 @@ end
 case node['platform_family']
 when 'debian'
   # Create our version string to fetch the appropriate file
-  version = node['check_mk']['version'] + '-' +
-    node['check_mk']['deb']['release']
+  version = "#{node['check_mk']['version']}-#{node['check_mk']['deb']['release']}"
 
   remote_file "/var/cache/apt/archives/check-mk-agent_#{version}_all.deb" do
     source "#{node['check_mk']['url']}/check-mk-agent_#{version}_all.deb"
@@ -67,7 +66,7 @@ when 'debian'
 
 when 'rhel'
   # Create our version string to fetch the appropriate file
-  version = node['check_mk']['version'] + '-' + node['check_mk']['rpm']['release']
+  version = "#{node['check_mk']['version']}-#{node['check_mk']['rpm']['release']}"
 
   remote_file "#{Chef::Config[:file_cache_path]}/check_mk-agent-#{version}.noarch.rpm" do
     source "#{node['check_mk']['url']}/check_mk-agent-#{version}.noarch.rpm"
@@ -115,13 +114,13 @@ when 'linux'
   end
 
   %w(apache_status mk_jolokia mk_mysql mk_postgres mk_redis).each do |plugin|
-    cookbook_file node['check_mk']['setup']['agentslibdir'] + '/plugins/' + plugin do
-      source 'plugins/linux/' + plugin
+    cookbook_file "#{node['check_mk']['setup']['agentslibdir']}/plugins/#{plugin}" do
+      source "plugins/linux/#{plugin}"
       mode 0750
     end
   end
 
-  template node['check_mk']['setup']['confdir'] + '/jolokia.cfg' do
+  template "#{node['check_mk']['setup']['confdir']}/jolokia.cfg" do
     source 'check_mk/client/plugin_configs/jolokia.cfg.erb'
     owner 'root'
     group 'root'
@@ -134,8 +133,8 @@ when 'windows'
     action :install
   end
   %w(ad_replication.bat).each do |plugin|
-    cookbook_file 'C:\\Program Files (x86)\\check_mk\\plugins\\' + plugin do
-      source 'plugins/windows/' + plugin
+    cookbook_file "C:\\Program Files (x86)\\check_mk\\plugins\\#{plugin}" do
+      source "plugins/windows/#{plugin}"
       mode 0750
     end
   end

@@ -16,6 +16,12 @@
 default['icinga']['user'] = 'nagios'
 default['icinga']['group'] = 'nagios'
 default['icinga']['htpasswd']['file'] = '/etc/icinga/htpasswd.users'
+default['icinga']['apache']['default_vhost'] = true
+default['icinga']['apache']['htdocs'] = "#{node['apache']['docroot_dir']}/icinga"
+default['icinga']['apache']['enable_access_log'] = false
+default['icinga']['apache']['ssl_cert'] = "/etc/ssl/certs/ssl-cert-snakeoil.pem"
+default['icinga']['apache']['ssl_key'] = "/etc/ssl/private/ssl-cert-snakeoil.key"
+default['icinga']['apache']['ssl_ca'] = nil
 default['icinga']['setup']['config']['log_file'] = '/var/log/icinga/icinga.log'
 default['icinga']['setup']['config']['cfg_file']['commands'] = '/etc/icinga/commands.cfg'
 default['icinga']['setup']['config']['cfg_dir']['nagios_plugins'] = '/etc/nagios-plugins/config'
