@@ -38,7 +38,7 @@ Vagrant.configure("2") do |config|
     chef.add_recipe "chef-solo-search"
     chef.add_recipe "icinga::server"
     chef.add_recipe "exim4-light"
-    chef.log_level = :debug
+    chef.log_level = :info
     chef.json = {
       "check_mk" => {
         "groups" => ['check-mk-admin', 'check-mk-guest'],

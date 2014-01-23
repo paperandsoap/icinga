@@ -40,7 +40,7 @@ if %w{ debian ubuntu }.member? node['platform']
   end
 
   # Proxy configuration
-  template '/etc/apache2/conf.d/multisite_proxy.conf' do
+  template "#{node['apache']['dir']}/conf.d/multisite_proxy.conf" do
     source 'check_mk/master/multisite_proxy.conf.erb'
     owner 'nagios'
     group 'nagios'

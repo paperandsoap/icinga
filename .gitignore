@@ -21,3 +21,6 @@ Cheffile.lock
 
 # Chefspec
 /spec/reports/
+
+# Emacs backup files
+*~

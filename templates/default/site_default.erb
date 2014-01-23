@@ -1,0 +1,16 @@
+<VirtualHost *:80>
+     DocumentRoot <%= node['icinga']['apache']['htdocs'] %>
+     RewriteEngine On
+     RewriteRule ^.*$ https://%{SERVER_NAME}%{REQUEST_URI} [L,R=permanent]
+     ServerSignature Off
+     <Directory <%= node['icinga']['apache']['htdocs'] %>>
+       AllowOverride None
+       Options -Indexes -FollowSymLinks
+     </Directory>
+     <% if node['icinga']['apache']['enable_access_log'] %>
+     CustomLog "<%= node['apache']['log_dir'] %>/icinga-access.log" common
+     <% else %>
+     CustomLog common env=!dontlog
+     <% end %>
+     ErrorLog "<%= node['apache']['log_dir'] %>/icinga-error.log"
+</VirtualHost>

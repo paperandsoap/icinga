@@ -87,13 +87,13 @@ end
 
 # Ensure all users run the default sidebar, do not overwrite if it exists already
 users.each do |user|
-  directory node['check_mk']['setup']['vardir'] + '/web/' + user['id'] do
+  directory "#{node['check_mk']['setup']['vardir']}/web/#{user['id']}" do
     owner node['apache']['user']
     group 'root'
     mode '0750'
     action :create
   end
-  template node['check_mk']['setup']['vardir'] + '/web/' + user['id'] + '/sidebar.mk' do
+  template "#{node['check_mk']['setup']['vardir']}/web/#{user['id']}/sidebar.mk" do
     source 'check_mk/server/user/sidebar.mk.erb'
     owner node['apache']['user']
     group 'root'
@@ -162,8 +162,8 @@ end unless node['check_mk']['config'].nil?
 
 # Additional service checks
 %w( redis ).each do |check|
-  cookbook_file node['check_mk']['setup']['sharedir'] + '/checks/' + check do
-    source 'checks/' + check
+  cookbook_file "#{node['check_mk']['setup']['sharedir']}/checks/#{check}" do
+    source "checks/#{check}"
     mode 0644
   end
 end
