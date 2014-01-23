@@ -1,7 +1,6 @@
 <VirtualHost *:80>
      DocumentRoot <%= node['icinga']['apache']['htdocs'] %>
      RewriteEngine On
-     RewriteCond %{REMOTE_ADDR} !^127\.0\.0\.1$
      RewriteRule ^.*$ https://%{SERVER_NAME}%{REQUEST_URI} [L,R=permanent]
      ServerSignature Off
      <Directory <%= node['icinga']['apache']['htdocs'] %>>
