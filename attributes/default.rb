@@ -15,6 +15,7 @@
 # Icinga settings
 default['icinga']['user'] = 'nagios'
 default['icinga']['group'] = 'nagios'
+default['icinga']['master_domain'] = 'bigpoint.net'
 default['icinga']['htpasswd']['file'] = '/etc/icinga/htpasswd.users'
 default['icinga']['apache']['default_vhost'] = true
 default['icinga']['apache']['htdocs'] = "#{node['apache']['docroot_dir']}/icinga"

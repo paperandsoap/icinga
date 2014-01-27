@@ -1,6 +1,6 @@
 <% @nodes.each do |monitoring_node| -%>
 <Location /<%= monitoring_node.chef_environment %>>
     RewriteEngine On
-    RewriteRule ^/.+/<%= monitoring_node.chef_environment %>/(.*) https://<%= monitoring_node['hostname'] %>/$1 [P]
+    RewriteRule ^/.+/<%= monitoring_node.chef_environment %>/(.*) https://<%= monitoring_node['hostname'] %>.<%= node['icinga']['master_domain'] %>/$1 [P]
 </Location>
 <% end -%>
