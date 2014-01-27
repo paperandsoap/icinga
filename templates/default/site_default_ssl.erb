@@ -3,6 +3,7 @@
      RewriteEngine On
      RewriteRule ^/$ /check_mk [R]
      SSLEngine On
+     SSLProxyEngine On
      SSLCertificateFile <%= node['icinga']['apache']['ssl_cert'] %>
      SSLCertificateKeyFile <%= node['icinga']['apache']['ssl_key'] %>
      <% unless node['icinga']['apache']['ssl_ca'].nil? %>
