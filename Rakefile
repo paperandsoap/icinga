@@ -43,10 +43,10 @@ task :chefspec => [:setup_cookbooks, 'ci:setup:rspec'] do
     File.join(COOKBOOKS_PATH, COOKBOOK_NAME, 'spec')
 end
 
-desc 'Run Rubocop'
-task :rubocop do
-  sh 'rubocop', '-fs'
-end
+#desc 'Run Rubocop'
+#task :rubocop do
+#  sh 'rubocop', '-fs', '--no-color'
+#end
 
 desc 'Run Kitchen'
 task :kitchen do
@@ -54,7 +54,7 @@ task :kitchen do
 end
 
 desc 'Run all tests'
-task :test => [:knife, :foodcritic, :chefspec, :rubocop]
+task :test => [:knife, :foodcritic, :chefspec]
 
 # Default, test everything
 task :default => :test

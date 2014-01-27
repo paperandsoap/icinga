@@ -1,7 +1,7 @@
 <VirtualHost *:80>
      DocumentRoot <%= node['icinga']['apache']['htdocs'] %>
      RewriteEngine On
-     RewriteRule ^.*$ https://%{SERVER_NAME}%{REQUEST_URI} [L,R=permanent]
+     RewriteRule ^.*$ https://%{SERVER_NAME}%{REQUEST_URI} [L,R=permanent,NE]
      ServerSignature Off
      <Directory <%= node['icinga']['apache']['htdocs'] %>>
        AllowOverride None
