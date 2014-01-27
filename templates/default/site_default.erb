@@ -5,7 +5,7 @@
      ServerSignature Off
      <Directory <%= node['icinga']['apache']['htdocs'] %>>
        AllowOverride None
-       Options -Indexes -FollowSymLinks
+       Options -Indexes
      </Directory>
      <% if node['icinga']['apache']['enable_access_log'] %>
      CustomLog "<%= node['apache']['log_dir'] %>/icinga-access.log" common
