@@ -64,3 +64,10 @@ task :lint => :foodcritic
 
 # Cleanup testing cookbooks
 at_exit { rm_rf COOKBOOKS_PATH }
+
+begin
+  require 'kitchen/rake_tasks'
+  Kitchen::RakeTasks.new
+rescue LoadError
+  puts ">>>>> Kitchen gem not loaded, omitting tasks" unless ENV['CI']
+end
