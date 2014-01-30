@@ -47,7 +47,7 @@ if ['debian'].member? node['platform']
   %w(icinga xinetd).each do |svc|
     service svc do
       supports 'status' => true, 'restart' => true, 'reload' => true
-      action [:enable, :start]
+      action :nothing
     end
   end
 end
