@@ -37,10 +37,10 @@ default['check_mk']['graphios']['spool_directory'] = '/var/spool/nagios/graphios
 default['check_mk']['graphios']['graphios_bin_location'] = '/var/lib/icinga'
 default['check_mk']['graphios']['log_file'] = '/var/log/icinga/graphios.log'
 default['check_mk']['graphios']['log_max_size'] = 25165824
-default['check_mk']['graphios']['log_level'] = 'logging.DEBUG'
+default['check_mk']['graphios']['log_level'] = 'logging.INFO'
 default['check_mk']['graphios']['sleep_time'] = 15
 default['check_mk']['graphios']['sleep_max'] = 480
-default['check_mk']['graphios']['test_mode'] = 'True'
+default['check_mk']['graphios']['test_mode'] = 'False'
 
 # Some defaults
 default['check_mk']['wato']['enabled'] = 'False'
