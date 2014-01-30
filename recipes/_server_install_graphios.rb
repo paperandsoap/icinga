@@ -35,7 +35,9 @@ file node['check_mk']['graphios']['log_file'] do
 end
 
 # create graphios commands file
+# rubocop:disable LineLength
 template node['icinga']['setup']['config']['cfg_dir']['nagios_plugins'] + '/' + node['check_mk']['graphios']['commands_file'] do
+# rubocop:enable LineLength
   source 'check_mk/server/graphios/graphios_commands.cfg.erb'
   owner node['icinga']['user']
   group node['icinga']['group']

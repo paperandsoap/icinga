@@ -27,7 +27,7 @@ if ['debian'].member? node['platform']
 
   # Configure our server
   include_recipe 'icinga::_server_config'
-  
+
   # Install graphios if enabled
   include_recipe 'icinga::_server_install_graphios' if node['check_mk']['graphios']['enabled']
 end
