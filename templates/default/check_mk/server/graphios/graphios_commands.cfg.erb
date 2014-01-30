@@ -1,0 +1,10 @@
+# GRAPHIOS
+define command {
+    command_name            graphite_perf_host
+    command_line            /bin/mv <%= node['check_mk']['graphios']['spool_directory'] %>/host-perfdata <%= node['check_mk']['graphios']['spool_directory'] %>/host-perfdata.$TIMET$
+}
+
+define command {
+    command_name            graphite_perf_service
+    command_line            /bin/mv <%= node['check_mk']['graphios']['spool_directory'] %>/service-perfdata <%= node['check_mk']['graphios']['spool_directory'] %>/service-perfdata.$TIMET$
+}
