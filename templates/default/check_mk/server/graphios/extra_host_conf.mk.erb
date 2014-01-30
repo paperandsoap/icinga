@@ -1,0 +1,3 @@
+extra_host_conf["_graphiteprefix"] = [
+  ( "<%= node['check_mk']['graphios']['graphite_prefix'] %>.<%= node.chef_environment %>.ping", ALL_HOSTS),
+]

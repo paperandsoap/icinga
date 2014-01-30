@@ -41,6 +41,9 @@ Vagrant.configure("2") do |config|
     chef.log_level = :info
     chef.json = {
       "check_mk" => {
+        "graphios" => {
+          "enabled" => "true"
+        },
         "groups" => ['check-mk-admin', 'check-mk-guest'],
         "isMaster" => 'False',
         "config" => {

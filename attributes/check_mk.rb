@@ -23,6 +23,25 @@ default['check_mk']['isMaster'] = 'False'
 # Custom configurations
 default['check_mk']['config'] = nil
 
+# Enable graphios (perfdata to graphite)?
+default['check_mk']['graphios']['enabled'] = false
+default['check_mk']['graphios']['graphite_prefix'] = 'check_mk'
+default['check_mk']['graphios']['checks_to_pass'] = [
+  { graphite_folder: 'check_mk', command: 'Check_MK' },
+  { graphite_folder: 'cpu.load', command: 'CPU load' }
+]
+default['check_mk']['graphios']['commands_file'] = 'graphios_commands.cfg'
+default['check_mk']['graphios']['carbon_server'] = '127.0.0.1'
+default['check_mk']['graphios']['carbon_port'] = 2004
+default['check_mk']['graphios']['spool_directory'] = '/var/spool/nagios/graphios'
+default['check_mk']['graphios']['graphios_bin_location'] = '/var/lib/icinga'
+default['check_mk']['graphios']['log_file'] = '/var/log/icinga/graphios.log'
+default['check_mk']['graphios']['log_max_size'] = 25165824
+default['check_mk']['graphios']['log_level'] = 'logging.INFO'
+default['check_mk']['graphios']['sleep_time'] = 15
+default['check_mk']['graphios']['sleep_max'] = 480
+default['check_mk']['graphios']['test_mode'] = 'False'
+
 # Some defaults
 default['check_mk']['wato']['enabled'] = 'False'
 default['check_mk']['notifications']['enabled'] = 'False'
