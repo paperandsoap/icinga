@@ -24,7 +24,7 @@ directory node['check_mk']['graphios']['spool_directory'] do
   group node['icinga']['group']
   action :create
   recursive true
-  mode 0644
+  mode 0755
 end
 
 # create log file
