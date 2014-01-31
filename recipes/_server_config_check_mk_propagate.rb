@@ -25,6 +25,7 @@ if Chef::Config[:solo]
 else
   nodes = search(:node, node['check_mk']['search']['nodes'])
 end
+nodes.sort! { |a, b| a.name <=> b.name }
 
 # If no nodes are found only add ourselves
 if nodes.empty?
@@ -35,6 +36,7 @@ end
 
 # Search for all roles and environments to create hostgroups to use as check_mk tags
 roles = search(:role, 'name:*')
+roles.sort! { |a, b| a.name <=> b.name }
 
 if Chef::Config[:solo]
   environments = ['_default']
