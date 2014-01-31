@@ -46,5 +46,6 @@ if %w{ debian ubuntu }.member? node['platform']
     group 'nagios'
     mode 0640
     variables(nodes: nodes)
+    notifies :restart, 'service[apache2]', :delayed
   end
 end
