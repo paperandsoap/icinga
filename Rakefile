@@ -16,6 +16,7 @@ def cookbook_name
   end
 end
 
+VAGRANT = ENV['VAGRANT'] || false
 COOKBOOK_NAME = ENV['COOKBOOK_NAME'] || cookbook_name
 COOKBOOKS_PATH = ENV['COOKBOOKS_PATH'] || 'cookbooks'
 
@@ -54,7 +55,7 @@ task :kitchen do
 end
 
 desc 'Run all tests'
-task :test => [:knife, :foodcritic, :chefspec]
+task :test => [:knife, :foodcritic, :chefspec, :kitchen]
 
 # Default, test everything
 task :default => :test
