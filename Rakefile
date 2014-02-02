@@ -44,18 +44,13 @@ task :chefspec => [:setup_cookbooks, 'ci:setup:rspec'] do
     File.join(COOKBOOKS_PATH, COOKBOOK_NAME, 'spec')
 end
 
-#desc 'Run Rubocop'
-#task :rubocop do
-#  sh 'rubocop', '-fs', '--no-color'
-#end
-
-desc 'Run Kitchen'
-task :kitchen do
-  sh 'kitchen', 'test'
+desc 'Run Rubocop'
+task :rubocop do
+  sh 'rubocop', '-fs', '--no-color'
 end
 
 desc 'Run all tests'
-task :test => [:knife, :foodcritic, :chefspec, :kitchen]
+task :test => [:knife, :foodcritic, :chefspec, :rubocop]
 
 # Default, test everything
 task :default => :test
@@ -69,6 +64,11 @@ at_exit { rm_rf COOKBOOKS_PATH }
 begin
   require 'kitchen/rake_tasks'
   Kitchen::RakeTasks.new
+  
+  desc "Alias for kitchen:all"
+  task :integration => "kitchen:all"
+
+  task :test => :integration
 rescue LoadError
   puts ">>>>> Kitchen gem not loaded, omitting tasks" unless ENV['CI']
 end
