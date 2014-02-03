@@ -56,6 +56,12 @@ end
 os_list.sort.uniq
 tags.sort.uniq
 
+# manual
+manual_hosts = []
+node['check_mk']['manual_checks']['hosts'].each do |host|
+        manual_hosts = host
+end
+
 # Add all defined legacy cehcks
 template '/etc/check_mk/conf.d/legacy-checks.mk' do
   source 'check_mk/server/conf.d/legacy-checks.mk.erb'
@@ -72,7 +78,7 @@ template '/etc/check_mk/conf.d/wato/hosts.mk' do
   owner node['icinga']['user']
   group node['icinga']['group']
   mode 0640
-  variables('nodes' => nodes)
+  variables('nodes' => nodes, 'manual_nodes' => manual_hosts)
   notifies :run, 'execute[reload-check-mk]', :delayed
 end
 
@@ -105,3 +111,4 @@ template '/usr/share/check_mk/notifications/sms.php' do
   group node['icinga']['group']
   mode 0770
 end
+
