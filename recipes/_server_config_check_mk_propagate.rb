@@ -126,4 +126,3 @@ template '/usr/share/check_mk/notifications/sms.php' do
   group node['icinga']['group']
   mode 0770
 end
-
