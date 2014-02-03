@@ -36,7 +36,7 @@ Vagrant.configure("2") do |config|
     chef.roles_path = "test/data_bags/role"
     chef.add_recipe "up2date"
     chef.add_recipe "chef-solo-search"
-    chef.add_recipe "icinga::server"
+    chef.add_role "monitoring-server"
     chef.add_recipe "exim4-light"
     chef.log_level = :info
     chef.json = {

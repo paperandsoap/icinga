@@ -11,24 +11,24 @@
         },
         "check_mk": {
             "manual_checks": {
-		"hosts": [
-		    { 
-		    	"hostname": "foobar",
-		    	"ipaddress": "127.0.0.1",
-		    	"environment": "_default",
-		    	"hosttags": ["snmp"],
-		    	"default_hosttag": "snmp"
-    		    }
-                ],
-		"checks": [
-    	    	    {
-      			"hostnames": ["foobar"],
-      			"check_type": "df",
-      			"check_item": "/var",
-      			"check_warn": 80,
-      			"check_crit": 90
-    		    }
-                ]
+              "hosts": [
+                { 
+                  "hostname": "localhost",
+                  "ipaddress": "127.0.0.1",
+                  "environment": "_default",
+                  "hosttags": ["snmp"],
+                  "default_hosttag": "snmp"
+      		      }
+                  ],
+              "checks": [
+                {
+                  "hostnames": ["foobar"],
+                  "check_type": "df",
+                  "check_item": "/var",
+                  "check_warn": 80,
+                  "check_crit": 90
+                }
+              ]
             }
         }
     },

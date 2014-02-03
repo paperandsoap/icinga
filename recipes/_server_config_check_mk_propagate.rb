@@ -59,8 +59,8 @@ tags.sort.uniq
 # manual
 manual_hosts = []
 node['check_mk']['manual_checks']['hosts'].each do |host|
-        manual_hosts = host
-end
+  manual_hosts.push(host)
+end unless node['check_mk']['manual_checks']['hosts'].nil?
 
 # Add all defined legacy cehcks
 template '/etc/check_mk/conf.d/legacy-checks.mk' do
