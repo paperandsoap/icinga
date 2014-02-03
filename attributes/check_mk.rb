@@ -23,6 +23,10 @@ default['check_mk']['isMaster'] = 'False'
 # Custom configurations
 default['check_mk']['config'] = nil
 
+# Manual hosts & checks
+default['check_mk']['manual_checks']['hosts'] = []
+default['check_mk']['manual_checks']['checks'] = []
+
 # Enable graphios (perfdata to graphite)?
 default['check_mk']['graphios']['enabled'] = false
 default['check_mk']['graphios']['graphite_prefix'] = 'check_mk'
