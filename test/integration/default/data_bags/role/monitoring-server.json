@@ -8,6 +8,28 @@
                 "80",
                 "443"
             ]
+        },
+        "check_mk": {
+            "manual_checks": {
+              "hosts": [
+                { 
+                  "hostname": "localhost",
+                  "ipaddress": "127.0.0.1",
+                  "environment": "_default",
+                  "hosttags": ["snmp"],
+                  "default_hosttag": "snmp"
+      		      }
+                  ],
+              "checks": [
+                {
+                  "hostnames": ["localhost"],
+                  "check_type": "df",
+                  "check_item": "/",
+                  "check_warn": 80,
+                  "check_crit": 90
+                }
+              ]
+            }
         }
     },
     "override_attributes":{

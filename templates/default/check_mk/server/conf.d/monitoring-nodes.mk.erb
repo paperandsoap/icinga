@@ -1,12 +1,18 @@
 all_hosts += [
 <% @nodes.each do |client_node| -%>
-    '<%= client_node['hostname'] %>|all|<% unless client_node['lsb'].nil? %><%= client_node['lsb']['codename'] %>|<%end %>site:<%= node['hostname'] %>|<%= client_node['os'] %>|<%= client_node.chef_environment %>|<%= client_node['roles'].join("|") %>|<%= client_node['tags'].join("|") %>',
+  '<%= client_node['hostname'] %>|all|<% unless client_node['lsb'].nil? %><%= client_node['lsb']['codename'] %>|<%end %>site:<%= node['hostname'] %>|<%= client_node['os'] %>|<%= client_node.chef_environment %>|<%= client_node['roles'].join("|") %>|<%= client_node['tags'].join("|") %>',
+<% end -%>
+<% @manual_nodes.each do |manual_node| -%>
+  '<%= manual_node['hostname'] %>|all|<% manual_node['hosttags'].each do |hosttag| %><%= hosttag %>|<% end unless manual_node['hosttags'].nil? -%><%= manual_node['environment'] %>',
 <% end -%>
 ]
 
 ipaddresses.update({
 <% @nodes.each do |client_node| -%>
   '<%= client_node['hostname'] %>': u'<%= private_addresse_for_node(client_node) %>',
+<% end -%>
+<% @manual_nodes.each do |manual_node| -%>
+  '<%= manual_node['hostname'] %>': u'<%= manual_node['ipaddress'] %>',
 <% end -%>
 })
 
@@ -15,5 +21,7 @@ extra_host_conf.setdefault('alias', []).extend([
   <% @nodes.each do |client_node| -%>
     <% unless client_node['roles'].nil? %>(u'<%= client_node['roles'].join("-") %>', ['<%= client_node['hostname'] %>']),<% end %>
   <% end %>
+  <% @manual_nodes.each do |manual_node| -%>
+    <% unless manual_node['default_hosttag'].nil? %>(u'<%= manual_node['default_hosttag'] %>', ['<%= manual_node['hostname'] %>']),<% end %>
+  <% end -%>  
 ])
-

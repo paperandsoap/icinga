@@ -1,0 +1,5 @@
+checks += [
+<% @manual_checks.each do |manual_check| %>
+( [<% manual_check['hostnames'].each do |hostname| %>"<%= hostname %>", <% end %>], "<%= manual_check['check_type'] %>", "<%= manual_check['check_item'] %>", (<%= manual_check['check_warn'] %>, <%= manual_check['check_crit'] %>) ),
+<% end %>
+]
