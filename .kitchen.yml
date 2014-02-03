@@ -23,7 +23,7 @@ suites:
     data_bags_path: "test/integration/default/data_bags"
     #encrypted_data_bag_secret_key_path: "test/integration/default/encrypted_data_bag_secret"
     run_list:
-      - recipe[icinga::server]
+      - role[monitoring-server]
       - recipe[exim4-light]
     attributes:
       set_fqdn: "icinga-server-01.local"
