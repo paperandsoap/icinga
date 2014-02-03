@@ -29,6 +29,7 @@ if %w{ debian ubuntu }.member? node['platform']
   else
     nodes = search(:node, 'role:monitoring-server')
   end
+  nodes.sort! { |a, b| a.name <=> b.name }
 
   # Multisite Configuration
   template '/etc/check_mk/multisite.d/sites.mk' do
@@ -46,5 +47,6 @@ if %w{ debian ubuntu }.member? node['platform']
     group 'nagios'
     mode 0640
     variables(nodes: nodes)
+    notifies :restart, 'service[apache2]', :delayed
   end
 end

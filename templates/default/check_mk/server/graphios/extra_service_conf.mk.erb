@@ -1,0 +1,15 @@
+extra_service_conf["_graphiteprefix"] = [
+  <% unless node['check_mk']['graphios']['checks_to_pass'].empty? %>
+    <% node['check_mk']['graphios']['checks_to_pass'].each do |check| %>
+      ( "<%= node['check_mk']['graphios']['graphite_prefix'] %>.<%= node.chef_environment %>", ALL_HOSTS, ["<%= check.command %>"]),
+    <% end %>
+  <% end %>
+]
+
+extra_service_conf["_graphitepostfix"] = [
+  <% unless node['check_mk']['graphios']['checks_to_pass'].empty? %>
+    <% node['check_mk']['graphios']['checks_to_pass'].each do |check| %>
+      ( "<%= check.graphite_folder %>", ALL_HOSTS, ["<%= check.command %>"]),
+    <% end %>
+  <% end %>
+]
