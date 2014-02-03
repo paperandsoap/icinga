@@ -22,9 +22,9 @@
                   ],
               "checks": [
                 {
-                  "hostnames": ["foobar"],
+                  "hostnames": ["localhost"],
                   "check_type": "df",
-                  "check_item": "/var",
+                  "check_item": "/",
                   "check_warn": 80,
                   "check_crit": 90
                 }

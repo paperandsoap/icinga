@@ -56,11 +56,26 @@ end
 os_list.sort.uniq
 tags.sort.uniq
 
-# manual
+# manual hosts
 manual_hosts = []
 node['check_mk']['manual_checks']['hosts'].each do |host|
   manual_hosts.push(host)
 end unless node['check_mk']['manual_checks']['hosts'].nil?
+
+# manual checks
+manual_checks = []
+node['check_mk']['manual_checks']['checks'].each do |check|
+  manual_checks.push(check)
+end unless node['check_mk']['manual_checks']['checks'].nil?
+
+template '/etc/check_mk/conf.d/manual_checks.mk' do
+  source 'check_mk/server/conf.d/manual_checks.mk.erb'
+  owner node['icinga']['user']
+  group node['icinga']['group']
+  mode 0640
+  variables('manual_checks' => manual_checks)
+  notifies :run, 'execute[reload-check-mk]', :delayed
+end
 
 # Add all defined legacy cehcks
 template '/etc/check_mk/conf.d/legacy-checks.mk' do
