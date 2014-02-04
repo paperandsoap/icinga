@@ -23,5 +23,5 @@ filesystem_default_levels["levels"] = ( 90, 95 )
 ipmi_ignore_nr = True
 
 # Our SNMP default community for SNMP scans
-snmp_default_community = "phN7RY5s163nE"
+snmp_default_community = "<%= @node['check_mk']['snmp']['public_community'] %>"
 

@@ -79,3 +79,11 @@ template '/etc/init.d/graphios' do
   mode 0755
   action :create
 end
+
+# graphios service
+service 'graphios' do
+# rubocop:disable HashSyntax
+  supports :status => true
+# rubocop:enable HashSyntax
+  action [:enable, :start]
+end

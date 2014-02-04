@@ -23,6 +23,10 @@ default['check_mk']['isMaster'] = 'False'
 # Custom configurations
 default['check_mk']['config'] = nil
 
+# Manual hosts & checks
+default['check_mk']['manual_checks']['hosts'] = []
+default['check_mk']['manual_checks']['checks'] = []
+
 # Enable graphios (perfdata to graphite)?
 default['check_mk']['graphios']['enabled'] = false
 default['check_mk']['graphios']['graphite_prefix'] = 'check_mk'
@@ -43,6 +47,7 @@ default['check_mk']['graphios']['sleep_max'] = 480
 default['check_mk']['graphios']['test_mode'] = 'False'
 
 # Some defaults
+default['check_mk']['snmp']['public_community'] = 'public'
 default['check_mk']['wato']['enabled'] = 'False'
 default['check_mk']['notifications']['enabled'] = 'False'
 default['check_mk']['notifications']['sms']['user'] = 'SMSUSER'

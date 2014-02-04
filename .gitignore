@@ -24,3 +24,7 @@ Cheffile.lock
 
 # Emacs backup files
 *~
+.kitchen.local.yml
+
+# rbenv local ruby version definition
+.ruby-version
