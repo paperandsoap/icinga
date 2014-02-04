@@ -79,3 +79,9 @@ template '/etc/init.d/graphios' do
   mode 0755
   action :create
 end
+
+# graphios service
+service "graphios" do
+  supports :status => true
+  action [ :enable, :start ]
+end
