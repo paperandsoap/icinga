@@ -1,0 +1,16 @@
+{
+    "name":"monitoring-client",
+    "description":"Icinga Monitoring client",
+    "json_class":"Chef::Role",
+    "default_attributes":{
+    },
+    "override_attributes":{
+    },
+    "chef_type":"role",
+    "run_list":[
+        "recipe[icinga::client]"
+    ],
+    "env_run_lists":{
+    },
+    "_rev":"4-c82859239100d64b25f2d121baa4cfd2"
+}
