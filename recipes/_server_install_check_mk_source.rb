@@ -39,7 +39,7 @@ template '/root/.check_mk_setup.conf' do
   owner 'root'
   group 'root'
   mode 0640
-  only_if { platform?('ubuntu', 'debian', 'ubuntu') }
+  only_if { platform?('ubuntu', 'debian') }
   action :nothing
 end
 
@@ -54,4 +54,27 @@ bash 'build_check_mk' do
     usermod -G nagios www-data
   EOF
   action :nothing
+end
+
+# As setup conf nagpipe is not used during setup (might be a bug) we need some workaround
+directory '/var/log/nagios' do
+  owner node['check_mk']['setup']['nagiosuser']
+  group node['check_mk']['setup']['nagiosuser']
+  mode 0755
+  only_if { platform?('ubuntu', 'debian') }
+  action :create
+end
+
+directory '/var/log/nagios/rw' do
+  owner node['check_mk']['setup']['nagiosuser']
+  group node['check_mk']['setup']['nagiosuser']
+  mode 0755
+  only_if { platform?('ubuntu', 'debian') }
+  action :create
+end
+
+link "/var/log/nagios/rw/live" do
+  to "/var/lib/icinga/rw/live"
+  owner node['check_mk']['setup']['nagiosuser']
+  group node['check_mk']['setup']['nagiosuser']
 end
