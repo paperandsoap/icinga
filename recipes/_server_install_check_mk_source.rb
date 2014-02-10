@@ -73,8 +73,8 @@ directory '/var/log/nagios/rw' do
   action :create
 end
 
-link "/var/log/nagios/rw/live" do
-  to "/var/lib/icinga/rw/live"
+link '/var/log/nagios/rw/live' do
+  to '/var/lib/icinga/rw/live'
   owner node['check_mk']['setup']['nagiosuser']
   group node['check_mk']['setup']['nagiosuser']
 end
