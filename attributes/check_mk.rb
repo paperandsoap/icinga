@@ -48,6 +48,7 @@ default['check_mk']['graphios']['test_mode'] = 'False'
 
 # Some defaults
 default['check_mk']['snmp']['public_community'] = 'public'
+default['check_mk']['snmp']['auto_discovery'] = 'False'
 default['check_mk']['wato']['enabled'] = 'False'
 default['check_mk']['notifications']['enabled'] = 'False'
 default['check_mk']['notifications']['sms']['user'] = 'SMSUSER'
