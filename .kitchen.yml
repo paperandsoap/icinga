@@ -16,6 +16,7 @@ platforms:
     - ["forwarded_port", {guest: 443, host: 4443, auto_correct: true}]
     - ["private_network", {ip: "8.1.1.8"}]
     customize:
+      cpus: 2
       memory: 1024
 
 suites:
