@@ -53,7 +53,7 @@ metadata_unixnames = []
 nodes.each do |client_node|
   if node['check_mk']['metadata']['enabled']
     metadata_name = client_node['check_mk']['metadata']['name']
-    
+
     client_node[metadata_name]['meta.pids'].each do |pid|
       metadata_pids.push(pid)
     end unless client_node[metadata_name]['meta.pids'].nil?
