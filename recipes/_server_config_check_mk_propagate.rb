@@ -52,17 +52,13 @@ metadata_unixnames = []
 
 nodes.each do |client_node|
   if node['check_mk']['metadata']['enabled']
-    client_node.normal['metadata_pids'] = []
-    client_node.normal['metadata_unixnames'] = []
     metadata_name = client_node['check_mk']['metadata']['name']
     
     client_node[metadata_name]['meta.pids'].each do |pid|
       metadata_pids.push(pid)
-      client_node.normal['metadata_pids'].push(pid)
     end unless client_node[metadata_name]['meta.pids'].nil?
     client_node[metadata_name]['meta.unixnames'].each do |unixname|
       metadata_unixnames.push(unixname)
-      client_node.normal['metadata_unixnames'].push(unixname)
     end unless client_node[metadata_name]['meta.unixnames'].nil?
   end
   client_node['tags'].each do |tag|
