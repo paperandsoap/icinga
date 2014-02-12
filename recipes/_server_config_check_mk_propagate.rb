@@ -47,7 +47,24 @@ end
 # Search all nodes for tags and os and add them to check_mk tagging and hostgroups
 tags = []
 os_list = []
+metadata_pids = []
+metadata_unixnames = []
+
 nodes.each do |client_node|
+  if node['check_mk']['metadata']['enabled']
+    client_node.normal['metadata_pids'] = []
+    client_node.normal['metadata_unixnames'] = []
+    metadata_name = client_node['check_mk']['metadata']['name']
+    
+    client_node[metadata_name]['meta.pids'].each do |pid|
+      metadata_pids.push(pid)
+      client_node.normal['metadata_pids'].push(pid)
+    end unless client_node[metadata_name]['meta.pids'].nil?
+    client_node[metadata_name]['meta.unixnames'].each do |unixname|
+      metadata_unixnames.push(unixname)
+      client_node.normal['metadata_unixnames'].push(unixname)
+    end unless client_node[metadata_name]['meta.unixnames'].nil?
+  end
   client_node['tags'].each do |tag|
     tags.push(tag)
   end
@@ -55,6 +72,8 @@ nodes.each do |client_node|
 end
 os_list.sort.uniq
 tags.sort.uniq
+metadata_pids.sort.uniq
+metadata_unixnames.sort.uniq
 
 # manual hosts
 manual_hosts = []
@@ -107,7 +126,9 @@ template "/etc/check_mk/conf.d/hostgroups-#{node['hostname']}.mk" do
       'roles' => roles,
       'environments' => environments,
       'tags' => tags,
-      'os_list' => os_list
+      'os_list' => os_list,
+      'metadata_pids' => metadata_pids,
+      'metadata_unixnames' => metadata_unixnames
   )
   notifies :run, 'execute[reload-check-mk]', :delayed
 end
