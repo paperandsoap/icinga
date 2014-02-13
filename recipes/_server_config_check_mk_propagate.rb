@@ -56,10 +56,10 @@ nodes.each do |client_node|
 
     client_node[metadata_name]['meta.pids'].each do |pid|
       metadata_pids.push(pid)
-    end unless client_node[metadata_name]['meta.pids'].nil?
+    end unless client_node[metadata_name].nil?
     client_node[metadata_name]['meta.unixnames'].each do |unixname|
       metadata_unixnames.push(unixname)
-    end unless client_node[metadata_name]['meta.unixnames'].nil?
+    end unless client_node[metadata_name].nil?
   end
   client_node['tags'].each do |tag|
     tags.push(tag)
