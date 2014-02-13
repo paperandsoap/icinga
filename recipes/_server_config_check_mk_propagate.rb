@@ -68,8 +68,6 @@ nodes.each do |client_node|
 end
 os_list.sort.uniq
 tags.sort.uniq
-metadata_pids.sort.uniq
-metadata_unixnames.sort.uniq
 
 # manual hosts
 manual_hosts = []
