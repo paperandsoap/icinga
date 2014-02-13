@@ -50,7 +50,7 @@ os_list = []
 metadata_pids = []
 metadata_unixnames = []
 
-# rubocop disable:LineLength
+# rubocop:disable LineLength
 nodes.each do |client_node|
   if node['check_mk']['metadata']['enabled']
     metadata_name = node['check_mk']['metadata']['name']
@@ -71,7 +71,7 @@ os_list.sort.uniq
 tags.sort.uniq
 metadata_pids.sort.uniq
 metadata_unixnames.sort.uniq
-# rubocop enable:LineLength
+# rubocop:enable LineLength
 
 # manual hosts
 manual_hosts = []
