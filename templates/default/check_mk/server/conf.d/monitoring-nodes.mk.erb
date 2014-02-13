@@ -4,10 +4,10 @@ all_hosts += [
   <% if node['check_mk']['metadata']['enabled']
     client_node[node['check_mk']['metadata']['name']]['meta.pids'].each do |pid|
       meta_host_tags.push(pid)
-    end
+    end unless client_node[node['check_mk']['metadata']['name']].nil?
     client_node[node['check_mk']['metadata']['name']]['meta.unixnames'].each do |unixname|
       meta_host_tags.push(unixname)
-    end
+    end unless client_node[node['check_mk']['metadata']['name']].nil?
   end %>
     '<%= client_node['hostname'] %>|all|<%= meta_host_tags.join("|") %>|<% unless client_node['lsb'].nil? %><%= client_node['lsb']['codename'] %>|<%end %>site:<%= node['hostname'] %>|<%= client_node['os'] %>|<%= client_node.chef_environment %>|<%= client_node['roles'].join("|") %>|<%= client_node['tags'].join("|") %>',
 <% end -%>
