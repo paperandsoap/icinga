@@ -3,6 +3,14 @@
     "description":"Icinga Monitoring client",
     "json_class":"Chef::Role",
     "default_attributes":{
+      "bigpoint": {
+        "meta.pids": [
+          "0333", "0444"
+        ],
+        "meta.unixnames": [
+          "narf", "zort"
+        ]
+      }
     },
     "override_attributes":{
     },

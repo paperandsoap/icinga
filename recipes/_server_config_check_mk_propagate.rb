@@ -50,16 +50,17 @@ os_list = []
 metadata_pids = []
 metadata_unixnames = []
 
+# rubocop:disable LineLength
 nodes.each do |client_node|
   if node['check_mk']['metadata']['enabled']
-    metadata_name = client_node['check_mk']['metadata']['name']
+    metadata_name = node['check_mk']['metadata']['name']
 
     client_node[metadata_name]['meta.pids'].each do |pid|
       metadata_pids.push(pid)
-    end unless client_node[metadata_name].nil?
+    end unless client_node[metadata_name]['meta.pids'].empty? unless client_node[metadata_name].nil?
     client_node[metadata_name]['meta.unixnames'].each do |unixname|
       metadata_unixnames.push(unixname)
-    end unless client_node[metadata_name].nil?
+    end unless client_node[metadata_name]['meta.unixnames'].empty? unless client_node[metadata_name].nil?
   end
   client_node['tags'].each do |tag|
     tags.push(tag)
@@ -68,6 +69,9 @@ nodes.each do |client_node|
 end
 os_list.sort.uniq
 tags.sort.uniq
+metadata_pids.sort.uniq
+metadata_unixnames.sort.uniq
+# rubocop:enable LineLength
 
 # manual hosts
 manual_hosts = []

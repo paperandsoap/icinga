@@ -20,6 +20,12 @@ platforms:
       memory: 1024
 
 suites:
+  - name: icinga-client
+    data_bags_path: "test/integration/default/data_bags"
+    run_list:
+      - role[monitoring-client]
+    attributes:
+      set_fqdn: "icinga-client-01.local"
   - name: icinga
     data_bags_path: "test/integration/default/data_bags"
     #encrypted_data_bag_secret_key_path: "test/integration/default/encrypted_data_bag_secret"
