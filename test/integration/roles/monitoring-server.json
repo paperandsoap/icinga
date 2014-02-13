@@ -9,7 +9,19 @@
                 "443"
             ]
         },
+        "bigpoint": {
+          "meta.pids": [
+            "0792"
+          ],
+          "meta.unixnames": [
+            "admin"
+          ]
+        },
         "check_mk": {
+            "metadata": {
+              "enabled": true,
+              "name": "bigpoint"
+            },
             "manual_checks": {
               "hosts": [
                 { 

@@ -1,6 +1,15 @@
 all_hosts += [
 <% @nodes.each do |client_node| -%>
-  '<%= client_node['hostname'] %>|all|<% unless client_node['lsb'].nil? %><%= client_node['lsb']['codename'] %>|<%end %>site:<%= node['hostname'] %>|<%= client_node['os'] %>|<%= client_node.chef_environment %>|<%= client_node['roles'].join("|") %>|<%= client_node['tags'].join("|") %>',
+  <% if node['check_mk']['metadata']['enabled']
+    meta_host_tags = []
+    client_node[node['check_mk']['metadata']['name']]['meta.pids'].each do |pid|
+      meta_host_tags.push(pid)
+    end
+    client_node[node['check_mk']['metadata']['name']]['meta.unixnames'].each do |unixname|
+      meta_host_tags.push(unixname)
+    end
+  end %>
+    '<%= client_node['hostname'] %>|all|<%= meta_host_tags.join("|") %>|<% unless client_node['lsb'].nil? %><%= client_node['lsb']['codename'] %>|<%end %>site:<%= node['hostname'] %>|<%= client_node['os'] %>|<%= client_node.chef_environment %>|<%= client_node['roles'].join("|") %>|<%= client_node['tags'].join("|") %>',
 <% end -%>
 <% @manual_nodes.each do |manual_node| -%>
   '<%= manual_node['hostname'] %>|all|<% manual_node['hosttags'].each do |hosttag| %><%= hosttag %>|<% end unless manual_node['hosttags'].nil? -%><%= manual_node['environment'] %>',
