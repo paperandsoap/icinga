@@ -23,6 +23,10 @@ default['check_mk']['isMaster'] = 'False'
 # Custom configurations
 default['check_mk']['config'] = nil
 
+# Metadata parsing
+default['check_mk']['metadata']['enabled'] = false
+default['check_mk']['metadata']['name'] = 'mycompany'
+
 # Manual hosts & checks
 default['check_mk']['manual_checks']['hosts'] = []
 default['check_mk']['manual_checks']['checks'] = []

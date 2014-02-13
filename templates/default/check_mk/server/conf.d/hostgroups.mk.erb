@@ -20,4 +20,14 @@ host_groups += [
 <% @os_list.each do |tmp| -%>
     ( 'os: <%= tmp %>', [ '<%= tmp %>' ], ALL_HOSTS ),
 <% end -%>
+
+<% if node['check_mk']['metadata']['enabled'] %>
+    # Chef metadata attached to machines
+  <% @metadata_pids.each do |tmp| -%>
+    ( 'pid: <%= tmp %>', [ '<%= tmp %>' ], ALL_HOSTS ),
+  <% end -%>
+  <% @metadata_unixnames.each do |tmp| -%>
+    ( 'unixname: <%= tmp %>', [ '<%= tmp %>' ], ALL_HOSTS ),
+  <% end -%>
+<% end %>
 ]
