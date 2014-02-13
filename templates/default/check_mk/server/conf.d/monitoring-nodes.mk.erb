@@ -1,7 +1,7 @@
 all_hosts += [
 <% @nodes.each do |client_node| -%>
+  meta_host_tags = []
   <% if node['check_mk']['metadata']['enabled']
-    meta_host_tags = []
     client_node[node['check_mk']['metadata']['name']]['meta.pids'].each do |pid|
       meta_host_tags.push(pid)
     end
