@@ -11,10 +11,10 @@
         },
         "bigpoint": {
           "meta.pids": [
-            "0792"
+            "0792", "0804"
           ],
           "meta.unixnames": [
-            "admin"
+            "admin", "moep"
           ]
         },
         "check_mk": {
