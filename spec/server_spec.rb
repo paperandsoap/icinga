@@ -34,20 +34,6 @@ require 'chefspec'
 
       # Required for template file name
       runner.node.set['check_mk'] = {
-        'legacy' => {
-          'checks' => {
-            'apache2::mod_ssl' => { 'name' => 'check-http', 'opts' => '-p 443 -S',
-                                    'alias' => 'Legacy_HTTPs', 'perfdata' => 'True' },
-            'apache2' => { 'name' => 'check-http', 'opts' => '-p 80',
-                           'alias' => 'Legacy_HTTP', 'perfdata' => 'True' }
-          },
-          'commands' => {
-            'check-http' => { 'name' => 'check-http',
-                              'line' => '$USER1$/check_http -I $HOSTADDRESS$ $ARG1$' },
-            'check-tcp' => { 'name' => 'check-tcp',
-                             'line' => '$USER1$/check_tcp -H $HOSTADDRESS$ $ARG1$' }
-          }
-        },
         'config' => {
           'ignored_services' => [
             'ALL_HOSTS, [ "Monitoring" ]',
@@ -154,12 +140,6 @@ require 'chefspec'
       expect(chef_run.remote_file(
         "#{Chef::Config[:file_cache_path]}/check_mk-#{chef_run.node['check_mk']['version']}.tar.gz")
       ).to notify('bash[build_check_mk]').to(:run)
-    end
-
-    %w(redis).each do |check|
-      it "should create service check #{check}" do
-        expect(chef_run).to render_file "/usr/share/check_mk/checks/#{check}"
-      end
     end
 
     # Check file and directory ownerships

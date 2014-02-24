@@ -113,18 +113,11 @@ when 'linux'
     notifies :reload, 'service[xinetd]'
   end
 
-  %w(apache_status mk_jolokia mk_mysql mk_postgres mk_redis).each do |plugin|
+  %w(mk_mysql mk_postgres).each do |plugin|
     cookbook_file "#{node['check_mk']['setup']['agentslibdir']}/plugins/#{plugin}" do
       source "plugins/linux/#{plugin}"
       mode 0750
     end
-  end
-
-  template "#{node['check_mk']['setup']['confdir']}/jolokia.cfg" do
-    source 'check_mk/client/plugin_configs/jolokia.cfg.erb'
-    owner 'root'
-    group 'root'
-    mode 0640
   end
 
 when 'windows'
