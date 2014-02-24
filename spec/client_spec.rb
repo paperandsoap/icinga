@@ -70,11 +70,8 @@ require 'chefspec'
     end
 
     # Check all files are copied
-    %w(/usr/lib/check_mk_agent/plugins/apache_status
-       /usr/lib/check_mk_agent/plugins/mk_jolokia
-       /usr/lib/check_mk_agent/plugins/mk_mysql
+    %w(/usr/lib/check_mk_agent/plugins/mk_mysql
        /usr/lib/check_mk_agent/plugins/mk_postgres
-       /usr/lib/check_mk_agent/plugins/mk_redis
     ).each do |file|
       it "should copy file #{file}" do
         expect(@chef_run).to render_file file

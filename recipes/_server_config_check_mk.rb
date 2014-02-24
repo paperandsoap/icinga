@@ -159,11 +159,3 @@ node['check_mk']['config'].sort.each do |config, data|
     variables('variable' => config)
   end
 end unless node['check_mk']['config'].nil?
-
-# Additional service checks
-%w( redis ).each do |check|
-  cookbook_file "#{node['check_mk']['setup']['sharedir']}/checks/#{check}" do
-    source "checks/#{check}"
-    mode 0644
-  end
-end
