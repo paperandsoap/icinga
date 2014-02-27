@@ -22,7 +22,8 @@ hosttags.each do |hosttag|
   pids.push(hosttag) if hosttag.is_number?
 end
 
-environment = 'TEST'
+environment = 'UNKNOWN'
+environment = hosttags[4] unless hosttags.empty?
 
 notify_event = ''
 notify_event = host_state + '|' + service_state + ':' + service_check + '@' + host + '.' + environment + '#' + pids.join('&')
