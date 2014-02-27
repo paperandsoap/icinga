@@ -20,8 +20,7 @@ end
 environment = 'UNKNOWN'
 environment = hosttags[4] unless hosttags.empty?
 
-notify_message = ''
-notify_message = message + ENV['NOTIFY_HOSTOUTPUT'].to_s + '\r\n' + ENV['NOTIFY_SERVICEOUTPUT'].to_s
+notify_message = ENV['NOTIFY_HOSTOUTPUT'].to_s + '\r\n' + ENV['NOTIFY_SERVICEOUTPUT'].to_s
 
 notify_event = ''
 notify_event = host_state + '|' + service_state + ':' + service_check + '@' + host + '.' + environment + '#' + pids.join('&')
