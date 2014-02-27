@@ -4,17 +4,28 @@ require('httparty')
 base_uri = '<%= @node['check_mk']['notifications']['nawom']['url'] %>'
 base_uri << '/' << '<%= @node['check_mk']['notifications']['nawom']['api_version'] %>' << '/event/'
 
+def is_number?(obj)
+  obj.to_s == obj.to_i.to_s
+end
+
 # pattern: HOSTSTATE|SERVICESTATE:SERVICECHECK@HOST.ENVIRONMENT#PID&PID
+# DOWN|$SERVICESTATE$:$SERVICECHECKCOMMAND$@srv039234.#all 0706 portal2 wheezy site:srv039110 linux pinf601 base nginx-p1-lb
 host_state = ENV['NOTIFY_HOSTSTATE'].to_s
 service_state = ENV['NOTIFY_SERVICESTATE'].to_s
 service_check = ENV['NOTIFY_SERVICECHECKCOMMAND'].to_s
 host = ENV['NOTIFY_HOSTNAME'].to_s
 hosttags = ENV['NOTIFY_HOSTTAGS'].to_s
-environment = ''
-pids = hosttags
+hosttags = hosttags.split(' ')
+
+pids = []
+hosttags.each do |hosttag|
+  pids.push(hosttag) if hosttag.is_number?
+end
+
+environment = 'TEST'
 
 notify_event = ''
-notify_event = host_state + '|' + service_state + ':' + service_check + '@' + host + '.' + environment + '#' + pids
+notify_event = host_state + '|' + service_state + ':' + service_check + '@' + host + '.' + environment + '#' + pids.join('&')
 
 ex_event = {:name => notify_event, :occured_at => Time.now.getutc.to_i, :message => ''}
 ex_event = JSON.generate(ex_event)
