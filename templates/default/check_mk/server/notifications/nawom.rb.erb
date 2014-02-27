@@ -14,7 +14,7 @@ hosttags = hosttags.split(" ")
 
 pids = []
 hosttags.each do |hosttag|
-  pids.push(hosttag) if hosttag.to_s == hosttag.to_i.to_s
+  pids.push(hosttag) unless hosttag.to_i == 0
 end
 
 environment = 'UNKNOWN'
