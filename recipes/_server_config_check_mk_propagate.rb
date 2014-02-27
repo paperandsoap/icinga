@@ -153,7 +153,7 @@ template '/usr/share/check_mk/notifications/nawom.rb' do
   mode 0770
 end
 
-gem_package "httparty" do
+gem_package 'httparty' do
   action :install
   ignore_failure true
 end
