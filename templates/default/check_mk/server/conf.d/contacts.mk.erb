@@ -25,6 +25,14 @@ contacts.update(
                                     'plugin': 'sms.php',
                                     'service_events': ['u','c'],
                                     'timeperiod': 'oncall'
+                                },
+                                {
+                                    'disabled': <%= user['icinga']['notifications']['nawom']['disabled'] %>,
+                                    'host_events': ['d', 'u'],
+                                    'parameters': [],
+                                    'plugin': 'nawom.rb',
+                                    'service_events': ['u','c'],
+                                    'timeperiod': '24X7'
                                 }]
                             ),
       'notification_period': '24X7',

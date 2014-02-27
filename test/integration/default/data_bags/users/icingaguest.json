@@ -14,6 +14,9 @@
           },
           "sms"     : {
               "disabled" : "True"
+          },
+          "nawom"   : {
+              "disabled" : "True"
           }
       }
   }
