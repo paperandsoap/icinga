@@ -145,3 +145,15 @@ template '/usr/share/check_mk/notifications/sms.php' do
   group node['icinga']['group']
   mode 0770
 end
+
+template '/usr/share/check_mk/notifications/nawom.rb' do
+  source 'check_mk/server/notifications/nawom.rb.erb'
+  owner node['icinga']['user']
+  group node['icinga']['group']
+  mode 0770
+end
+
+gem_package 'httparty' do
+  action :install
+  ignore_failure true
+end
