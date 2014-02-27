@@ -2,23 +2,23 @@
 require('httparty')
 
 base_uri = '<%= @node['check_mk']['notifications']['nawom']['url'] %>'
-base_uri << '/' << <%= @node['check_mk']['notifications']['nawom']['api_version'] %> << '/event/'
+base_uri << '/' << '<%= @node['check_mk']['notifications']['nawom']['api_version'] %>' << '/event/'
 
 # pattern: HOSTSTATE|SERVICESTATE:SERVICECHECK@HOST.ENVIRONMENT#PID&PID
-host_state = ENV['NOTIFY_HOSTSTATE']
-service_state = ENV['NOTIFY_SERVICESTATE']
-service_check = ENV['NOTIFY_SERVICECHECKCOMMAND']
-host = ENV['NOTIFY_HOSTNAME']
-hosttags = ENV['NOTIFY_HOSTTAGS']
+host_state = ENV['NOTIFY_HOSTSTATE'].to_s
+service_state = ENV['NOTIFY_SERVICESTATE'].to_s
+service_check = ENV['NOTIFY_SERVICECHECKCOMMAND'].to_s
+host = ENV['NOTIFY_HOSTNAME'].to_s
+hosttags = ENV['NOTIFY_HOSTTAGS'].to_s
 environment = ''
 pids = hosttags
 
-event = host_state + '|' + service_state + ':' + service_check + '@' + host + '.' + environment + '#' + pids
+notify_event = ''
+notify_event = host_state + '|' + service_state + ':' + service_check + '@' + host + '.' + environment + '#' + pids
 
-ex_event = {:name => event, :occured_at => Time.now.getutc.to_i, :message => ''}
+ex_event = {:name => notify_event, :occured_at => Time.now.getutc.to_i, :message => ''}
 ex_event = JSON.generate(ex_event)
 
 options = { :body => { :event => ex_event } }
 
 HTTParty.post(base_uri, options)
-
