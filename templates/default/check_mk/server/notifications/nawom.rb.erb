@@ -4,7 +4,7 @@ require('httparty')
 base_uri = '<%= @node['check_mk']['notifications']['nawom']['url'] %>'
 base_uri << '/' << '<%= @node['check_mk']['notifications']['nawom']['api_version'] %>' << '/event/'
 
-# pattern: HOSTSTATE|SERVICESTATE:SERVICECHECK@HOST.ENVIRONMENT#PID&PID
+# pattern: HOSTSTATE|SERVICESTATE:SERVICECHECK@HOST.ENVIRONMENT#HOSTTAG&HOSTTAG
 host_state = ENV['NOTIFY_HOSTSTATE'].to_s
 service_state = ENV['NOTIFY_SERVICESTATE'].to_s
 service_check = ENV['NOTIFY_SERVICECHECKCOMMAND'].to_s
@@ -12,9 +12,10 @@ host = ENV['NOTIFY_HOSTNAME'].to_s
 hosttags = ENV['NOTIFY_HOSTTAGS'].to_s
 hosttags = hosttags.split(" ")
 
-pids = []
-hosttags.each do |hosttag|
-  pids.push(hosttag) unless hosttag.to_i == 0
+# first 5 hosttags are always the same: all|PLATFORM|MULTISITESITE|OS|ENVIRONMENT
+hosttags_to_push = []
+hosttags.each.with_index(1) do |hosttag, i|
+  hosttags_to_push.push(hosttag) if i > 5
 end
 
 environment = 'UNKNOWN'
@@ -23,7 +24,7 @@ environment = hosttags[4] unless hosttags.empty?
 notify_message = ENV['NOTIFY_HOSTOUTPUT'].to_s + '\r\n' + ENV['NOTIFY_SERVICEOUTPUT'].to_s
 
 notify_event = ''
-notify_event = host_state + '|' + service_state + ':' + service_check + '@' + host + '.' + environment + '#' + pids.join('&')
+notify_event = host_state + '|' + service_state + ':' + service_check + '@' + host + '.' + environment + '#' + hosttags_to_push.join('&')
 
 ex_event = {:name => notify_event, :occured_at => Time.now.getutc.to_i, :message => notify_message}
 ex_event = JSON.generate(ex_event)
