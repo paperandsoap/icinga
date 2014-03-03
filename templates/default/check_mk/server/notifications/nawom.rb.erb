@@ -12,14 +12,14 @@ host = ENV['NOTIFY_HOSTNAME'].to_s
 hosttags = ENV['NOTIFY_HOSTTAGS'].to_s
 hosttags = hosttags.split(" ")
 
-# first 5 hosttags are always the same: all|PLATFORM|MULTISITESITE|OS|ENVIRONMENT
+# first 4 hosttags are always the same: all|MULTISITESITE|OS|ENVIRONMENT
 hosttags_to_push = []
 hosttags.each.with_index(1) do |hosttag, i|
-  hosttags_to_push.push(hosttag) if i > 5
+  hosttags_to_push.push(hosttag) if i > 4
 end
 
 environment = 'UNKNOWN'
-environment = hosttags[4] unless hosttags.empty?
+environment = hosttags[3] unless hosttags.empty?
 
 notify_message = ENV['NOTIFY_HOSTOUTPUT'].to_s + '\r\n' + ENV['NOTIFY_SERVICEOUTPUT'].to_s
 
