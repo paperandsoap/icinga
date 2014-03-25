@@ -19,10 +19,10 @@
 
 # Install required packages based on platform
 pkgs = value_for_platform_family(
-  'windows' => %w{ },
-  'rhel' => %w{ xinetd ethtool },
-  'debian' => %w{ xinetd ethtool },
-  'default' => %w{ xinetd ethtool }
+  'windows' => %w( ),
+  'rhel' => %w( xinetd ethtool ),
+  'debian' => %w( xinetd ethtool ),
+  'default' => %w( xinetd ethtool )
 )
 pkgs.each do |pkg|
   package pkg do
