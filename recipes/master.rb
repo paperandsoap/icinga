@@ -22,7 +22,7 @@ include_recipe 'icinga::client'
 include_recipe 'apache2::mod_proxy'
 include_recipe 'apache2::mod_proxy_http'
 
-if %w{ debian ubuntu }.member? node['platform']
+if %w( debian ubuntu ).member? node['platform']
 
   if Chef::Config[:solo]
     nodes = search(:node, 'role:monitoring-server')
