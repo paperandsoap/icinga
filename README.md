@@ -361,7 +361,7 @@ Vagrantfile
 Please ensure you have forwarded port 443 to your local machine to access the WebUI.
 No other special settings are required in the Vagrantfile for this cookbook to work.
 
-# Exmaple Vagrantfile
+# Example Vagrantfile
 
 This vagrantfile is used while testing the cookbook functionality. When
 using the data bags explained above you should be able to get it going
