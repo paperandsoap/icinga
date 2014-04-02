@@ -17,7 +17,7 @@ if_inventory_uses_alias = True
 if_inventory_monitor_speed = True
 
 # Global filesystem default levels
-filesystem_default_levels["levels"] = ( 90, 95 )
+filesystem_default_levels["levels"] = ( <%= @node['check_mk']['filesystem']['default_levels']['warning'] %>, <%= @node['check_mk']['filesystem']['default_levels']['critical'] %> )
 
 # Ignore ipmi entries with no records
 ipmi_ignore_nr = True

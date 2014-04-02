@@ -137,3 +137,5 @@ default['check_mk']['legacy']['commands'] = {
         'line' => '$USER1$/check_tcp -H $HOSTADDRESS$ $ARG1$'
     }
 }
+default['check_mk']['filesystem']['default_levels']['warning'] = 90.0
+default['check_mk']['filesystem']['default_levels']['critical'] = 95.0
