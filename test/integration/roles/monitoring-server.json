@@ -22,6 +22,17 @@
               "enabled": true,
               "name": "bigpoint"
             },
+            "vsphere": {
+              "enabled": true,
+              "user": "user",
+              "password": "password",
+              "hosts": [
+                {
+                  "hostname": "esxhost1",
+                  "ipaddress": "10.7.0.10"
+                }
+              ]
+            },
             "manual_checks": {
               "hosts": [
                 { 
@@ -30,8 +41,15 @@
                   "environment": "_default",
                   "hosttags": ["snmp"],
                   "default_hosttag": "snmp"
-      		      }
-                  ],
+                },
+                {
+                  "hostname": "esxhost1",
+                  "ipaddress": "10.7.0.10",
+                  "environment": "_default",
+                  "hosttags": ["tcp"],
+                  "default_hosttag": "tcp"
+                }
+              ],
               "checks": [
                 {
                   "hostnames": ["localhost"],
