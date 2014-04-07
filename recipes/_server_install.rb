@@ -30,7 +30,7 @@ if ['debian'].member? node['platform']
 
   # Install graphios if enabled
   include_recipe 'icinga::_server_install_graphios' if node['check_mk']['graphios']['enabled']
-  
+
   # Install vsphere monitoring if enabled
   include_recipe 'icinga::_server_install_vsphere' if node['check_mk']['vsphere']['enabled']
 end
