@@ -31,6 +31,13 @@ default['check_mk']['metadata']['name'] = 'mycompany'
 default['check_mk']['manual_checks']['hosts'] = []
 default['check_mk']['manual_checks']['checks'] = []
 
+# Enable vsphere monitoring?
+default['check_mk']['vsphere']['enabled'] = false
+default['check_mk']['vsphere']['user'] = 'user'
+default['check_mk']['vsphere']['password'] = 'password'
+default['check_mk']['vsphere']['modules'] = 'hostsystem,virtualmachine,datastore,counters'
+default['check_mk']['vsphere']['hosts'] = []
+
 # Enable graphios (perfdata to graphite)?
 default['check_mk']['graphios']['enabled'] = false
 default['check_mk']['graphios']['graphite_prefix'] = 'check_mk'
