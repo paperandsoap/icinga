@@ -1,12 +1,13 @@
 AllCops:
   Exclude:
+    - Rakefile
     - bin/**
     - vendor/**
     - attributes/**
     - Cheffile
     - Berksfile
     - metadata.rb
-    - cookbooks/**
+    - cookbooks/**/*
 
 LineLength:
   Max: 100

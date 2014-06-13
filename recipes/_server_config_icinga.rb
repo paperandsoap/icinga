@@ -27,11 +27,11 @@ template '/etc/icinga/icinga.cfg' do
 end
 
 # Remove some default files
-%w(/etc/icinga/objects/extinfo_icinga.cfg
-   /etc/icinga/objects/hostgroups_icinga.cfg
-   /etc/icinga/objects/localhost_icinga.cfg
-   /etc/icinga/objects/services_icinga.cfg
-  ).each do |f|
+%w( /etc/icinga/objects/extinfo_icinga.cfg
+    /etc/icinga/objects/hostgroups_icinga.cfg
+    /etc/icinga/objects/localhost_icinga.cfg
+    /etc/icinga/objects/services_icinga.cfg
+).each do |f|
   file f do
     action :delete
   end

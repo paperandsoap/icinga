@@ -25,7 +25,7 @@ version = node['check_mk']['version']
 
 # Source of check_mk
 remote_file "#{Chef::Config[:file_cache_path]}/check_mk-#{version}.tar.gz" do
-  source "#{node["check_mk"]["url"]}/check_mk-#{version}.tar.gz"
+  source "#{node['check_mk']['url']}/check_mk-#{version}.tar.gz"
   mode '0644'
   checksum node['check_mk']['source']['tar']['checksum']
   action :create_if_missing
