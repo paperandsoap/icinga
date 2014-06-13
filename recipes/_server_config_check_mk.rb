@@ -149,7 +149,7 @@ template '/etc/check_mk/conf.d/global-configuration.mk' do
 end
 
 # Simple configuration
-node['check_mk']['config'].sort.each do |config, data|
+node['check_mk']['config'].sort.each do |config, _data|
   template "/etc/check_mk/conf.d/#{config}.mk" do
     source 'check_mk/server/conf.d/simple-config.mk.erb'
     owner node['icinga']['user']

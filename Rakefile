@@ -1,3 +1,4 @@
+# encoding: utf-8
 require 'chef/cookbook/metadata'
 require 'ci/reporter/rake/rspec'
 
@@ -50,7 +51,7 @@ task :rubocop do
 end
 
 desc 'Run all tests'
-task :test => [:knife, :foodcritic, :rubocop]
+task :test => [:knife, :foodcritic, :rubocop, :chefspec]
 # @TODO readd chef-spec once we find the rootcause for not finding recipes
 
 # Default, test everything
@@ -61,15 +62,3 @@ task :lint => :foodcritic
 
 # Cleanup testing cookbooks
 at_exit { rm_rf COOKBOOKS_PATH }
-
-begin
-  require 'kitchen/rake_tasks'
-  Kitchen::RakeTasks.new
-  
-  desc "Alias for kitchen:all"
-  task :integration => "kitchen:all"
-
-  task :test => :integration
-rescue LoadError
-  puts ">>>>> Kitchen gem not loaded, omitting tasks" unless ENV['CI']
-end

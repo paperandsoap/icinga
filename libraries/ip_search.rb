@@ -29,7 +29,7 @@ def private_addresse_for_node(node_def)
     end
   end
 
-  node_def['network']['interfaces'].each_pair do |ifname, ifdata|
+  node_def['network']['interfaces'].each_pair do |_ifname, ifdata|
     ifdata['addresses'].nil? && next
     ifdata['addresses'].keys.each do |ip_str|
       return ip_str if private_ip?(ip_str)

@@ -37,7 +37,7 @@ end
 # create graphios commands file
 # rubocop:disable LineLength
 template node['icinga']['setup']['config']['cfg_dir']['nagios_plugins'] + '/' + node['check_mk']['graphios']['commands_file'] do
-# rubocop:enable LineLength
+  # rubocop:enable LineLength
   source 'check_mk/server/graphios/graphios_commands.cfg.erb'
   owner 'root'
   group 'root'
@@ -82,8 +82,8 @@ end
 
 # graphios service
 service 'graphios' do
-# rubocop:disable HashSyntax
+  # rubocop:disable HashSyntax
   supports :status => true
-# rubocop:enable HashSyntax
+  # rubocop:enable HashSyntax
   action [:enable, :start]
 end

@@ -5,6 +5,16 @@
 sites = \
 {
 <% @nodes.each do |monitoring_node| -%>
+  <%
+    # There may be cases that we wish to overwrite a nodes ipaddress with a meta supplied one
+    ipaddress = monitoring_node['ipaddress']
+    if !monitoring_node['check_mk']['metadata'].nil?
+      meta_name = monitoring_node['check_mk']['metadata']['name']
+      if monitoring_node['check_mk']['metadata']['enabled'] && !monitoring_node[meta_name].nil?
+        ipaddress = monitoring_node[meta_name]['meta.ipaddress'] unless monitoring_node[meta_name]['meta.ipaddress'].nil?
+      end
+    end
+  %>
     '<%= monitoring_node['fqdn'] %>':
     {
     'alias': u'<%= monitoring_node.chef_environment %>',
@@ -14,7 +24,7 @@ sites = \
     'persist': False,
     'repl_priority': 0,
     'timeout': 10,
-    'socket': 'tcp:<%= monitoring_node['ipaddress'] %>:6557',
+    'socket': 'tcp:<%= ipaddress %>:6557',
     'url_prefix': '/<%= monitoring_node.chef_environment %>/'
     },
 <% end -%>

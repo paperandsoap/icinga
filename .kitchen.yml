@@ -22,41 +22,41 @@ platforms:
 
 suites:
   - name: icinga-client
-    data_bags_path: "test/integration/default/data_bags"
     run_list:
       - role[monitoring-client]
     attributes:
       set_fqdn: "icinga-client-01.local"
-  - name: icinga
-    data_bags_path: "test/integration/default/data_bags"
-    #encrypted_data_bag_secret_key_path: "test/integration/default/encrypted_data_bag_secret"
+  - name: icinga-server
     run_list:
       - role[monitoring-server]
       - recipe[exim4-light]
     attributes:
       set_fqdn: "icinga-server-01.local"
-      check_mk: 
-        groups: 
+      check_mk:
+        groups:
           - "check-mk-admin"
           - "check-mk-guest"
         isMaster: "False"
-        config: 
-          ignored_services: 
+        config:
+          ignored_services:
             - "ALL_HOSTS, [ \"Monitoring\" ]"
-          ignored_checks: 
+          ignored_checks:
             - "[ \"mysql_capacity\" ], ALL_HOSTS"
-        notifications: 
-          email: 
+        notifications:
+          email:
             disabled: "True"
-          sms: 
+          sms:
             disabled: "True"
-        exim4: 
+        exim4:
           configtype: "internet"
-        pnp4nagios: 
-          htpasswd: 
+        pnp4nagios:
+          htpasswd:
             file: "/etc/icinga/htpasswd.users"
-        rrdcached: 
-          config: 
+        rrdcached:
+          config:
             options: "-s nagios -m 0660 -l unix:/var/run/rrdcached/rrdcached.sock -F -w 1800 -z 1800"
             socket: "unix:/var/run/rrdcached rrdcached.sock"
-
+  - name: icinga-master
+    run_list:
+      - role[monitoring-master]
+      - recipe[exim4-light]

@@ -12,6 +12,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+
+require 'rspec/expectations'
 require 'chefspec'
 
 { 'debian' => '7.1', 'centos' => '6.4' }.each do |platform, version|
