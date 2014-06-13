@@ -1,77 +1,77 @@
 {
-    "name":"monitoring-server",
-    "description":"Icinga Monitoring Host",
-    "json_class":"Chef::Role",
-    "default_attributes":{
-        "apache2":{
-            "listen_ports":[
-                "80",
-                "443"
-            ]
-        },
-        "bigpoint": {
-          "meta.pids": [
-            "0792", "0804"
-          ],
-          "meta.unixnames": [
-            "admin", "moep"
-          ]
-        },
-        "check_mk": {
-            "metadata": {
-              "enabled": true,
-              "name": "bigpoint"
-            },
-            "vsphere": {
-              "enabled": true,
-              "user": "user",
-              "password": "password",
-              "hosts": [
-                {
-                  "hostname": "esxhost1",
-                  "ipaddress": "10.7.0.10"
-                }
-              ]
-            },
-            "manual_checks": {
-              "hosts": [
-                { 
-                  "hostname": "localhost",
-                  "ipaddress": "127.0.0.1",
-                  "environment": "_default",
-                  "hosttags": ["snmp"],
-                  "default_hosttag": "snmp"
-                },
-                {
-                  "hostname": "esxhost1",
-                  "ipaddress": "10.7.0.10",
-                  "environment": "_default",
-                  "hosttags": ["tcp"],
-                  "default_hosttag": "tcp"
-                }
-              ],
-              "checks": [
-                {
-                  "hostnames": ["localhost"],
-                  "check_type": "df",
-                  "check_item": "/",
-                  "check_warn": 80,
-                  "check_crit": 90
-                }
-              ]
-            }
+  "name":"monitoring-server",
+  "description":"Icinga Monitoring Host",
+  "json_class":"Chef::Role",
+  "default_attributes":{
+    "apache2":{
+      "listen_ports":[
+        "80",
+        "443"
+      ]
+    },
+    "bigpoint": {
+      "meta.pids": [
+        "0792", "0804"
+      ],
+      "meta.unixnames": [
+        "admin", "moep"
+      ]
+    },
+    "check_mk": {
+      "metadata": {
+        "enabled": true,
+        "name": "bigpoint"
+      },
+      "vsphere": {
+        "enabled": true,
+        "user": "user",
+        "password": "password",
+        "hosts": [
+          {
+          "hostname": "esxhost1",
+          "ipaddress": "10.7.0.10"
         }
-    },
-    "override_attributes":{
-    },
-    "chef_type":"role",
-    "run_list":[
-        "recipe[apache2]",
-        "recipe[apache2::mod_ssl]",
-        "recipe[icinga::server]",
-        "recipe[icinga::client]"
-    ],
-    "env_run_lists":{
-    },
-    "_rev":"4-c82859239100d64b25f2d121baa4cfd2"
+        ]
+      },
+      "manual_checks": {
+        "hosts": [
+          {
+          "hostname": "localhost",
+          "ipaddress": "127.0.0.1",
+          "environment": "_default",
+          "hosttags": ["snmp"],
+          "default_hosttag": "snmp"
+        },
+        {
+          "hostname": "esxhost1",
+          "ipaddress": "10.7.0.10",
+          "environment": "_default",
+          "hosttags": ["tcp"],
+          "default_hosttag": "tcp"
+        }
+        ],
+        "checks": [
+          {
+          "hostnames": ["localhost"],
+          "check_type": "df",
+          "check_item": "/",
+          "check_warn": 80,
+          "check_crit": 90
+        }
+        ]
+      }
+    }
+  },
+  "override_attributes":{
+  },
+  "chef_type":"role",
+  "run_list":[
+    "recipe[apache2]",
+    "recipe[apache2::mod_ssl]",
+    "recipe[icinga::server]",
+    "recipe[icinga::client]"
+  ],
+  "env_run_lists":{
+  },
+  "_rev":"4-c82859239100d64b25f2d121baa4cfd2"
 }

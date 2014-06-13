@@ -1,26 +1,37 @@
 {
-    "name":"monitoring-master",
-    "description":"Icinga Monitoring Host and Master",
-    "json_class":"Chef::Role",
-    "default_attributes":{
-        "apache2":{
-            "listen_ports":[
-                "80",
-                "443"
-            ]
-        }
+  "name":"monitoring-master",
+  "description":"Icinga Monitoring Host and Master",
+  "json_class":"Chef::Role",
+  "default_attributes":{
+    "apache2":{
+      "listen_ports":[
+        "80",
+        "443"
+      ]
     },
-    "override_attributes":{
+    "bigpoint": {
+      "meta.pids": [
+        "0792", "0804"
+      ],
+      "meta.unixnames": [
+        "admin", "moep"
+      ]
     },
-    "chef_type":"role",
-    "run_list":[
-        "recipe[apache2]",
-        "recipe[apache2::mod_ssl]",
-        "recipe[icinga::server]",
-        "recipe[icinga::client]",
-        "recipe[icinga::master]"
-    ],
-    "env_run_lists":{
-    },
-    "_rev":"1-5e3c4f30f145263eb10abc5837b75803"
+    "check_mk": {
+      "isMaster": "True"
+    }
+  },
+  "override_attributes":{
+  },
+  "chef_type":"role",
+  "run_list":[
+    "recipe[apache2]",
+    "recipe[apache2::mod_ssl]",
+    "recipe[icinga::server]",
+    "recipe[icinga::client]",
+    "recipe[icinga::master]"
+  ],
+  "env_run_lists":{
+  },
+  "_rev":"1-5e3c4f30f145263eb10abc5837b75803"
 }
