@@ -110,7 +110,7 @@ require 'chefspec'
       ],
       '/etc/check_mk/conf.d/global-configuration.mk' => [
         'if_inventory_uses_alias = True', 'if_inventory_monitor_speed = True',
-        'ipmi_ignore_nr = True', 'filesystem_default_levels\["levels"\] = \( 90, 95 \)'
+        'ipmi_ignore_nr = True', 'filesystem_default_levels\["levels"\] = \( 90.0, 95.0 \)'
       ],
       '/etc/check_mk/conf.d/legacy-checks.mk' => ['command_name    check-http',
                                                   'command_name    check-tcp'],
