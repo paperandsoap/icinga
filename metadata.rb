@@ -68,7 +68,7 @@ attribute 'check_mk/groups',
           :description => 'Check_mk contact groups. Used to find users in the data bags.',
           :default => '1'
 
-depends 'build-essential', '>= 1.1.2'
+depends 'build-essential', '>= 2.0.2'
 depends 'apache2', '>= 1.1.16'
 depends 'apt'
 depends 'rrdcached'
