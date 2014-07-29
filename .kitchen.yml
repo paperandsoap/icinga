@@ -23,16 +23,20 @@ platforms:
 suites:
   - name: icinga-client
     run_list:
+      - recipe[apt]
       - role[monitoring-client]
     attributes:
       set_fqdn: "icinga-client-01.local"
   - name: icinga-server
     run_list:
+      - recipe[apt]
       - role[monitoring-server]
       - recipe[exim4-light]
     attributes:
       set_fqdn: "icinga-server-01.local"
       check_mk:
+        metadata:
+          enabled: false
         groups:
           - "check-mk-admin"
           - "check-mk-guest"
