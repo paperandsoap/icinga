@@ -12,7 +12,7 @@ all_hosts += [
     '<%= client_node['hostname'] %>|all|site:<%= node['hostname'] %>|<%= client_node['os'] %>|<%= client_node.chef_environment %>|<%= meta_host_tags.join("|") %>|<%= client_node['roles'].join("|") %>|<% unless client_node['lsb'].nil? %><%= client_node['lsb']['codename'] %>|<%end %><%= client_node['tags'].join("|") %>',
 <% end -%>
 <% @manual_nodes.each do |manual_node| -%>
-  '<%= manual_node['hostname'] %>|all|misc|site:<%= node['hostname'] %>|<% manual_node['hosttags'].each do |hosttag| %><%= hosttag %>|<% end unless manual_node['hosttags'].nil? -%><%= manual_node['environment'] %>',
+  '<%= manual_node['hostname'] %>|all|misc|site:<%= node['hostname'] %>|<%= manual_node['environment'] %><% manual_node['hosttags'].each do |hosttag| %>|<%= hosttag %><% end unless manual_node['hosttags'].nil? -%>',
 <% end -%>
 ]
 
