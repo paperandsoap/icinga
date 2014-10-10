@@ -69,7 +69,7 @@ attribute 'check_mk/groups',
           :default => '1'
 
 depends 'build-essential', '>= 2.0.2'
-depends 'apache2', '= 1.11.0'
+depends 'apache2', '< 2.0.0'
 depends 'apt'
 depends 'rrdcached'
 depends 'pnp4nagios'
