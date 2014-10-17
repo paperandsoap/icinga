@@ -64,6 +64,15 @@ when 'debian'
     provider Chef::Provider::Package::Dpkg
   end
 
+  # CVE-2014-0243
+  directory '/var/lib/check_mk_agent' do
+    user 'root'
+    group 'root'
+    action :create
+    recursive true
+    mode 0755
+  end
+
 when 'rhel'
   # Create our version string to fetch the appropriate file
   version = "#{node['check_mk']['version']}-#{node['check_mk']['rpm']['release']}"
@@ -95,6 +104,7 @@ when 'rhel'
     source "#{Chef::Config[:file_cache_path]}/check_mk-agent-logwatch-#{version}.noarch.rpm"
     provider Chef::Provider::Package::Rpm
   end
+
 end
 
 case node['os']
@@ -131,4 +141,5 @@ when 'windows'
       mode 0750
     end
   end
+
 end
