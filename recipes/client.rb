@@ -65,7 +65,7 @@ when 'debian'
   end
 
   # CVE-2014-0243
-  directory '/var/lib/check_mk_agent' do
+  directory '/var/lib/check_mk_agent/job' do
     user 'root'
     group 'root'
     action :create
