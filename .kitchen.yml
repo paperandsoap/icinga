@@ -6,7 +6,7 @@ provisioner:
   name: chef_zero
 
 platforms:
-- name: debian-7.6
+- name: debian-7.7
   driver_config:
     network:
     - ["forwarded_port", {guest: 80, host: 8080, auto_correct: true}]
