@@ -57,6 +57,27 @@ default['check_mk']['graphios']['sleep_time'] = 15
 default['check_mk']['graphios']['sleep_max'] = 480
 default['check_mk']['graphios']['test_mode'] = 'False'
 
+# Logwatch definitions
+default['check_mk']['logwatch']['entries']['/var/log/messages'] = [
+  'C Fail event detected on md device',
+  'I mdadm.*: Rebuild.*event detected',
+  'W mdadm\[',
+  'W ata.*hard resetting link',
+  'W ata.*soft reset failed (.*FIS failed)',
+  'W device-mapper: thin:.*reached low water mark',
+  'C device-mapper: thin:.*no free space',
+  'C Error: (.*)'
+]
+default['check_mk']['logwatch']['entries']['/var/log/auth.log'] = [
+  'W sshd.*Corrupted MAC on input'
+]
+default['check_mk']['logwatch']['entries']['/var/log/syslog /var/log/kern.log'] = [
+  'C panic',
+  'C oops',
+  'W generic protection rip',
+  'W .*Unrecovered read error - auto reallocate failed'
+]
+
 # Some defaults
 default['check_mk']['snmp']['public_community'] = 'public'
 default['check_mk']['snmp']['auto_discovery'] = 'False'

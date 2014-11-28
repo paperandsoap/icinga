@@ -130,6 +130,14 @@ when 'linux'
     end
   end
 
+  template '/etc/check_mk/logwatch.cfg' do
+    source 'check_mk/client/logwatch.cfg.erb'
+    owner 'root'
+    group 'root'
+    mode 0644
+    variables('entries' => node['check_mk']['logwatch']['entries'])
+  end
+
 when 'windows'
   windows_package "Check_MK Agent #{node['check_mk']['version']}" do
     source "#{node['check_mk']['url']}/check-mk-agent-#{node['check_mk']['version']}.exe"
