@@ -30,37 +30,41 @@ pkgs.each do |pkg|
   end
 end
 
+
+version = node['check_mk']['version']
+
+remote_file "#{Chef::Config[:file_cache_path]}/check_mk-#{version}.tar.gz" do
+  source "#{node['check_mk']['url']}/check_mk-#{version}.tar.gz"
+  mode '0644'
+  checksum node['check_mk']['source']['tar']['checksum']
+  action :create_if_missing
+  notifies :run, 'bash[extract_cmk_source]', :immediately
+end
+
+bash 'extract_cmk_source' do
+  cwd Chef::Config[:file_cache_path]
+  code <<-EOF
+    tar -xzf check_mk-#{version}.tar.gz
+  EOF
+  action :nothing
+  notifies :run, 'bash[extract_agents]', :immediately
+end
+
+bash 'extract_agents' do
+  cwd Chef::Config[:file_cache_path] + "/check_mk-#{version}/"
+  code <<-EOF
+    tar -xzf agents.tar.gz
+  EOF
+  action :nothing
+end
+
 # Platform specific installation path  : Debian
 case node['platform_family']
 when 'debian'
-  # Create our version string to fetch the appropriate file
-  version = "#{node['check_mk']['version']}-#{node['check_mk']['deb']['release']}"
 
-  remote_file "/var/cache/apt/archives/check-mk-agent_#{version}_all.deb" do
-    source "#{node['check_mk']['url']}/check-mk-agent_#{version}_all.deb"
-    mode '0644'
-    checksum node['check_mk']['agent']['deb']['checksum']
-    action :create_if_missing
-    notifies :install, 'package[check-mk-agent]', :immediately
-  end
-
-  remote_file "/var/cache/apt/archives/check-mk-agent-logwatch_#{version}_all.deb" do
-    source "#{node['check_mk']['url']}/check-mk-agent-logwatch_#{version}_all.deb"
-    mode '0644'
-    checksum node['check_mk']['logwatch']['deb']['checksum']
-    action :create_if_missing
-    notifies :install, 'package[check-mk-agent-logwatch]', :immediately
-  end
-
-  package 'check-mk-agent' do
-    action :nothing
-    source "/var/cache/apt/archives/check-mk-agent_#{version}_all.deb"
-    provider Chef::Provider::Package::Dpkg
-  end
-
-  package 'check-mk-agent-logwatch' do
-    action :nothing
-    source "/var/cache/apt/archives/check-mk-agent-logwatch_#{version}_all.deb"
+  package 'check-mk-agent-debian' do
+    action :install
+    source Chef::Config[:file_cache_path] + "/check_mk-#{version}/check-mk-agent_#{version}-1_all.deb"
     provider Chef::Provider::Package::Dpkg
   end
 
@@ -74,80 +78,48 @@ when 'debian'
   end
 
 when 'rhel'
-  # Create our version string to fetch the appropriate file
-  version = "#{node['check_mk']['version']}-#{node['check_mk']['rpm']['release']}"
-
-  remote_file "#{Chef::Config[:file_cache_path]}/check_mk-agent-#{version}.noarch.rpm" do
-    source "#{node['check_mk']['url']}/check_mk-agent-#{version}.noarch.rpm"
-    mode '0644'
-    checksum node['check_mk']['agent']['rpm']['checksum']
-    action :create_if_missing
-    notifies :install, 'package[check-mk-agent]', :immediately
+  package 'check-mk-agent-rhel' do
+    action :install
+    source Chef::Config[:file_cache_path] + "/check_mk-#{version}/check-mk-agent_#{version}-1.noarch.rpm"
+    provider Chef::Provider::Package::Dpkg
   end
-
-  remote_file "#{Chef::Config[:file_cache_path]}/check_mk-agent-logwatch-#{version}.noarch.rpm" do
-    source "#{node['check_mk']['url']}/check_mk-agent-logwatch-#{version}.noarch.rpm"
-    mode '0644'
-    checksum node['check_mk']['logwatch']['rpm']['checksum']
-    action :create_if_missing
-    notifies :install, 'package[check-mk-agent-logwatch]', :immediately
-  end
-
-  package 'check-mk-agent' do
-    action :nothing
-    source "#{Chef::Config[:file_cache_path]}/check_mk-agent-#{version}.noarch.rpm"
-    provider Chef::Provider::Package::Rpm
-  end
-
-  package 'check-mk-agent-logwatch' do
-    action :nothing
-    source "#{Chef::Config[:file_cache_path]}/check_mk-agent-logwatch-#{version}.noarch.rpm"
-    provider Chef::Provider::Package::Rpm
-  end
-
 end
 
-case node['os']
-when 'linux'
-  # runs /etc/init.d/xinetd (start|stop|restart), etc.
-  service 'xinetd' do
-    supports 'status' => false, 'restart' => true, 'reload' => true
-    action [:enable, :start]
-  end
+# install logwatch plugin
+bash 'install_logwatch' do
+  cwd Chef::Config[:file_cache_path] + "/check_mk-#{version}/plugins/"
+  code <<-EOF
+    cp mk_logwatch #{node['check_mk']['setup']['agentslibdir']}/plugins/
+  EOF
+  not_if { ::File.exists?("#{node['check_mk']['setup']['agentslibdir']}/plugins/mk_logwatch")}
+end
+
+# runs /etc/init.d/xinetd (start|stop|restart), etc.
+service 'xinetd' do
+  supports 'status' => false, 'restart' => true, 'reload' => true
+  action [:enable, :start]
+end
+
   # Reload xinetd if config changed
-  template '/etc/xinetd.d/check_mk' do
-    source 'check_mk/client/check_mk.erb'
-    owner 'root'
-    group 'root'
-    mode 0640
-    notifies :reload, 'service[xinetd]'
-  end
+template '/etc/xinetd.d/check_mk' do
+  source 'check_mk/client/check_mk.erb'
+  owner 'root'
+  group 'root'
+  mode 0640
+  notifies :reload, 'service[xinetd]'
+end
 
-  %w(mk_mysql mk_postgres).each do |plugin|
-    cookbook_file "#{node['check_mk']['setup']['agentslibdir']}/plugins/#{plugin}" do
-      source "plugins/linux/#{plugin}"
-      mode 0750
-    end
+%w(mk_mysql mk_postgres).each do |plugin|
+  cookbook_file "#{node['check_mk']['setup']['agentslibdir']}/plugins/#{plugin}" do
+    source "plugins/linux/#{plugin}"
+    mode 0750
   end
+end
 
-  template '/etc/check_mk/logwatch.cfg' do
-    source 'check_mk/client/logwatch.cfg.erb'
-    owner 'root'
-    group 'root'
-    mode 0644
-    variables('entries' => node['check_mk']['logwatch']['entries'])
-  end
-
-when 'windows'
-  windows_package "Check_MK Agent #{node['check_mk']['version']}" do
-    source "#{node['check_mk']['url']}/check-mk-agent-#{node['check_mk']['version']}.exe"
-    action :install
-  end
-  %w(ad_replication.bat).each do |plugin|
-    cookbook_file "C:\\Program Files (x86)\\check_mk\\plugins\\#{plugin}" do
-      source "plugins/windows/#{plugin}"
-      mode 0750
-    end
-  end
-
+template '/etc/check_mk/logwatch.cfg' do
+  source 'check_mk/client/logwatch.cfg.erb'
+  owner 'root'
+  group 'root'
+  mode 0644
+  variables('entries' => node['check_mk']['logwatch']['entries'])
 end
