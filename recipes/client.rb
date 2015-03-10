@@ -33,7 +33,7 @@ end
 %w(check-mk-agent check-mk-agent-logwatch).each do |pkg|
   package pkg do
     action :purge
-    only_if { node['platform_family'] == 'debian' }
+    only_if { node['platform_family'] == 'debian' || node['platform_family'] == 'rhel' }
   end
 end
 
@@ -70,7 +70,7 @@ when 'debian'
 
   package 'check-mk-agent-debian' do
     action :install
-    source Chef::Config[:file_cache_path] + "/check_mk-#{version}/check-mk-agent_#{version}-1_all.deb"
+    source "#{Chef::Config[:file_cache_path]}/check_mk-#{version}/check-mk-agent_#{version}-1_all.deb"
     provider Chef::Provider::Package::Dpkg
   end
 
@@ -86,18 +86,18 @@ when 'debian'
 when 'rhel'
   package 'check-mk-agent-rhel' do
     action :install
-    source Chef::Config[:file_cache_path] + "/check_mk-#{version}/check-mk-agent_#{version}-1.noarch.rpm"
+    source "#{Chef::Config[:file_cache_path]}/check_mk-#{version}/check-mk-agent_#{version}-1.noarch.rpm"
     provider Chef::Provider::Package::Dpkg
   end
 end
 
 # install logwatch plugin
 bash 'install_logwatch' do
-  cwd Chef::Config[:file_cache_path] + "/check_mk-#{version}/plugins/"
+  cwd "#{Chef::Config[:file_cache_path]}/check_mk-#{version}/plugins/"
   code <<-EOF
     cp mk_logwatch #{node['check_mk']['setup']['agentslibdir']}/plugins/
   EOF
-  not_if { ::File.exists?("#{node['check_mk']['setup']['agentslibdir']}/plugins/mk_logwatch")}
+  not_if { ::File.exist?("#{node['check_mk']['setup']['agentslibdir']}/plugins/mk_logwatch") }
 end
 
 # runs /etc/init.d/xinetd (start|stop|restart), etc.
@@ -106,7 +106,7 @@ service 'xinetd' do
   action [:enable, :start]
 end
 
-  # Reload xinetd if config changed
+# Reload xinetd if config changed
 template '/etc/xinetd.d/check_mk' do
   source 'check_mk/client/check_mk.erb'
   owner 'root'
