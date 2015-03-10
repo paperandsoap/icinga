@@ -30,11 +30,9 @@ pkgs.each do |pkg|
   end
 end
 
-%w(check-mk-agent check-mk-agent-logwatch).each do |pkg|
-  package pkg do
-    action :purge
-    only_if { node['platform_family'] == 'debian' || node['platform_family'] == 'rhel' }
-  end
+package 'check-mk-agent-logwatch' do
+  action :purge
+  only_if { node['platform_family'] == 'debian' || node['platform_family'] == 'rhel' }
 end
 
 version = node['check_mk']['version']
