@@ -84,7 +84,7 @@ when 'debian'
 when 'rhel'
   package 'check-mk-agent-rhel' do
     action :install
-    source "#{Chef::Config[:file_cache_path]}/check_mk-#{version}/check-mk-agent_#{version}-1.noarch.rpm"
+    source "#{Chef::Config[:file_cache_path]}/check_mk-#{version}/check-mk-agent-#{version}-1.noarch.rpm"
     provider Chef::Provider::Package::Rpm
   end
 end
