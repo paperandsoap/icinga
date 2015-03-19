@@ -1,4 +1,4 @@
-\# encoding: utf-8
+# encoding: utf-8
 # Cookbook Name:: icinga
 # Recipe:: client
 #
