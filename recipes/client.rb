@@ -69,6 +69,7 @@ when 'debian'
   package 'check-mk-agent-debian' do
     action :install
     source "#{Chef::Config[:file_cache_path]}/check_mk-#{version}/check-mk-agent_#{version}-1_all.deb"
+    options '--assume-yes'
     provider Chef::Provider::Package::Dpkg
   end
 
