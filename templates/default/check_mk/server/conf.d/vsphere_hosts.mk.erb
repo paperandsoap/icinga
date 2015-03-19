@@ -2,7 +2,6 @@
 datasource_programs.append((
   "<%= @node['check_mk']['setup']['sharedir'] %>/agents/special/agent_vsphere  -u '<%= @node['check_mk']['vsphere']['user'] %>' -s '<%= @node['check_mk']['vsphere']['password'] %>' "
   "-i <%= @node['check_mk']['vsphere']['modules'] %> --direct "
-  "--hostname '<%= vsphere_host['hostname'] %>' --timeout 5 <%= vsphere_host['ipaddress'] %>", [ "<%= vsphere_host['hostname'] %>" ]
+  "--hostname '<%= vsphere_host['hostname'] %>' --timeout <%= @node['check_mk']['vsphere']['timeout'] %> <%= vsphere_host['ipaddress'] %>", [ "<%= vsphere_host['hostname'] %>" ]
 ))
 <% end %>
-

@@ -37,6 +37,7 @@ default['check_mk']['vsphere']['user'] = 'user'
 default['check_mk']['vsphere']['password'] = 'password'
 default['check_mk']['vsphere']['modules'] = 'hostsystem,virtualmachine,datastore,counters'
 default['check_mk']['vsphere']['hosts'] = []
+default['check_mk']['vsphere']['timeout'] = 10
 
 # Enable graphios (perfdata to graphite)?
 default['check_mk']['graphios']['enabled'] = false
