@@ -1,4 +1,4 @@
-# encoding: utf-8
+\# encoding: utf-8
 # Cookbook Name:: icinga
 # Recipe:: client
 #
@@ -69,7 +69,7 @@ when 'debian'
   package 'check-mk-agent-debian' do
     action :install
     source "#{Chef::Config[:file_cache_path]}/check_mk-#{version}/check-mk-agent_#{version}-1_all.deb"
-    options '--assume-yes'
+    options '–force-confnew'
     provider Chef::Provider::Package::Dpkg
   end
 
