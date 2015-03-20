@@ -21,11 +21,11 @@
 # Used to properly address services once cmk is installed
 #
 execute 'reload-check-mk' do
-  command 'check_mk -I ; check_mk -O'
+  command 'check_mk -I -v ; check_mk -O'
   action :nothing
 end
 
 execute 'restart-check-mk' do
-  command 'check_mk -II ; check_mk -R'
+  command 'check_mk -II -v ; check_mk -R'
   action :nothing
 end
