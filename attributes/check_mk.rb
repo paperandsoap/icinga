@@ -163,3 +163,6 @@ default['check_mk']['legacy']['commands'] = {
 }
 default['check_mk']['filesystem']['default_levels']['warning'] = 90.0
 default['check_mk']['filesystem']['default_levels']['critical'] = 95.0
+
+
+default['check_mk']['ruby-pkg'] = 'ruby-dev'

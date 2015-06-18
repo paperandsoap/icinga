@@ -3,6 +3,5 @@ source "https://api.berkshelf.com"
 
 metadata
 
-cookbook 'rrdcached',        :github => 'Bigpoint/rrdcached'
-cookbook 'pnp4nagios',       :github => 'Bigpoint/pnp4nagios'
-cookbook 'exim4-light',      :github => 'tmassman/exim4-light'
+cookbook 'pnp4nagios', path: '/home/jtabel/pinf/knife_for_pinf/cookbooks/pnp4nagios'
+cookbook 'rrdcached', path: '/home/jtabel/pinf/knife_for_pinf/cookbooks/rrdcached'

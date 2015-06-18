@@ -7,28 +7,39 @@ provisioner:
 
 platforms:
 - name: debian-7.8
+  run_list:
+    - recipe[apt]
   driver_config:
     network:
     - ["forwarded_port", {guest: 80, host: 8080, auto_correct: true}]
-    - ["forwarded_port", {guest: 8080, host: 8081, auto_correct: true}]
+    - ["forwarded_port", {guest: 8080, host: 8083, auto_correct: true}]
     - ["forwarded_port", {guest: 443, host: 4443, auto_correct: true}]
     - ["private_network", {ip: "8.1.1.8"}]
     customize:
       cpus: 2
       memory: 1024
 
+- name: ubuntu-14.04
+  run_list:
+    - recipe[apt]
+  driver_config:
+    network:
+    - ["forwarded_port", {guest: 80, host: 8081, auto_correct: true}]
+    - ["forwarded_port", {guest: 8080, host: 8084, auto_correct: true}]
+    - ["forwarded_port", {guest: 443, host: 4444, auto_correct: true}]
+    - ["private_network", {ip: "8.1.1.9"}]
+    customize:
+      cpus: 2
+      memory: 1024
+
 suites:
   - name: icinga-client
-    run_list:
-      - recipe[apt]
       - role[monitoring-client]
     attributes:
       set_fqdn: "icinga-client-01.local"
   - name: icinga-server
     run_list:
-      - recipe[apt]
       - role[monitoring-server]
-      - recipe[exim4-light]
     attributes:
       set_fqdn: "icinga-server-01.local"
       check_mk:
@@ -48,8 +59,6 @@ suites:
             disabled: "True"
           sms:
             disabled: "True"
-        exim4:
-          configtype: "internet"
         pnp4nagios:
           htpasswd:
             file: "/etc/icinga/htpasswd.users"

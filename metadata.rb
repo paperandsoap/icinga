@@ -7,6 +7,10 @@ description      'Installs/Configures Icinga and check_mk Monitoring Solution'
 long_description IO.read(File.join(File.dirname(__FILE__), 'README.md'))
 version          '0.2.1'
 
+
+supports 'debian', '= 7.8'
+supports 'ubuntu'
+
 recipe 'icinga', 'Icinga Client Monitoring'
 recipe 'icinga::server', 'Icinga Monitoring Server and configurable monitoring node discovery'
 recipe 'icinga::master',
@@ -69,7 +73,7 @@ attribute 'check_mk/groups',
           :default => '1'
 
 depends 'build-essential', '>= 2.0.2'
-depends 'apache2', '< 2.0.0'
+depends 'apache2', '>= 3.0'
 depends 'apt'
 depends 'rrdcached'
 depends 'pnp4nagios'

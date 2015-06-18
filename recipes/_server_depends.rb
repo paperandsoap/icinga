@@ -25,11 +25,12 @@ include_recipe 'apache2'
 
 # Install for mod_ssl
 package 'ca-certificates'
-package 'ssl-cert'
+package 'openssl'
 
 # Apache2 Modules
+include_recipe 'apache2::mod_php5'
 include_recipe 'apache2::mod_ssl'
-include_recipe 'apache2::mod_python'
+#include_recipe 'apache2::mod_python'
 include_recipe 'apache2::mod_rewrite'
 
 if node['icinga']['apache']['default_vhost']

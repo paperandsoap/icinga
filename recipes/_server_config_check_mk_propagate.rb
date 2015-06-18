@@ -153,7 +153,7 @@ template '/usr/share/check_mk/notifications/nawom.rb' do
   mode 0770
 end
 
-package 'ruby-dev' do
+package node['check_mk']['ruby-pkg'] do
   action :install
 end
 

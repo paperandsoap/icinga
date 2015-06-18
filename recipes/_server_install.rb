@@ -18,9 +18,9 @@
 # limitations under the License.
 #
 
-if ['debian'].member? node['platform']
+#if ['debian'].member? node['platform']
   # Install the Icinga on Debian
-  include_recipe 'icinga::_server_install_debian'
+  include_recipe 'icinga::_server_install_packages'
 
   # Install Icinga Check_mk extension
   include_recipe 'icinga::_server_install_check_mk_source'
@@ -33,4 +33,4 @@ if ['debian'].member? node['platform']
 
   # Install vsphere monitoring if enabled
   include_recipe 'icinga::_server_install_vsphere' if node['check_mk']['vsphere']['enabled']
-end
+#end

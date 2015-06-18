@@ -51,7 +51,7 @@ bash 'build_check_mk' do
     tar -xzf check_mk-#{version}.tar.gz
     (cd check_mk-#{version} && ./setup.sh --yes)
     # Add #{node['apache']['group']} to Nagios group (Better in chef?)
-    usermod -G nagios www-data
+    usermod -G nagios #{node['apache']['user']}
   EOF
   action :nothing
 end
@@ -61,7 +61,6 @@ directory '/var/log/nagios' do
   owner node['check_mk']['setup']['nagiosuser']
   group node['check_mk']['setup']['nagiosuser']
   mode 0755
-  only_if { platform?('ubuntu', 'debian') }
   action :create
 end
 
@@ -69,7 +68,6 @@ directory '/var/log/nagios/rw' do
   owner node['check_mk']['setup']['nagiosuser']
   group node['check_mk']['setup']['nagiosuser']
   mode 0755
-  only_if { platform?('ubuntu', 'debian') }
   action :create
 end
 

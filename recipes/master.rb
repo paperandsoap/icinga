@@ -22,7 +22,7 @@ include_recipe 'icinga::client'
 include_recipe 'apache2::mod_proxy'
 include_recipe 'apache2::mod_proxy_http'
 
-if %w( debian ubuntu ).member? node['platform']
+if node['platform_family'] == 'debian'
 
   if Chef::Config[:solo]
     nodes = search(:node, 'role:monitoring-server')
@@ -41,12 +41,16 @@ if %w( debian ubuntu ).member? node['platform']
   end
 
   # Proxy configuration
-  template "#{node['apache']['dir']}/conf.d/multisite_proxy.conf" do
+  template "#{node['apache']['dir']}/conf-available/multisite_proxy.conf" do
     source 'check_mk/master/multisite_proxy.conf.erb'
     owner 'nagios'
     group 'nagios'
     mode 0640
     variables(nodes: nodes)
     notifies :restart, 'service[apache2]', :delayed
+  end
+
+  apache_config 'multisite_proxy' do
+    enable true
   end
 end
